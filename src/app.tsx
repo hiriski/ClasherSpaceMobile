@@ -23,6 +23,7 @@ const App = (): JSX.Element => {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider>
           <StatusBar translucent backgroundColor='transparent' />
+          <AppContainer />
         </SafeAreaProvider>
       </GestureHandlerRootView>
     </AppContextProvider>
