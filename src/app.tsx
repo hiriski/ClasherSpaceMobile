@@ -30,6 +30,7 @@ import { enableScreens } from 'react-native-screens'
 
 // gesture handler root view
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import Sample from './components/sample'
 
 enableScreens()
 
@@ -41,6 +42,7 @@ function Section({ children, title }: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark'
   return (
     <View style={styles.sectionContainer}>
+      <Sample />
       <Text
         style={[
           styles.sectionTitle,

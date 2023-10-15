@@ -51,5 +51,26 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Jost-ExtraLight.ttf</string>
+		<string>Jost-ExtraLightItalic.ttf</string>
+		<string>Jost-Light.ttf</string>
+		<string>Jost-LightItalic.ttf</string>
+		<string>Jost-Regular.ttf</string>
+		<string>Jost-Italic.ttf</string>
+		<string>Jost-Medium.ttf</string>
+		<string>Jost-MediumItalic.ttf</string>
+		<string>Jost-SemiBold.ttf</string>
+		<string>Jost-SemiBoldItalic.ttf</string>
+		<string>Jost-Bold.ttf</string>
+		<string>Jost-BoldItalic.ttf</string>
+		<string>Feather.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>Zocial.ttf</string>
+	</array>
 </dict>
 </plist>
