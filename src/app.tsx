@@ -1,10 +1,8 @@
-import { StatusBar } from 'react-native'
-
 // app container
 import AppContainer from './app.container'
 
-// app context provider
-import { AppContextProvider } from '@/contexts/app'
+// context provider
+import { AppContextProvider, ThemeContextProvider } from '@/contexts'
 
 // react native screens.
 import { enableScreens } from 'react-native-screens'
@@ -20,12 +18,13 @@ enableScreens(true)
 const App = (): JSX.Element => {
   return (
     <AppContextProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaProvider>
-          <StatusBar translucent backgroundColor='transparent' />
-          <AppContainer />
-        </SafeAreaProvider>
-      </GestureHandlerRootView>
+      <ThemeContextProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <SafeAreaProvider>
+            <AppContainer />
+          </SafeAreaProvider>
+        </GestureHandlerRootView>
+      </ThemeContextProvider>
     </AppContextProvider>
   )
 }

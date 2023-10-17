@@ -12,7 +12,7 @@ import { useApp } from '@/hooks'
 import { useIsMounted } from '@/hooks'
 
 // utils
-import { storageUtils } from '@/utils'
+import { storageUtils } from '@/utilities'
 import { getActiveRouteName } from './navigation.util'
 
 /**
@@ -56,9 +56,9 @@ export function useNavigationPersistence() {
 
     if (previousRouteName !== currentRouteName) {
       // track screens.
-      if (__DEV__) {
-        console.log('>>>> currentRouteName >>>> ', currentRouteName)
-      }
+      // if (__DEV__) {
+      //   console.log('>>>> currentRouteName >>>> ', currentRouteName)
+      // }
     }
 
     // Save the current route name for later comparison
@@ -91,7 +91,7 @@ export function useNavigationPersistence() {
     // eslint-disable-next-line no-extra-semi
     ;(async () => {
       if (!isRestored) {
-        console.log('!isRestored')
+        // console.log('!isRestored')
         await restoreState()
       }
       if (splashScreenVisible) {

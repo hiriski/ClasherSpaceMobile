@@ -14,13 +14,13 @@ export const useApp = () => {
     dispatch({ type: AppActionTypes.setVisibleSplashScreen, payload })
   }
 
-  const setFoo = (payload: string) => {
-    dispatch({ type: AppActionTypes.setFoo, payload })
+  const setVisibleBottomTab = (payload: boolean) => {
+    dispatch({ type: AppActionTypes.setVisibleBottomTab, payload })
   }
 
   return {
     ...state,
-    setFoo,
+    setVisibleBottomTab,
     setSplashScreen,
   }
 }

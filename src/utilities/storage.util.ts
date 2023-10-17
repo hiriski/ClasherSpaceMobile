@@ -6,7 +6,7 @@ import { STORAGE_KEYS } from '@/constants'
  *
  * @param key The key to fetch.
  */
-async function getString(key: STORAGE_KEYS): Promise<string | null> {
+export async function getString(key: STORAGE_KEYS): Promise<string | null> {
   try {
     return await AsyncStorage.getItem(key)
   } catch {
@@ -21,7 +21,7 @@ async function getString(key: STORAGE_KEYS): Promise<string | null> {
  * @param key The key to fetch.
  * @param value The value to store.
  */
-async function saveString(key: STORAGE_KEYS, value: string): Promise<boolean> {
+export async function saveString(key: STORAGE_KEYS, value: string): Promise<boolean> {
   try {
     await AsyncStorage.setItem(key, value)
     return true
@@ -64,7 +64,7 @@ export async function save(key: STORAGE_KEYS, value: any): Promise<boolean> {
  *
  * @param key The key to kill.
  */
-async function remove(key: STORAGE_KEYS): Promise<void> {
+export async function remove(key: STORAGE_KEYS): Promise<void> {
   try {
     await AsyncStorage.removeItem(key)
   } catch {}
@@ -73,10 +73,10 @@ async function remove(key: STORAGE_KEYS): Promise<void> {
 /**
  * Burn it all to the ground.
  */
-async function clear(): Promise<void> {
+export async function clear(): Promise<void> {
   try {
     await AsyncStorage.clear()
   } catch {}
 }
 
-export const storageUtils = { getString, saveString, get, save, remove, clear }
+export const storageUtils = { getString, saveString, get, save, clear }

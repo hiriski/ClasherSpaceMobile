@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavigationContainer as ReactNavigationContainer } from '@react-navigation/native'
+import { NavigationContainer as ReactNavigationNativeContainer } from '@react-navigation/native'
 
 // root stack navigator
 import RootStackNavigator from './root-stack.navigator'
@@ -11,13 +11,13 @@ import { navigationRef } from './navigation.util'
 import { navigationLightTheme } from './navigation.theme'
 
 // prettier-ignore
-interface NavigationContainerProps extends Partial<React.ComponentProps<typeof ReactNavigationContainer>> {}
+interface NavigationContainerProps extends Partial<React.ComponentProps<typeof ReactNavigationNativeContainer>> {}
 
 const NavigationContainer = (props: NavigationContainerProps) => {
   return (
-    <ReactNavigationContainer {...props} ref={navigationRef} theme={navigationLightTheme}>
+    <ReactNavigationNativeContainer {...props} ref={navigationRef} theme={navigationLightTheme}>
       <RootStackNavigator />
-    </ReactNavigationContainer>
+    </ReactNavigationNativeContainer>
   )
 }
 

@@ -7,16 +7,21 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigatorParamList, ScreenType } from './navigation.type'
 import { AppState, AppStateStatus } from 'react-native'
 
-// screens
+// screens & navigator
 import { SplashScreen } from '@/screens/splash'
-import { DashboardScreen } from '@/screens/dashboard'
+
+// navigator
+import BottomTabStackNavigator from './bottom-tab-stack.navigator'
 
 // utils
-import { storageUtils } from '@/utils'
+import { storageUtils } from '@/utilities'
+import { LayoutDetailScreen, LayoutListScreen } from '@/screens/layout'
 
 const SCREENS: Array<ScreenType> = [
   { name: 'splash_screen', component: SplashScreen },
-  { name: 'dashboard_screen', component: DashboardScreen },
+  { name: 'bottom_tab_stack', component: BottomTabStackNavigator },
+  { name: 'layout_list_screen', component: LayoutListScreen },
+  { name: 'layout_detail_screen', component: LayoutDetailScreen },
 ]
 
 const RootStack = createNativeStackNavigator<NavigatorParamList>()
@@ -28,7 +33,7 @@ const RootStackNavigator = (): JSX.Element | null => {
   const [_, setAppStateVisible] = useState(appState.current)
 
   const init = async (): Promise<void> => {
-    console.log('----- INIT DO SOMETHING -----')
+    // console.log('----- INIT DO SOMETHING -----')
   }
 
   const checkAlreadyLaunched = async (): Promise<void> => {
@@ -72,9 +77,10 @@ const RootStackNavigator = (): JSX.Element | null => {
 
   return (
     <RootStack.Navigator
-      initialRouteName='dashboard_screen'
+      initialRouteName='bottom_tab_stack'
       screenOptions={{
         headerShown: false,
+        animation: 'slide_from_right',
       }}
     >
       {SCREENS.map(x => {

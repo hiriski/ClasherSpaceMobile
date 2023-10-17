@@ -1,25 +1,31 @@
-import { appConfig } from '@/config'
-import { Dimensions, StatusBar, StyleSheet, Text, View } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { StyleSheet, View } from 'react-native'
 
-const dimensions = Dimensions.get('window')
-const AppSplashScreen = (): JSX.Element => {
+// components
+import { Screen, Typography } from '@/components/core'
+
+// hooks
+import { appConfig } from '@/config'
+
+import { screenUtils } from '@/utilities'
+import { useTheme } from '@/hooks'
+import { createSpacing } from '@/helpers'
+
+const AppSplashScreen = () => {
+  const theme = useTheme()
   return (
-    <>
-      <StatusBar translucent />
-      <View style={StyleSheet.flatten([styles.root])}>
-        <View style={styles.root}>
-          <Icon name='game-controller' size={64} color='#4674fe' style={{ marginBottom: 12 }} />
-          <Text style={StyleSheet.flatten([styles.text, { fontSize: 22, fontWeight: '500', marginBottom: 4 }])}>
-            {appConfig.appName}
-          </Text>
-          <Text style={styles.text}>{appConfig.appDescription}</Text>
-        </View>
-        <View style={styles.footer}>
-          <Text style={styles.text}>Made with ❤️</Text>
-        </View>
+    <Screen preset='fixed' statusBarStyle='dark-content' backgroundColor={theme.palette.background.paper}>
+      <View style={styles.root}>
+        <Typography variant='h2'>{appConfig.appName}</Typography>
       </View>
-    </>
+      <View style={styles.footer}>
+        <Typography color='text.secondary' variant='body2' gutterBottom>
+          Made with ❤️
+        </Typography>
+        <Typography color='text.secondary' variant='body2'>
+          South Beach, Palabuhanratu - Indonesia
+        </Typography>
+      </View>
+    </Screen>
   )
 }
 
@@ -29,17 +35,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    width: dimensions.width,
-    height: dimensions.height,
+    width: screenUtils.width,
+    height: screenUtils.height,
     zIndex: 1000,
-    backgroundColor: '#ffffff',
   },
-  text: {
-    fontFamily: 'Jost',
+  logo: {
+    height: 82,
+    marginBottom: createSpacing(4),
+  },
+  text: {},
+  title: {
+    marginBottom: createSpacing(1),
   },
   footer: {
     marginTop: 'auto',
-    marginBottom: 30,
+    marginBottom: createSpacing(6),
     alignItems: 'center',
   },
 })

@@ -1,4 +1,5 @@
 export const appConfig = {
-  appName: 'Clasher Bases',
-  appDescription: 'Clash of Clans Base Layouts Collection',
+  appName: 'RN Core Components',
+  appDescription: 'React Native boilerplate starter components',
+  defaultVectorIcon: 'ionicons',
 }

@@ -1,23 +1,31 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { View } from 'react-native'
+import { Button, Screen, Typography } from '@/components/core'
+import { paletteLibs } from '@/libs/palette/_palette.lib'
+import { useTheme } from '@/hooks'
+import { useNavigation } from '@react-navigation/native'
+import { NavigationProps } from '@/navigators'
 
 const DashboardScreen = (): JSX.Element => {
+  const theme = useTheme()
+  const nav = useNavigation<NavigationProps>()
   return (
-    <View style={styles.root}>
-      <Text>Dashboard screen</Text>
-    </View>
+    <Screen
+      preset='fixed'
+      statusBarStyle='light-content'
+      title='Settings'
+      titleColor='#ffffff'
+      headerBackgroundColor={paletteLibs.grey[800]}
+      backgroundColor={theme.palette.background.paper}
+      style={{ paddingTop: 12, paddingHorizontal: theme.horizontalSpacing }}
+    >
+      <View style={{ flex: 1 }}>
+        <Typography color='text.disabled' style={{ textAlign: 'center' }}>
+          Dashboard
+        </Typography>
+        <Button title='Navigate to layout list' onPress={() => nav.navigate('layout_list_screen')} />
+      </View>
+    </Screen>
   )
 }
-
-const dimensions = Dimensions.get('window')
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: dimensions.width,
-    height: dimensions.height,
-  },
-})
 
 export default DashboardScreen

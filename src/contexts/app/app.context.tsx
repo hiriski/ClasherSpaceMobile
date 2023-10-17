@@ -7,7 +7,7 @@ import { AppReducerActions, appReducer } from '@/reducers'
 
 export interface IAppState {
   splashScreenVisible: boolean
-  foo: string
+  visibleBottomTab: boolean
 }
 
 // app context provider
@@ -21,7 +21,7 @@ export const AppDispatchContext = createContext<Dispatch<AppReducerActions>>(nul
  */
 export const appContext_initialState: IAppState = {
   splashScreenVisible: true,
-  foo: 'Hello',
+  visibleBottomTab: true,
 }
 
 // app context provider

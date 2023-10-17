@@ -2,7 +2,7 @@ import { IAppState } from '@/contexts/app'
 
 export enum AppActionTypes {
   setVisibleSplashScreen = '@app/setVisibleSplashScreen',
-  setFoo = '@app/setFoo',
+  setVisibleBottomTab = '@app/setVisibleBottomTab',
 }
 
 /**
@@ -14,13 +14,13 @@ type SetVisibleSplashScreen = {
   payload: boolean
 }
 
-type SetFoo = {
-  type: AppActionTypes.setFoo
-  payload: string
+type SetVisibleBottomTab = {
+  type: AppActionTypes.setVisibleBottomTab
+  payload: boolean
 }
 /** ---------------------------------- */
 
-export type AppReducerActions = SetVisibleSplashScreen | SetFoo
+export type AppReducerActions = SetVisibleSplashScreen | SetVisibleBottomTab
 
 /**
  * app reducer
@@ -35,10 +35,10 @@ export const appReducer = (state: IAppState, action: AppReducerActions): IAppSta
         ...state,
         splashScreenVisible: payload,
       }
-    case AppActionTypes.setFoo:
+    case AppActionTypes.setVisibleBottomTab:
       return {
         ...state,
-        foo: payload,
+        visibleBottomTab: payload,
       }
     default:
       return state
