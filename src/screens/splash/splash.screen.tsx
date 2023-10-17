@@ -1,28 +1,39 @@
-import { StyleSheet, View } from 'react-native'
+import { FC, useEffect } from 'react'
+import { Image, StyleSheet, View, ActivityIndicator } from 'react-native'
 
 // components
 import { Screen, Typography } from '@/components/core'
 
-// hooks
-import { appConfig } from '@/config'
+// config
+import { appConfig, themeConfig } from '@/config'
 
-import { screenUtils } from '@/utilities'
-import { useTheme } from '@/hooks'
+// utils
+import { screenUtils, uiUtils } from '@/utilities'
 import { createSpacing } from '@/helpers'
 
-const AppSplashScreen = () => {
-  const theme = useTheme()
+// assets
+import { Assets } from '@/assets'
+
+const BACKGROUND_COLOR = '#2f3556'
+
+const AppSplashScreen: FC = () => {
+  useEffect(() => {
+    uiUtils.changeNavbarBarColor(BACKGROUND_COLOR, true)
+  }, [])
   return (
-    <Screen preset='fixed' statusBarStyle='dark-content' backgroundColor={theme.palette.background.paper}>
+    <Screen preset='fixed' statusBarStyle='light-content' backgroundColor={BACKGROUND_COLOR}>
       <View style={styles.root}>
-        <Typography variant='h2'>{appConfig.appName}</Typography>
+        <Image source={Assets.logoLightSm} style={styles.logo} resizeMode='contain' />
+        <Typography variant='h3' color='common.white' fontWeight='bold'>
+          {appConfig.appName}
+        </Typography>
+        <View style={styles.loadingSpace}>
+          <ActivityIndicator color={themeConfig.paletteBase.secondary.main} size={28} />
+        </View>
       </View>
       <View style={styles.footer}>
-        <Typography color='text.secondary' variant='body2' gutterBottom>
+        <Typography variant='body2' color='text.disabled'>
           Made with ❤️
-        </Typography>
-        <Typography color='text.secondary' variant='body2'>
-          South Beach, Palabuhanratu - Indonesia
         </Typography>
       </View>
     </Screen>
@@ -38,19 +49,20 @@ const styles = StyleSheet.create({
     width: screenUtils.width,
     height: screenUtils.height,
     zIndex: 1000,
+    marginTop: -22,
   },
   logo: {
-    height: 82,
-    marginBottom: createSpacing(4),
-  },
-  text: {},
-  title: {
-    marginBottom: createSpacing(1),
+    height: 110,
+    marginBottom: createSpacing(5),
   },
   footer: {
     marginTop: 'auto',
-    marginBottom: createSpacing(6),
+    marginBottom: createSpacing(8),
     alignItems: 'center',
+  },
+  loadingSpace: {
+    marginTop: 12,
+    height: 30,
   },
 })
 
