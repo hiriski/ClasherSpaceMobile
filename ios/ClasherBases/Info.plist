@@ -53,18 +53,20 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Jost-ExtraLight.ttf</string>
-		<string>Jost-ExtraLightItalic.ttf</string>
-		<string>Jost-Light.ttf</string>
-		<string>Jost-LightItalic.ttf</string>
-		<string>Jost-Regular.ttf</string>
-		<string>Jost-Italic.ttf</string>
-		<string>Jost-Medium.ttf</string>
-		<string>Jost-MediumItalic.ttf</string>
-		<string>Jost-SemiBold.ttf</string>
-		<string>Jost-SemiBoldItalic.ttf</string>
-		<string>Jost-Bold.ttf</string>
-		<string>Jost-BoldItalic.ttf</string>
+		<string>PlusJakartaSans-ExtraLight.ttf</string>
+		<string>PlusJakartaSans-ExtraLightItalic.ttf</string>
+		<string>PlusJakartaSans-Light.ttf</string>
+		<string>PlusJakartaSans-LightItalic.ttf</string>
+		<string>PlusJakartaSans-Regular.ttf</string>
+		<string>PlusJakartaSans-Italic.ttf</string>
+		<string>PlusJakartaSans-Medium.ttf</string>
+		<string>PlusJakartaSans-MediumItalic.ttf</string>
+		<string>PlusJakartaSans-SemiBold.ttf</string>
+		<string>PlusJakartaSans-SemiBoldItalic.ttf</string>
+		<string>PlusJakartaSans-Bold.ttf</string>
+		<string>PlusJakartaSans-BoldItalic.ttf</string>
+		<string>PlusJakartaSans-ExtraBold.ttf</string>
+		<string>PlusJakartaSans-ExtraBoldItalic.ttf</string>
 		<string>Feather.ttf</string>
 		<string>Ionicons.ttf</string>
 		<string>MaterialIcons.ttf</string>
