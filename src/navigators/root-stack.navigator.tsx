@@ -7,21 +7,35 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigatorParamList, ScreenType } from './navigation.type'
 import { AppState, AppStateStatus } from 'react-native'
 
+// firebase
+import auth from '@react-native-firebase/auth'
+
 // screens & navigator
 import { SplashScreen } from '@/screens/splash'
 
 // navigator
 import BottomTabStackNavigator from './bottom-tab-stack.navigator'
 
-// utils
-import { storageUtils } from '@/utilities'
+// screens
 import { LayoutDetailScreen, LayoutListScreen } from '@/screens/layout'
+import { LoginScreen, RegisterScreen } from '@/screens/auth'
+import { OnboardingScreen } from '@/screens/onboarding'
+
+// hooks
+import { useAuth } from '@/hooks/auth'
+
+// helpers / utils
+// import { log } from '@/helpers'
+import { storageUtils } from '@/utilities'
 
 const SCREENS: Array<ScreenType> = [
   { name: 'splash_screen', component: SplashScreen },
+  { name: 'onboarding_screen', component: OnboardingScreen },
   { name: 'bottom_tab_stack', component: BottomTabStackNavigator },
   { name: 'layout_list_screen', component: LayoutListScreen },
   { name: 'layout_detail_screen', component: LayoutDetailScreen },
+  { name: 'register_screen', component: RegisterScreen },
+  { name: 'login_screen', component: LoginScreen },
 ]
 
 const RootStack = createNativeStackNavigator<NavigatorParamList>()
@@ -32,8 +46,10 @@ const RootStackNavigator = (): JSX.Element | null => {
   const [isAlreadyLaunched, setIsAlreadyLaunched] = useState(false)
   const [_, setAppStateVisible] = useState(appState.current)
 
+  const { auth_setUser, isAuthenticated } = useAuth()
+
   const init = async (): Promise<void> => {
-    // console.log('----- INIT DO SOMETHING -----')
+    // log.info('----- INIT DO SOMETHING -----')
   }
 
   const checkAlreadyLaunched = async (): Promise<void> => {
@@ -71,13 +87,23 @@ const RootStackNavigator = (): JSX.Element | null => {
     }
   }, [])
 
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(user => {
+      // log.warn(`onAuthStateChanged user -> ${JSON.stringify(user)}`)
+      auth_setUser(user)
+    })
+    return subscriber // unsubscribe on unmount
+  }, [])
+
+  // log.warn(`isAlreadyLaunched -> ${isAlreadyLaunched}`)
+
   if (!isAppLoaded) {
     return null
   }
 
   return (
     <RootStack.Navigator
-      initialRouteName='bottom_tab_stack'
+      initialRouteName={isAlreadyLaunched ? 'bottom_tab_stack' : 'onboarding_screen'}
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',

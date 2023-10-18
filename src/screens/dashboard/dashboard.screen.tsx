@@ -4,6 +4,7 @@ import { paletteLibs } from '@/libs/palette/_palette.lib'
 import { useTheme } from '@/hooks'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationProps } from '@/navigators'
+import { storageUtils } from '@/utilities'
 
 const DashboardScreen = (): JSX.Element => {
   const theme = useTheme()
@@ -12,7 +13,7 @@ const DashboardScreen = (): JSX.Element => {
     <Screen
       preset='fixed'
       statusBarStyle='light-content'
-      title='Settings'
+      title='Dashboard'
       titleColor='#ffffff'
       headerBackgroundColor={paletteLibs.grey[800]}
       backgroundColor={theme.palette.background.paper}
@@ -22,7 +23,11 @@ const DashboardScreen = (): JSX.Element => {
         <Typography color='text.disabled' style={{ textAlign: 'center' }}>
           Dashboard
         </Typography>
-        <Button title='Navigate to layout list' onPress={() => nav.navigate('layout_list_screen')} />
+        <Button title='Navigate to layout list' onPress={() => nav.navigate('layout_list_screen')} style={{ marginBottom: 20 }} />
+        <Button title='Go to profile' onPress={() => nav.navigate('profile_screen')} style={{ marginBottom: 20 }} />
+        <Button title='Clear storage' onPress={() => storageUtils.clear()} style={{ marginBottom: 20 }} />
+        <Button title='Register' color='secondary' onPress={() => nav.navigate('register_screen')} style={{ marginBottom: 12 }} />
+        <Button title='Login' color='secondary' onPress={() => nav.navigate('login_screen')} />
       </View>
     </Screen>
   )

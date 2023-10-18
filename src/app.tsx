@@ -2,7 +2,7 @@
 import AppContainer from './app.container'
 
 // context provider
-import { AppContextProvider, ThemeContextProvider } from '@/contexts'
+import { AppContextProvider, AuthContextProvider, ThemeContextProvider } from '@/contexts'
 
 // react native screens.
 import { enableScreens } from 'react-native-screens'
@@ -19,11 +19,13 @@ const App = (): JSX.Element => {
   return (
     <AppContextProvider>
       <ThemeContextProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <SafeAreaProvider>
-            <AppContainer />
-          </SafeAreaProvider>
-        </GestureHandlerRootView>
+        <AuthContextProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <SafeAreaProvider>
+              <AppContainer />
+            </SafeAreaProvider>
+          </GestureHandlerRootView>
+        </AuthContextProvider>
       </ThemeContextProvider>
     </AppContextProvider>
   )
