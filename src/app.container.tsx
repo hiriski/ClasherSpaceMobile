@@ -2,9 +2,7 @@
 import { NavigationContainer } from '@/navigators'
 
 // hooks
-import { useApp, useTheme } from '@/hooks'
-import { useNavigationPersistence } from '@/navigators/navigation.hook'
-// import { SplashScreen } from './screens/splash'
+import { useTheme } from '@/hooks'
 
 // toast
 import Toast, { ToastConfig } from 'react-native-toast-message'
@@ -18,26 +16,18 @@ import { uiUtils } from './utilities'
 import { log } from './helpers'
 
 const AppContainer = () => {
-  // const { splashScreenVisible } = useApp()
   const { palette } = useTheme()
-  const { onNavigationStateChange } = useNavigationPersistence()
-
-  // const isNavigationStateRestored = true
 
   const onNavigationIsReady = (): void => {
+    log.info('<<< onNavigationIsReady >>')
     // do something when navigation is ready
     uiUtils.changeNavbarBarColor(palette.background.paper, false)
-    log.info('<<< onNavigationIsReady >>')
   }
 
   return (
     <>
       <StatusBar translucent backgroundColor='transparent' />
-      <NavigationContainer
-        // initialState={initialNavigationState}
-        onStateChange={onNavigationStateChange}
-        onReady={onNavigationIsReady}
-      />
+      <NavigationContainer onReady={onNavigationIsReady} />
       <Toast position='bottom' config={toastConfig as ToastConfig} />
       {/* {(splashScreenVisible || !isNavigationStateRestored) && <SplashScreen />} */}
     </>

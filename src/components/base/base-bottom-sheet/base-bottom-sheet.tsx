@@ -22,6 +22,7 @@ import { bottomSheetStyles as styles } from './base-bottom-sheet.styles'
 import { IconButtonProps } from 'react-native-vector-icons/Icon'
 import { themeConfig } from '@/config'
 import { RNVectorIconProvider } from '@/interfaces'
+import { BackdropPressBehavior } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types'
 
 interface Props {
   /**
@@ -104,6 +105,8 @@ interface Props {
    */
   backdrop?: boolean
 
+  backdropPressBehavior?: BackdropPressBehavior
+
   /**
    * footer button props...
    */
@@ -137,6 +140,7 @@ const BaseBottomSheet: FC<Props> = props => {
     containerStyle,
     backgroundStyle,
     backdrop,
+    backdropPressBehavior,
     enableFooterButton,
     enableFooterButtonTitle,
     onPressFooterButton,
@@ -183,7 +187,7 @@ const BaseBottomSheet: FC<Props> = props => {
   // backdrop
   // prettier-ignore
   const renderBackdrop = useCallback((backdropProps: BottomSheetBackdropProps) => (
-    <BaseBottomSheetBackdrop {...backdropProps} pressBehavior='close' />
+    <BaseBottomSheetBackdrop {...backdropProps} pressBehavior={backdropPressBehavior} />
   ), [])
 
   // bottom sheet handle
@@ -253,6 +257,7 @@ BaseBottomSheet.defaultProps = {
   enablePanDownToClose: true,
   enableHandle: true,
   backdrop: true,
+  backdropPressBehavior: 'close',
   onOpenSnapToIndex: 0,
   enableFooterButton: false,
   enableFooterButtonTitle: '',

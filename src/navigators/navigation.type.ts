@@ -3,10 +3,13 @@ import { NativeStackNavigationOptions, NativeStackNavigationProp, NativeStackScr
 
 export type NavigatorParamList = {
   splash_screen: undefined
+  onboarding_screen: undefined
   bottom_tab_stack: undefined
   layout_list_screen: undefined
   layout_detail_screen: undefined
   notifications_screen: undefined
+  register_screen: undefined
+  login_screen: undefined
 } & BottomTabNavigatorParamList
 
 export type BottomTabNavigatorParamList = {
