@@ -1,14 +1,21 @@
 import { View } from 'react-native'
 import { Button, Screen, Typography } from '@/components/core'
 import { paletteLibs } from '@/libs/palette/_palette.lib'
-import { useTheme } from '@/hooks'
+import { useApp, useTheme } from '@/hooks'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationProps } from '@/navigators'
 import { storageUtils } from '@/utilities'
+import { useCallback } from 'react'
 
 const DashboardScreen = (): JSX.Element => {
   const theme = useTheme()
   const nav = useNavigation<NavigationProps>()
+  const { setVisibleBottomTab, visibleBottomTab } = useApp()
+
+  const onPressToggleBottomTab = useCallback(() => {
+    setVisibleBottomTab(!visibleBottomTab)
+  }, [visibleBottomTab])
+
   return (
     <Screen
       preset='fixed'
@@ -23,6 +30,7 @@ const DashboardScreen = (): JSX.Element => {
         <Typography color='text.disabled' style={{ textAlign: 'center' }}>
           Dashboard
         </Typography>
+        <Button title='Toggle Bottom Tabb' onPress={onPressToggleBottomTab} style={{ marginBottom: 20 }} />
         <Button title='Navigate to layout list' onPress={() => nav.navigate('layout_list_screen')} style={{ marginBottom: 20 }} />
         <Button title='Go to profile' onPress={() => nav.navigate('profile_screen')} style={{ marginBottom: 20 }} />
         <Button title='Clear storage' onPress={() => storageUtils.clear()} style={{ marginBottom: 20 }} />

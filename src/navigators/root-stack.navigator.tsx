@@ -17,7 +17,7 @@ import { SplashScreen } from '@/screens/splash'
 import BottomTabStackNavigator from './bottom-tab-stack.navigator'
 
 // screens
-import { LayoutDetailScreen, LayoutListScreen } from '@/screens/layout'
+import { LayoutDetailScreen } from '@/screens/layout'
 import { LoginScreen, RegisterScreen } from '@/screens/auth'
 import { OnboardingScreen } from '@/screens/onboarding'
 
@@ -32,7 +32,6 @@ const SCREENS: Array<ScreenType> = [
   { name: 'splash_screen', component: SplashScreen },
   { name: 'onboarding_screen', component: OnboardingScreen },
   { name: 'bottom_tab_stack', component: BottomTabStackNavigator },
-  { name: 'layout_list_screen', component: LayoutListScreen },
   { name: 'layout_detail_screen', component: LayoutDetailScreen },
   { name: 'register_screen', component: RegisterScreen },
   { name: 'login_screen', component: LoginScreen },
@@ -46,7 +45,7 @@ const RootStackNavigator = (): JSX.Element | null => {
   const [isAlreadyLaunched, setIsAlreadyLaunched] = useState(false)
   const [_, setAppStateVisible] = useState(appState.current)
 
-  const { auth_setUser, isAuthenticated } = useAuth()
+  const { auth_setUser } = useAuth()
 
   const init = async (): Promise<void> => {
     // log.info('----- INIT DO SOMETHING -----')
@@ -94,8 +93,6 @@ const RootStackNavigator = (): JSX.Element | null => {
     })
     return subscriber // unsubscribe on unmount
   }, [])
-
-  // log.warn(`isAlreadyLaunched -> ${isAlreadyLaunched}`)
 
   if (!isAppLoaded) {
     return null

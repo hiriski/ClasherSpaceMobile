@@ -14,7 +14,7 @@ export type NavigatorParamList = {
 
 export type BottomTabNavigatorParamList = {
   dashboard_screen: undefined
-  settings_screen: undefined
+  layout_list_screen: undefined
   profile_screen: undefined
 }
 

@@ -9,7 +9,7 @@ const LayoutListScreen = (): JSX.Element => {
     <Screen
       preset='fixed'
       statusBarStyle='light-content'
-      title='Settings'
+      title='Layout List Screen'
       titleColor='#ffffff'
       headerBackgroundColor={paletteLibs.grey[800]}
       backgroundColor={theme.palette.background.paper}
