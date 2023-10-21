@@ -1,10 +1,10 @@
-import { StyleSheet, View } from 'react-native'
-import { Button, TextField } from '@/components/core'
+import { Image, StyleSheet, View } from 'react-native'
+import { Button, TextField, Typography } from '@/components/core'
 import auth from '@react-native-firebase/auth'
 
 // utils
 import { screenUtils } from '@/utilities'
-import { log } from '@/helpers'
+import { createSpacing, log } from '@/helpers'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationProps } from '@/navigators'
 
@@ -12,8 +12,10 @@ import { NavigationProps } from '@/navigators'
 import { useForm, Controller, SubmitHandler, SubmitErrorHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import { useToast } from '@/hooks'
+import { useTheme, useToast } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
+import { Assets } from '@/assets'
+import { useEffect } from 'react'
 
 type FormValues = {
   email: string
@@ -29,6 +31,7 @@ const schema = Yup.object()
 
 const LoginForm = (): JSX.Element => {
   const nav = useNavigation<NavigationProps>()
+  const theme = useTheme()
 
   const { showToast } = useToast()
 
@@ -84,47 +87,69 @@ const LoginForm = (): JSX.Element => {
 
   return (
     <View style={styles.root}>
-      <Controller
-        control={control}
-        name='email'
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextField
-            label='Email'
-            placeholder='Email'
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            margin='normal'
-            isError={Boolean(errors?.email?.message)}
-            helperText={errors?.email?.message ? errors?.email?.message : undefined}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name='password'
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextField
-            label='Password'
-            placeholder='Password'
-            secureTextEntry={true}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            margin='normal'
-            isError={Boolean(errors?.password?.message)}
-            helperText={errors?.password?.message ? errors?.password?.message : undefined}
-          />
-        )}
-      />
-      <View>
+      <View style={styles.formHeader}>
+        <Image source={theme.isDarkMode ? Assets.logoLightXs : Assets.logoDarkXs} style={styles.logo} resizeMode='contain' />
+        <Typography variant='h2' gutterBottom fontWeight='bold'>
+          Welcome back 👋
+        </Typography>
+        <Typography color='text.secondary'>Login to your account</Typography>
+      </View>
+      <View style={{ marginBottom: createSpacing(2) }}>
+        <Controller
+          control={control}
+          name='email'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label='Email'
+              labelSize='medium'
+              placeholder='Email'
+              onBlur={onBlur}
+              variant='filled'
+              onChangeText={onChange}
+              value={value}
+              margin='normal'
+              size='large'
+              isError={Boolean(errors?.email?.message)}
+              helperText={errors?.email?.message ? errors?.email?.message : undefined}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name='password'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label='Password'
+              labelSize='medium'
+              placeholder='Password'
+              variant='filled'
+              secureTextEntry={true}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              margin='normal'
+              size='large'
+              isError={Boolean(errors?.password?.message)}
+              helperText={errors?.password?.message ? errors?.password?.message : undefined}
+            />
+          )}
+        />
+      </View>
+
+      <View style={{ marginBottom: createSpacing(3) }}>
         <Button
           isLoading={loginLoading}
           onPress={handleSubmit(onValidSubmit, onInvalidSubmit)}
-          title='Sign In'
-          size='large'
+          title='Login'
+          size='extra-large'
           startIcon='enter-outline'
+          iconType='ionicons'
+          rounded
         />
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+        <Typography color='text.secondary'>Don't have an account ? </Typography>
+        <Button onPress={() => nav.navigate('register_screen')} title='Register' variant='text' disablePadding />
       </View>
     </View>
   )
@@ -132,8 +157,20 @@ const LoginForm = (): JSX.Element => {
 
 const styles = StyleSheet.create({
   root: {
-    width: screenUtils.width / 1.3,
+    flex: 1,
+    width: screenUtils.width / 1.4,
     alignSelf: 'center',
+    paddingTop: createSpacing(6),
+    paddingBottom: createSpacing(3),
+  },
+  formHeader: {
+    marginBottom: createSpacing(4),
+    alignItems: 'center',
+  },
+  logo: {
+    height: 52,
+    width: 52,
+    marginBottom: createSpacing(4),
   },
 })
 

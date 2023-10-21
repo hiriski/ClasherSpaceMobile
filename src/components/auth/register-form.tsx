@@ -1,19 +1,28 @@
-import { StyleSheet, View } from 'react-native'
-import { Button, TextField } from '@/components/core'
+import { FC } from 'react'
+import { Image, StyleSheet, View } from 'react-native'
+import { Button, TextField, Typography } from '@/components/core'
 import auth from '@react-native-firebase/auth'
 
 // utils
 import { screenUtils } from '@/utilities'
-import { log } from '@/helpers'
+import { createSpacing, log } from '@/helpers'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationProps } from '@/navigators'
 
 // hook form
+import * as Yup from 'yup'
 import { useForm, Controller, SubmitHandler, SubmitErrorHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import * as Yup from 'yup'
-import { useToast } from '@/hooks'
+
+// hooks
+import { useTheme, useToast } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
+
+// config
+import { appConfig } from '@/config'
+
+// assets
+import { Assets } from '@/assets'
 
 type FormValues = {
   email: string
@@ -31,9 +40,14 @@ const schema = Yup.object()
   })
   .required()
 
-const RegisterForm = (): JSX.Element => {
+interface Props {
+  onSuccess: () => void
+}
+
+const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
   const nav = useNavigation<NavigationProps>()
   const { showToast } = useToast()
+  const theme = useTheme()
 
   const { auth_setRegisterLoading, registerLoading } = useAuth()
 
@@ -53,19 +67,14 @@ const RegisterForm = (): JSX.Element => {
   const onValidSubmit: SubmitHandler<FormValues> = values => {
     auth_setRegisterLoading(true)
     const { email, password } = values
-    log.info(`values -> ${JSON.stringify(values)}`)
 
     auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
         auth_setRegisterLoading(false)
-        nav.navigate('profile_screen')
-        showToast({
-          type: 'success',
-          position: 'bottom',
-          variant: 'filled',
-          text1: 'Register Success',
-        })
+        if (typeof onSuccess === 'function') {
+          onSuccess()
+        }
       })
       .catch(error => {
         auth_setRegisterLoading(false)
@@ -91,64 +100,104 @@ const RegisterForm = (): JSX.Element => {
 
   return (
     <View style={styles.root}>
-      <Controller
-        control={control}
-        name='email'
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextField
-            label='Email'
-            placeholder='Email'
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            margin='normal'
-            isError={Boolean(errors?.email?.message)}
-            helperText={errors?.email?.message ? errors?.email?.message : undefined}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name='password'
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextField
-            label='Password'
-            placeholder='Password'
-            secureTextEntry={true}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            margin='normal'
-            isError={Boolean(errors?.password?.message)}
-            helperText={errors?.password?.message ? errors?.password?.message : undefined}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name='password_confirmation'
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextField
-            label='Confirm Password'
-            placeholder='Confirm Password'
-            secureTextEntry={true}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            margin='normal'
-            isError={Boolean(errors?.password_confirmation?.message)}
-            helperText={errors?.password_confirmation?.message ? errors?.password_confirmation?.message : undefined}
-          />
-        )}
-      />
-      <View>
+      <View style={styles.formHeader}>
+        <Image source={theme.isDarkMode ? Assets.logoLightXs : Assets.logoDarkXs} style={styles.logo} resizeMode='contain' />
+        <Typography variant='h2' gutterBottom fontWeight='bold'>
+          Sign Up ⚔️
+        </Typography>
+        <Typography color='text.secondary'>Create to your {appConfig.appName} account</Typography>
+      </View>
+      <View style={{ marginBottom: createSpacing(2) }}>
+        <Controller
+          control={control}
+          name='email'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label='Email'
+              labelSize='medium'
+              placeholder='Email'
+              onBlur={onBlur}
+              variant='filled'
+              onChangeText={onChange}
+              value={value}
+              margin='normal'
+              size='large'
+              isError={Boolean(errors?.email?.message)}
+              helperText={errors?.email?.message ? errors?.email?.message : undefined}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name='password'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label='Password'
+              labelSize='medium'
+              placeholder='Password'
+              variant='filled'
+              secureTextEntry={true}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              margin='normal'
+              size='large'
+              isError={Boolean(errors?.password?.message)}
+              helperText={errors?.password?.message ? errors?.password?.message : undefined}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name='password_confirmation'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label='Confirm Pasword'
+              labelSize='medium'
+              placeholder='Confirm Password'
+              variant='filled'
+              secureTextEntry={true}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              margin='normal'
+              size='large'
+              isError={Boolean(errors?.password_confirmation?.message)}
+              helperText={errors?.password_confirmation?.message ? errors?.password_confirmation?.message : undefined}
+            />
+          )}
+        />
+      </View>
+      <View style={{ marginBottom: createSpacing(3) }}>
         <Button
           isLoading={registerLoading}
           onPress={handleSubmit(onValidSubmit, onInvalidSubmit)}
           title='Create Account'
-          size='large'
-          startIcon='enter-outline'
+          size='extra-large'
+          endIcon='arrow-forward'
+          iconType='ionicons'
+          rounded
         />
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: createSpacing(6) }}>
+        <Typography color='text.secondary'>Already have account ? </Typography>
+        <Button onPress={() => nav.navigate('login_screen')} title='Login' variant='text' disablePadding />
+      </View>
+      <View style={{ marginTop: 'auto', alignItems: 'center' }}>
+        <Typography color='text.secondary' variant='subtitle2'>
+          By sign up, you agree to {appConfig.appName}{' '}
+        </Typography>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 'auto' }}>
+          <Typography color='text.primary' variant='subtitle2'>
+            Term of Conditions{' '}
+          </Typography>
+          <Typography color='text.secondary' variant='subtitle2'>
+            and{' '}
+          </Typography>
+          <Typography color='text.primary' variant='subtitle2'>
+            Privacy Policy
+          </Typography>
+        </View>
       </View>
     </View>
   )
@@ -156,8 +205,20 @@ const RegisterForm = (): JSX.Element => {
 
 const styles = StyleSheet.create({
   root: {
-    width: screenUtils.width / 1.3,
+    flex: 1,
+    width: screenUtils.width / 1.4,
     alignSelf: 'center',
+    paddingTop: createSpacing(6),
+    paddingBottom: createSpacing(3),
+  },
+  formHeader: {
+    marginBottom: createSpacing(4),
+    alignItems: 'center',
+  },
+  logo: {
+    height: 52,
+    width: 52,
+    marginBottom: createSpacing(4),
   },
 })
 
