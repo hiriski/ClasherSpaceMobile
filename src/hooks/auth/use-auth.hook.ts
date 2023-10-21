@@ -54,6 +54,10 @@ export const useAuth = () => {
     dispatch({ type: AuthActionTypes.registerLoading, payload })
   }
 
+  const auth_setOpenBottomSheetConfirmLogout = (payload: boolean) => {
+    dispatch({ type: AuthActionTypes.openBottomSheetConfirmLogout, payload })
+  }
+
   return {
     ...state,
     isAuthenticated,
@@ -62,5 +66,6 @@ export const useAuth = () => {
     auth_resetAuth,
     auth_setLoginLoading,
     auth_setRegisterLoading,
+    auth_setOpenBottomSheetConfirmLogout,
   }
 }

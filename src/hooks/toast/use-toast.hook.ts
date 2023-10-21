@@ -1,29 +1,8 @@
 import { useCallback } from 'react'
-import { IToastShowParams, ToastType, ToastVariant } from '@/interfaces'
+import { IToastShowParams } from '@/interfaces'
 import { platformUtils } from '@/utilities'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
-
-const getToastType = (type: ToastType, variant: ToastVariant): ToastType => {
-  if (!type || !variant) {
-    return 'success'
-  }
-  if (variant === 'filled') {
-    if (type === 'success') {
-      return 'success_filled'
-    } else if (type === 'info') {
-      return 'info_filled'
-    } else if (type === 'warning') {
-      return 'warning_filled'
-    } else if (type === 'error') {
-      return 'error_filled'
-    } else {
-      return type
-    }
-  } else {
-    return type
-  }
-}
 
 export const useToast = () => {
   const insets = useSafeAreaInsets()
@@ -40,9 +19,13 @@ export const useToast = () => {
       setTimeout(() => {
         Toast.show({
           ...params,
-          type: getToastType(params.type as ToastType, params.variant as ToastVariant),
-          topOffset: TOP_OFFSET,
-          bottomOffset: BOTTOM_OFFSET,
+          type: params.type ?? 'success',
+          topOffset: params.fullWidth ? 0 : TOP_OFFSET,
+          bottomOffset: params.fullWidth ? 0 : BOTTOM_OFFSET,
+          props: {
+            fullWidth: params.fullWidth ?? false,
+            variant: params.variant ?? 'filled',
+          },
         })
       }, 150)
     },
