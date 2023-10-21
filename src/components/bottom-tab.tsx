@@ -2,11 +2,10 @@ import { FC, useEffect, useRef } from 'react'
 import { View, TouchableOpacity, Animated, StyleSheet } from 'react-native'
 
 // components
-import { Icon } from '@/components/core'
+import { Icon, Typography } from '@/components/core'
 
 // hooks
-import { useApp } from '@/hooks'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useApp, useTheme } from '@/hooks'
 
 // interfaces
 import { RNVectorIconProvider } from '@/interfaces'
@@ -15,6 +14,7 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 
 // utils
 import { screenUtils } from '@/utilities'
+import { createSpacing } from '@/helpers'
 
 type TabItem = {
   path: keyof NavigatorParamList
@@ -48,15 +48,15 @@ const TAB_ITEMS: Array<TabItem> = [
   },
 ]
 
-const TAB_WIDTH = 180
-const TAB_HEIGH = 58
+const TAB_WIDTH = screenUtils.width
+const TAB_HEIGH = 68
 
 interface Props extends BottomTabBarProps {}
 
 const BottomTab: FC<Props> = props => {
   const { state, navigation } = props
 
-  const insets = useSafeAreaInsets()
+  const theme = useTheme()
 
   const { visibleBottomTab } = useApp()
 
@@ -71,7 +71,7 @@ const BottomTab: FC<Props> = props => {
       }).start()
     } else {
       Animated.timing(animatedBottomTabRef, {
-        toValue: 160,
+        toValue: TAB_HEIGH + 20,
         duration: 425,
         useNativeDriver: true,
       }).start()
@@ -88,8 +88,11 @@ const BottomTab: FC<Props> = props => {
         left: 0,
         right: 0,
         position: 'absolute',
-        bottom: insets.bottom + 24,
+        bottom: 0,
         width: TAB_WIDTH,
+        backgroundColor: theme.palette.background.paper,
+        borderTopColor: theme.palette.divider,
+        borderTopWidth: 1.2,
         transform: [
           {
             translateY: animatedBottomTabRef,
@@ -100,40 +103,29 @@ const BottomTab: FC<Props> = props => {
         ],
       }}
     >
-      <View
-        style={StyleSheet.flatten([
-          styles.bottomTabRoot,
-          { width: TAB_WIDTH },
-          {
-            // backgroundColor: theme.palette.background.paper,
-          },
-        ])}
-      >
+      <View style={StyleSheet.flatten([styles.bottomTabRoot, { width: TAB_WIDTH }])}>
         <View style={StyleSheet.flatten([styles.customTab_root])}>
           {TAB_ITEMS.map((x, index) => (
-            <TouchableOpacity key={x.path} activeOpacity={0.4} onPress={() => onPress(x.path)}>
-              <View
-                style={StyleSheet.flatten([
-                  styles.tabItem,
-                  {
-                    ...(state.index === index && {
-                      borderRadius: 60,
-                      backgroundColor: '#fbfbfb',
-                    }),
-                  },
-                ])}
-              >
+            <TouchableOpacity
+              key={x.path}
+              activeOpacity={0.85}
+              onPress={() => onPress(x.path)}
+              style={StyleSheet.flatten([styles.tabItem, { ...(state.index === index && styles.tabItemFocused) }])}
+            >
+              <View style={StyleSheet.flatten([styles.tabItemInner])}>
                 <Icon
-                  size={23}
+                  size={22}
                   name={state.index === index ? x.focusIcon : x.icon}
                   provider={x.iconProvider}
-                  color={state.index === index ? '#337FFF' : '#ffffff'}
+                  color={state.index === index ? '#ffffff' : '#337FFF'}
                 />
-                {/* {state.index === index && (
-                  <View style={{ marginLeft: createSpacing(2) }}>
-                    <Typography variant='body2'>{x.label}</Typography>
+                {state.index === index && (
+                  <View style={StyleSheet.flatten([{ marginLeft: createSpacing(2) }])}>
+                    <Typography variant='body2' style={styles.tabItemLabel}>
+                      {x.label}
+                    </Typography>
                   </View>
-                )} */}
+                )}
               </View>
             </TouchableOpacity>
           ))}
@@ -153,18 +145,29 @@ const styles = StyleSheet.create({
     elevation: 8,
     shadowColor: 'rgba(0,0,0,0.65)',
     shadowOpacity: 0.2,
-    borderRadius: TAB_HEIGH,
     alignItems: 'center',
     justifyContent: 'center',
     height: TAB_HEIGH,
-    backgroundColor: '#337FFF',
     flexDirection: 'row',
   },
   tabItem: {
-    height: TAB_HEIGH - 12,
-    width: TAB_WIDTH / 3 - 5,
+    height: TAB_HEIGH - 18,
+    width: TAB_WIDTH / 3 - 10,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 40,
+  },
+  tabItemFocused: {
+    backgroundColor: '#337FFF',
+  },
+  tabItemInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tabItemLabel: {
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
 })
 
