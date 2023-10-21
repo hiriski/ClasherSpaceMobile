@@ -15,6 +15,13 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 // utils
 import { screenUtils } from '@/utilities'
 import { createSpacing } from '@/helpers'
+import { useAuth } from '@/hooks/auth'
+
+// fast image
+import FastImage from 'react-native-fast-image'
+
+// assets
+import { AssetsAvatars } from '@/assets/avatars'
 
 type TabItem = {
   path: keyof NavigatorParamList
@@ -55,6 +62,8 @@ interface Props extends BottomTabBarProps {}
 
 const BottomTab: FC<Props> = props => {
   const { state, navigation } = props
+
+  const { isAuthenticated, user } = useAuth()
 
   const theme = useTheme()
 
@@ -113,12 +122,24 @@ const BottomTab: FC<Props> = props => {
               style={StyleSheet.flatten([styles.tabItem, { ...(state.index === index && styles.tabItemFocused) }])}
             >
               <View style={StyleSheet.flatten([styles.tabItemInner])}>
-                <Icon
-                  size={22}
-                  name={state.index === index ? x.focusIcon : x.icon}
-                  provider={x.iconProvider}
-                  color={state.index === index ? '#ffffff' : '#337FFF'}
-                />
+                {isAuthenticated && user?.photoURL && x.path === 'profile_screen' ? (
+                  <FastImage
+                    style={StyleSheet.flatten([styles.tabBarAvatar])}
+                    defaultSource={AssetsAvatars.avatarGuest}
+                    source={{
+                      uri: user?.photoURL as string,
+                      priority: FastImage.priority.normal,
+                    }}
+                    resizeMode={FastImage.resizeMode.cover}
+                  />
+                ) : (
+                  <Icon
+                    size={22}
+                    name={state.index === index ? x.focusIcon : x.icon}
+                    provider={x.iconProvider}
+                    color={state.index === index ? '#ffffff' : '#337FFF'}
+                  />
+                )}
                 {state.index === index && (
                   <View style={StyleSheet.flatten([{ marginLeft: createSpacing(2) }])}>
                     <Typography variant='body2' style={styles.tabItemLabel}>
@@ -168,6 +189,11 @@ const styles = StyleSheet.create({
   tabItemLabel: {
     color: '#ffffff',
     fontWeight: 'bold',
+  },
+  tabBarAvatar: {
+    width: 22,
+    height: 22,
+    borderRadius: 22,
   },
 })
 

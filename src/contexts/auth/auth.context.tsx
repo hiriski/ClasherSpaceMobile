@@ -11,6 +11,7 @@ export interface IAuthState {
   user: IUser | null
   loginLoading: boolean
   registerLoading: boolean
+  openBottomSheetConfirmLogout: boolean
 }
 
 // auth context provider
@@ -26,6 +27,7 @@ export const authContext_initialState: IAuthState = {
   user: null,
   loginLoading: false,
   registerLoading: false,
+  openBottomSheetConfirmLogout: false,
 }
 
 // auth context provider

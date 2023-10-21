@@ -6,6 +6,7 @@ export enum AuthActionTypes {
   resetAuth = '@auth/resetAuth',
   loginLoading = '@auth/loginLoading',
   registerLoading = '@auth/registerLoading',
+  openBottomSheetConfirmLogout = '@auth/openBottomSheetConfirmLogout',
 }
 
 /**
@@ -31,9 +32,14 @@ type SetRegisterLoading = {
   payload: boolean
 }
 
+type SetVisibleBottomSheetConfirmLogout = {
+  type: AuthActionTypes.openBottomSheetConfirmLogout
+  payload: boolean
+}
+
 /** ---------------------------------- */
 
-export type AuthReducerActions = SetUser | ResetAuth | SetLoginLoading | SetRegisterLoading
+export type AuthReducerActions = SetUser | ResetAuth | SetLoginLoading | SetRegisterLoading | SetVisibleBottomSheetConfirmLogout
 
 /**
  * app reducer
@@ -57,6 +63,11 @@ export const authReducer = (state: IAuthState, action: AuthReducerActions): IAut
       return {
         ...state,
         registerLoading: action.payload,
+      }
+    case AuthActionTypes.openBottomSheetConfirmLogout:
+      return {
+        ...state,
+        openBottomSheetConfirmLogout: action.payload,
       }
     case AuthActionTypes.resetAuth:
       return authContext_initialState
