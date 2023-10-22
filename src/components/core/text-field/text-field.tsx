@@ -42,7 +42,7 @@ export interface TextFieldProps extends Omit<TextInputProps, 'style'> {
   style?: TextStyle
   isError?: boolean
   isValid?: boolean
-  helperText?: string
+  helperText?: string | null
   fullWidth?: boolean
 }
 
