@@ -20,7 +20,7 @@ import { AdornmentIconTypeButton, ButtonColor, ButtonVariant } from './button.in
 import { useTheme } from '@/hooks'
 
 // config
-import { appConfig } from '@/config'
+import { appConfig, themeConfig } from '@/config'
 
 export interface CoreButtonProps extends BaseButtonProps {
   color?: ButtonColor
@@ -270,6 +270,7 @@ const styles = StyleSheet.create({
   },
   buttonTextStyle: {
     color: common.white,
+    fontWeight: themeConfig.typography.button.fontWeightMedium,
   },
   spinnerStyle: {
     marginRight: themeHelpers.createSpacing(1.5),
