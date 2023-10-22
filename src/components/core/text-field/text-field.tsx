@@ -279,21 +279,25 @@ const styles = StyleSheet.create({
     minHeight: TEXT_FIELD_SMALL_HEIGHT,
     fontSize: 12,
     paddingHorizontal: themeHelpers.createSpacing(3),
+    textAlignVertical: 'top',
   },
   textInput_mediumMultiline: {
     minHeight: TEXT_FIELD_MEDIUM_HEIGHT,
     fontSize: 13.8,
     paddingHorizontal: themeHelpers.createSpacing(3.6),
+    textAlignVertical: 'top',
   },
   textInput_largeMultiline: {
     minHeight: TEXT_FIELD_LARGE_HEIGHT,
     fontSize: 15,
     paddingHorizontal: themeHelpers.createSpacing(4.4),
+    textAlignVertical: 'top',
   },
   textInput_extraLargeMultiline: {
     minHeight: TEXT_FIELD_EXTRA_LARGE_HEIGHT,
     fontSize: 16,
     paddingHorizontal: themeHelpers.createSpacing(4.4),
+    textAlignVertical: 'top',
   },
 
   label: {
