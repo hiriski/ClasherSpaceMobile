@@ -23,8 +23,15 @@ export type TextFieldVariant = 'filled' | 'outlined'
 
 export type TextFieldColor = keyof Pick<IThemePalette, 'primary' | 'secondary'>
 
+export type TextFieldSize = ThemeSize | 'extra-large'
+
+export const TEXT_FIELD_SMALL_HEIGHT = 36
+export const TEXT_FIELD_MEDIUM_HEIGHT = 42
+export const TEXT_FIELD_LARGE_HEIGHT = 50
+export const TEXT_FIELD_EXTRA_LARGE_HEIGHT = 56
+
 export interface TextFieldProps extends Omit<TextInputProps, 'style'> {
-  size?: ThemeSize
+  size?: TextFieldSize
   margin?: 'none' | 'dense' | 'normal'
   variant?: TextFieldVariant
   rounded?: boolean
@@ -102,16 +109,19 @@ const TextField: FC<TextFieldProps> = (props): JSX.Element => {
           },
           // rounded
           // prettier-ignore
-          { ...(rounded && size === 'small' && { borderRadius: 36 }) },
+          { ...(rounded && size === 'small' && { borderRadius: TEXT_FIELD_SMALL_HEIGHT }) },
           // prettier-ignore
-          { ...(rounded && size === 'medium' && { borderRadius: 46 }) },
+          { ...(rounded && size === 'medium' && { borderRadius: TEXT_FIELD_MEDIUM_HEIGHT }) },
           // prettier-ignore
-          { ...(rounded && size === 'large' && { borderRadius: 50 }) },
+          { ...(rounded && size === 'large' && { borderRadius: TEXT_FIELD_LARGE_HEIGHT }) },
+          // prettier-ignore
+          { ...(rounded && size === 'extra-large' && { borderRadius: TEXT_FIELD_EXTRA_LARGE_HEIGHT }) },
 
           // text input style
           { ...(size === 'small' && !multiline && styles.textInput_small) },
           { ...(size === 'medium' && !multiline && styles.textInput_medium) },
           { ...(size === 'large' && !multiline && styles.textInput_large) },
+          { ...(size === 'extra-large' && !multiline && styles.textInput_extraLarge) },
 
           // text input style multiline
           // prettier-ignore
@@ -120,6 +130,8 @@ const TextField: FC<TextFieldProps> = (props): JSX.Element => {
           { ...(size === 'medium' && multiline && styles.textInput_mediumMultiline) },
           // prettier-ignore
           { ...(size === 'large' && multiline && styles.textInput_largeMultiline) },
+          // prettier-ignore
+          { ...(size === 'extra-large' && multiline && styles.textInput_extraLargeMultiline) },
 
           // styles for variant outlined
           // prettier-ignore
@@ -166,8 +178,8 @@ const TextField: FC<TextFieldProps> = (props): JSX.Element => {
           // Styles for variant filled
           // prettier-ignore
           {...(variant === 'filled' && {
-            backgroundColor: !isDarkMode ? '#eaeaea' : grey[900],
-            borderColor: !isDarkMode ? '#eaeaea' : grey[900],
+            backgroundColor: !isDarkMode ? '#efefef' : grey[900],
+            borderColor: !isDarkMode ? '#efefef' : grey[900],
           })},
 
           // Styles for variant filled disabled.
@@ -234,38 +246,53 @@ const styles = StyleSheet.create({
   textInputBase: {
     borderWidth: 1.3,
     borderRadius: theme_shape.borderRadius,
-    fontWeight: '500',
+    fontWeight: themeConfig.typography.body1.fontWeightMedium,
+    fontFamily: themeConfig.typography.body1.fontFamily,
   },
 
   textInput_small: {
-    height: 36,
-    fontSize: 12,
+    height: TEXT_FIELD_SMALL_HEIGHT,
+    fontSize: 12.2,
+    lineHeight: 16.4,
     paddingHorizontal: themeHelpers.createSpacing(3),
   },
   textInput_medium: {
-    height: 42,
+    height: TEXT_FIELD_MEDIUM_HEIGHT,
     fontSize: 13.8,
+    lineHeight: 17.4,
     paddingHorizontal: themeHelpers.createSpacing(3.6),
   },
   textInput_large: {
-    height: 50,
-    fontSize: 15,
+    height: TEXT_FIELD_LARGE_HEIGHT,
+    fontSize: 15.2,
+    lineHeight: 18.4,
+    paddingHorizontal: themeHelpers.createSpacing(4.4),
+  },
+  textInput_extraLarge: {
+    height: TEXT_FIELD_EXTRA_LARGE_HEIGHT,
+    fontSize: 16.2,
+    lineHeight: 19.2,
     paddingHorizontal: themeHelpers.createSpacing(4.4),
   },
 
   textInput_smallMultiline: {
-    minHeight: 32,
+    minHeight: TEXT_FIELD_SMALL_HEIGHT,
     fontSize: 12,
     paddingHorizontal: themeHelpers.createSpacing(3),
   },
   textInput_mediumMultiline: {
-    minHeight: 40,
+    minHeight: TEXT_FIELD_MEDIUM_HEIGHT,
     fontSize: 13.8,
     paddingHorizontal: themeHelpers.createSpacing(3.6),
   },
   textInput_largeMultiline: {
-    minHeight: 46,
+    minHeight: TEXT_FIELD_LARGE_HEIGHT,
     fontSize: 15,
+    paddingHorizontal: themeHelpers.createSpacing(4.4),
+  },
+  textInput_extraLargeMultiline: {
+    minHeight: TEXT_FIELD_EXTRA_LARGE_HEIGHT,
+    fontSize: 16,
     paddingHorizontal: themeHelpers.createSpacing(4.4),
   },
 
