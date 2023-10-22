@@ -8,7 +8,7 @@ import { StyleSheet } from 'react-native'
 import { themeConfig } from '@/config'
 import { screenUtils } from '@/utilities'
 
-const ESTIMATE_FORM_HEIGHT = 452
+const ESTIMATE_FORM_HEIGHT = 465
 const EXTRA_KEYBOARD_OFFSET = 180
 
 const LoginScreen = (): JSX.Element => {

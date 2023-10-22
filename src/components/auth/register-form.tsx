@@ -121,7 +121,7 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='large'
+              size='extra-large'
               isError={Boolean(errors?.email?.message)}
               helperText={errors?.email?.message ? errors?.email?.message : undefined}
             />
@@ -141,7 +141,7 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='large'
+              size='extra-large'
               isError={Boolean(errors?.password?.message)}
               helperText={errors?.password?.message ? errors?.password?.message : undefined}
             />
@@ -206,7 +206,7 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    width: screenUtils.width / 1.4,
+    width: screenUtils.width / 1.2,
     alignSelf: 'center',
     paddingTop: createSpacing(6),
     paddingBottom: createSpacing(3),
