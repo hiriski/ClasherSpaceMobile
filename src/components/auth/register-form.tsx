@@ -161,7 +161,7 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='large'
+              size='extra-large'
               isError={Boolean(errors?.password_confirmation?.message)}
               helperText={errors?.password_confirmation?.message ? errors?.password_confirmation?.message : undefined}
             />
