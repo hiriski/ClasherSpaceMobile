@@ -215,7 +215,7 @@ const RegisterFormStep2 = (): JSX.Element => {
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='large'
+              size='extra-large'
               isError={Boolean(errors?.name?.message)}
               helperText={errors?.name?.message ? errors?.name?.message : undefined}
             />
@@ -245,7 +245,7 @@ const AVATAR_SIZE = 60
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    width: screenUtils.width / 1.4,
+    width: screenUtils.width / 1.2,
     alignSelf: 'center',
     paddingTop: createSpacing(6),
     paddingBottom: createSpacing(3),

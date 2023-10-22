@@ -21,7 +21,7 @@ const AppContainer = () => {
   const onNavigationIsReady = (): void => {
     log.info('<<< onNavigationIsReady >>')
     // do something when navigation is ready
-    // uiUtils.changeNavbarBarColor(palette.background.paper, false)
+    uiUtils.changeNavbarBarColor(palette.background.paper, false, false)
   }
 
   return (

@@ -15,7 +15,6 @@ import * as Yup from 'yup'
 import { useTheme, useToast } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
 import { Assets } from '@/assets'
-import { useEffect } from 'react'
 
 type FormValues = {
   email: string
@@ -102,13 +101,13 @@ const LoginForm = (): JSX.Element => {
             <TextField
               label='Email'
               labelSize='medium'
+              variant='filled'
               placeholder='Email'
               onBlur={onBlur}
-              variant='filled'
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='large'
+              size='extra-large'
               isError={Boolean(errors?.email?.message)}
               helperText={errors?.email?.message ? errors?.email?.message : undefined}
             />
@@ -121,14 +120,14 @@ const LoginForm = (): JSX.Element => {
             <TextField
               label='Password'
               labelSize='medium'
-              placeholder='Password'
               variant='filled'
+              placeholder='Password'
               secureTextEntry={true}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='large'
+              size='extra-large'
               isError={Boolean(errors?.password?.message)}
               helperText={errors?.password?.message ? errors?.password?.message : undefined}
             />
@@ -158,7 +157,7 @@ const LoginForm = (): JSX.Element => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    width: screenUtils.width / 1.4,
+    width: screenUtils.width / 1.2,
     alignSelf: 'center',
     paddingTop: createSpacing(6),
     paddingBottom: createSpacing(3),
