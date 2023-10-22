@@ -10,6 +10,7 @@ export type NavigatorParamList = {
   notifications_screen: undefined
   register_screen: undefined
   login_screen: undefined
+  feedback_screen: undefined
 } & BottomTabNavigatorParamList
 
 export type BottomTabNavigatorParamList = {

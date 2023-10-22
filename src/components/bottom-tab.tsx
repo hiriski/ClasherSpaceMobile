@@ -75,13 +75,13 @@ const BottomTab: FC<Props> = props => {
     if (visibleBottomTab) {
       Animated.timing(animatedBottomTabRef, {
         toValue: 0,
-        duration: 425,
+        duration: 250,
         useNativeDriver: true,
       }).start()
     } else {
       Animated.timing(animatedBottomTabRef, {
         toValue: TAB_HEIGH + 20,
-        duration: 425,
+        duration: 250,
         useNativeDriver: true,
       }).start()
     }

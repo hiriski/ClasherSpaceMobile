@@ -20,6 +20,7 @@ import BottomTabStackNavigator from './bottom-tab-stack.navigator'
 import { LayoutDetailScreen } from '@/screens/layout'
 import { LoginScreen, RegisterScreen } from '@/screens/auth'
 import { OnboardingScreen } from '@/screens/onboarding'
+import { FeedbackScreen } from '@/screens/feedback'
 
 // hooks
 import { useAuth } from '@/hooks/auth'
@@ -27,6 +28,7 @@ import { useAuth } from '@/hooks/auth'
 // helpers / utils
 // import { log } from '@/helpers'
 import { storageUtils } from '@/utilities'
+import { useFeedback } from '@/hooks'
 
 const SCREENS: Array<ScreenType> = [
   { name: 'splash_screen', component: SplashScreen },
@@ -35,6 +37,7 @@ const SCREENS: Array<ScreenType> = [
   { name: 'layout_detail_screen', component: LayoutDetailScreen },
   { name: 'register_screen', component: RegisterScreen },
   { name: 'login_screen', component: LoginScreen },
+  { name: 'feedback_screen', component: FeedbackScreen },
 ]
 
 const RootStack = createNativeStackNavigator<NavigatorParamList>()
@@ -44,6 +47,8 @@ const RootStackNavigator = (): JSX.Element | null => {
   const [isAppLoaded, setIsAppLoaded] = useState(false)
   const [isAlreadyLaunched, setIsAlreadyLaunched] = useState(false)
   const [_, setAppStateVisible] = useState(appState.current)
+
+  const { feedback_setHasSubmittedFeedback } = useFeedback()
 
   const { auth_setUser } = useAuth()
 
@@ -60,12 +65,18 @@ const RootStackNavigator = (): JSX.Element | null => {
     }
   }
 
+  const checkHasSubmittedFeedback = async (): Promise<void> => {
+    const hasSubmitted = (await storageUtils.get('SUBMITTED_FEEDBACK')) ?? false
+    feedback_setHasSubmittedFeedback(hasSubmitted)
+  }
+
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
     ;(async () => {
       checkAlreadyLaunched().then(() => {
         setIsAppLoaded(true)
       })
+      checkHasSubmittedFeedback()
     })()
 
     init()
