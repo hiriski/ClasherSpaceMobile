@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 // interfaces
 import { NavigatorParamList, ScreenType } from './navigation.type'
 import { AppState, AppStateStatus } from 'react-native'
+import { AppLanguageCode } from '@/interfaces'
 
 // firebase
 import auth from '@react-native-firebase/auth'
@@ -24,11 +25,11 @@ import { FeedbackScreen } from '@/screens/feedback'
 
 // hooks
 import { useAuth } from '@/hooks/auth'
+import { useApp, useFeedback } from '@/hooks'
+import { useTranslation } from 'react-i18next'
 
 // helpers / utils
-// import { log } from '@/helpers'
 import { storageUtils } from '@/utilities'
-import { useFeedback } from '@/hooks'
 
 const SCREENS: Array<ScreenType> = [
   { name: 'splash_screen', component: SplashScreen },
@@ -48,6 +49,8 @@ const RootStackNavigator = (): JSX.Element | null => {
   const [isAlreadyLaunched, setIsAlreadyLaunched] = useState(false)
   const [_, setAppStateVisible] = useState(appState.current)
 
+  const { i18n } = useTranslation()
+  const { app_setLang } = useApp()
   const { feedback_setHasSubmittedFeedback } = useFeedback()
 
   const { auth_setUser } = useAuth()
@@ -66,12 +69,20 @@ const RootStackNavigator = (): JSX.Element | null => {
   }
 
   const checkHasSubmittedFeedback = async (): Promise<void> => {
-    const hasSubmitted = (await storageUtils.get('SUBMITTED_FEEDBACK')) ?? false
-    feedback_setHasSubmittedFeedback(hasSubmitted)
+    const hasSubmitted = await storageUtils.get('SUBMITTED_FEEDBACK')
+    feedback_setHasSubmittedFeedback(hasSubmitted ?? false)
   }
 
   useEffect(() => {
-    // eslint-disable-next-line no-extra-semi
+    ;(async () => {
+      const savedLanguageCode = await storageUtils.getString('LANGUAGE')
+      if (savedLanguageCode && i18n.language !== savedLanguageCode) {
+        app_setLang(savedLanguageCode as AppLanguageCode)
+      }
+    })()
+  }, [])
+
+  useEffect(() => {
     ;(async () => {
       checkAlreadyLaunched().then(() => {
         setIsAppLoaded(true)
@@ -117,9 +128,9 @@ const RootStackNavigator = (): JSX.Element | null => {
         animation: 'slide_from_right',
       }}
     >
-      {SCREENS.map(x => {
+      {/* {SCREENS.map(x => {
         return <RootStack.Screen key={x.name} component={x.component} name={x.name} options={x.options} />
-      })}
+      })} */}
     </RootStack.Navigator>
   )
 }
