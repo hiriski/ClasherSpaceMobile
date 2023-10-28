@@ -47,7 +47,7 @@ const SELECT_OPTIONS = [
     value: 'missing_feature',
   },
   {
-    label: 'I Found Bug on Clasher Bases',
+    label: 'I Found Bug on Clasher Space',
     value: 'bug',
   },
   {

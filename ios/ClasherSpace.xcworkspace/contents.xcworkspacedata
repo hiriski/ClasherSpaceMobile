@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:ClasherBases.xcodeproj">
+      location = "group:ClasherSpace.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ClasherSpace.xcodeproj">
    </FileRef>
 </Workspace>

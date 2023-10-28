@@ -74,9 +74,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "io.github.hiriski.clasherbases"
+    namespace "io.github.hiriski.clasherspace"
     defaultConfig {
-        applicationId "io.github.hiriski.clasherbases"
+        applicationId "io.github.hiriski.clasherspace"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
