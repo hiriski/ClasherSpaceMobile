@@ -1,8 +1,10 @@
 import { IAppState } from '@/contexts/app'
+import { AppLanguageCode } from '@/interfaces'
 
 export enum AppActionTypes {
   setVisibleSplashScreen = '@app/setVisibleSplashScreen',
   setVisibleBottomTab = '@app/setVisibleBottomTab',
+  setLang = '@app/setLang',
 }
 
 /**
@@ -18,9 +20,14 @@ type SetVisibleBottomTab = {
   type: AppActionTypes.setVisibleBottomTab
   payload: boolean
 }
+
+type SetLang = {
+  type: AppActionTypes.setLang
+  payload: AppLanguageCode
+}
 /** ---------------------------------- */
 
-export type AppReducerActions = SetVisibleSplashScreen | SetVisibleBottomTab
+export type AppReducerActions = SetVisibleSplashScreen | SetVisibleBottomTab | SetLang
 
 /**
  * app reducer
@@ -39,6 +46,11 @@ export const appReducer = (state: IAppState, action: AppReducerActions): IAppSta
       return {
         ...state,
         visibleBottomTab: payload,
+      }
+    case AppActionTypes.setLang:
+      return {
+        ...state,
+        lang: payload,
       }
     default:
       return state

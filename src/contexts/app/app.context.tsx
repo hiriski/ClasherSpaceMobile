@@ -2,12 +2,15 @@ import React, { FC, createContext, PropsWithChildren, useReducer, Dispatch } fro
 
 // reducers
 import { AppReducerActions, appReducer } from '@/reducers'
+import { AppLanguageCode } from '@/interfaces'
+import { appConfig } from '@/config'
 
 // type for our context
 
 export interface IAppState {
   splashScreenVisible: boolean
   visibleBottomTab: boolean
+  lang: AppLanguageCode
 }
 
 // app context provider
@@ -22,6 +25,7 @@ export const AppDispatchContext = createContext<Dispatch<AppReducerActions>>(nul
 export const appContext_initialState: IAppState = {
   splashScreenVisible: true,
   visibleBottomTab: true,
+  lang: appConfig.defaultLang as AppLanguageCode,
 }
 
 // app context provider

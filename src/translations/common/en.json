@@ -1,0 +1,13 @@
+{
+  "common": {
+    "hello": "Hello",
+    "greeting": {
+      "hi_there": "Hi, there",
+      "not_logged_in": "You're not logged in",
+      "good_morning": "⛅ Good morning",
+      "good_evening": "☀️ Good evening",
+      "good_afternoon": "🌙 Good afternoon",
+      "good_night": "🌙 Good night"
+    }
+  }
+}
