@@ -11,5 +11,8 @@ export const Assets = {
   clashOfClans1: require('./images/clash_of_clans_1.jpg'),
   clashOfClans2: require('./images/clash_of_clans_2.jpg'),
   clashOfClans3: require('./images/clash_of_clans_3.jpg'),
+
+  placeholder: require('./images/placeholder.jpg'),
+
   ...AssetsAvatars,
 }

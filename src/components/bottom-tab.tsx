@@ -40,7 +40,7 @@ const TAB_ITEMS: Array<TabItem> = [
     iconProvider: 'ionicons',
   },
   {
-    path: 'layout_list_screen',
+    path: 'base_layout_list_screen',
     label: 'Layouts',
     icon: 'map-outline',
     focusIcon: 'map',

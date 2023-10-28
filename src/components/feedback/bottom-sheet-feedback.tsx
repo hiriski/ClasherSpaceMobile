@@ -30,7 +30,7 @@ const BottomSheetFeedback = () => {
 
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false)
 
-  const { openBottomSheet, feedback_setOpenBottomSheet } = useFeedback()
+  const { openBottomSheet, feedback_setOpenBottomSheet, feedback_setHasSubmittedFeedback } = useFeedback()
 
   const { visibleBottomTab, setVisibleBottomTab } = useApp()
 
@@ -72,6 +72,9 @@ const BottomSheetFeedback = () => {
   const onPressFinish = useCallback(() => {
     setIsSubmitSuccess(false)
     ref.current?.close()
+    setTimeout(() => {
+      feedback_setHasSubmittedFeedback(true)
+    }, 300)
   }, [ref?.current, visibleBottomTab, openBottomSheet, isSubmitSuccess])
 
   // backdrop

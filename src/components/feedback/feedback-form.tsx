@@ -63,8 +63,6 @@ const SELECT_OPTIONS = [
 const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const { feedback_setHasSubmittedFeedback } = useFeedback()
-
   const { user } = useAuth()
 
   const {
@@ -93,7 +91,6 @@ const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
           setIsLoading(false)
           if (typeof onSubmitSuccess === 'function') {
             onSubmitSuccess()
-            feedback_setHasSubmittedFeedback(true)
             reset()
           }
         })

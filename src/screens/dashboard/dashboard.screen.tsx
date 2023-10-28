@@ -36,7 +36,11 @@ const DashboardScreen = (): JSX.Element => {
             Dashboard
           </Typography>
           <Button title='Toggle Bottom Tabb' onPress={onPressToggleBottomTab} style={{ marginBottom: 20 }} />
-          <Button title='Navigate to layout list' onPress={() => nav.navigate('layout_list_screen')} style={{ marginBottom: 20 }} />
+          <Button
+            title='Navigate to layout list'
+            onPress={() => nav.navigate('base_layout_list_screen')}
+            style={{ marginBottom: 20 }}
+          />
           <Button title='Go to profile' onPress={() => nav.navigate('profile_screen')} style={{ marginBottom: 20 }} />
           <Button title='Clear storage' onPress={() => storageUtils.clear()} style={{ marginBottom: 20 }} />
           <Button title='Register' color='secondary' onPress={() => nav.navigate('register_screen')} style={{ marginBottom: 12 }} />

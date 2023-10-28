@@ -5,7 +5,7 @@ import BottomTab from '@/components/bottom-tab'
 
 // screens
 import { DashboardScreen } from '@/screens/dashboard'
-import { LayoutListScreen } from '@/screens/layout'
+import { BaseLayoutListScreen } from '@/screens/base-layout'
 import { ProfileScreen } from '@/screens/profile'
 
 // interfaces
@@ -19,9 +19,9 @@ export const BOTTOM_TAB_SCREENS: ScreenType[] = [
     component: DashboardScreen,
   },
   {
-    name: 'layout_list_screen',
+    name: 'base_layout_list_screen',
     label: 'Layouts',
-    component: LayoutListScreen,
+    component: BaseLayoutListScreen,
   },
   {
     name: 'profile_screen',

@@ -3,7 +3,7 @@ import { Screen, Typography } from '@/components/core'
 import { paletteLibs } from '@/libs/palette/_palette.lib'
 import { useTheme } from '@/hooks'
 
-const LayoutDetailScreen = (): JSX.Element => {
+const BaseLayoutDetailScreen = (): JSX.Element => {
   const theme = useTheme()
   return (
     <Screen
@@ -24,4 +24,4 @@ const LayoutDetailScreen = (): JSX.Element => {
   )
 }
 
-export default LayoutDetailScreen
+export default BaseLayoutDetailScreen

@@ -17,7 +17,7 @@ import { SplashScreen } from '@/screens/splash'
 import BottomTabStackNavigator from './bottom-tab-stack.navigator'
 
 // screens
-import { LayoutDetailScreen } from '@/screens/layout'
+import { BaseLayoutDetailScreen } from '@/screens/base-layout'
 import { LoginScreen, RegisterScreen } from '@/screens/auth'
 import { OnboardingScreen } from '@/screens/onboarding'
 import { FeedbackScreen } from '@/screens/feedback'
@@ -34,7 +34,7 @@ const SCREENS: Array<ScreenType> = [
   { name: 'splash_screen', component: SplashScreen },
   { name: 'onboarding_screen', component: OnboardingScreen },
   { name: 'bottom_tab_stack', component: BottomTabStackNavigator },
-  { name: 'layout_detail_screen', component: LayoutDetailScreen },
+  { name: 'base_layout_detail_screen', component: BaseLayoutDetailScreen },
   { name: 'register_screen', component: RegisterScreen },
   { name: 'login_screen', component: LoginScreen },
   { name: 'feedback_screen', component: FeedbackScreen },
