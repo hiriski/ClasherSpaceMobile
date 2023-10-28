@@ -17,7 +17,7 @@ import { grey, red } from '@/libs'
 import { IThemePalette, ThemeSize } from '@/interfaces'
 
 // helpers / utils.
-import { themeHelpers } from '@/helpers'
+import { createSpacing, themeHelpers } from '@/helpers'
 
 export type TextFieldVariant = 'filled' | 'outlined'
 
@@ -44,11 +44,28 @@ export interface TextFieldProps extends Omit<TextInputProps, 'style'> {
   isValid?: boolean
   helperText?: string | null
   fullWidth?: boolean
+  rows?: number
+  maxRows?: number
 }
 
 const TextField: FC<TextFieldProps> = (props): JSX.Element => {
-  const { size, margin, variant, rounded, style, label, labelSize, labelStyle, isError, isValid, helperText, multiline, ...rest } =
-    props
+  const {
+    size,
+    margin,
+    variant,
+    rounded,
+    style,
+    label,
+    labelSize,
+    labelStyle,
+    isError,
+    isValid,
+    helperText,
+    multiline,
+    rows,
+    maxRows,
+    ...rest
+  } = props
   const { palette } = useTheme()
 
   const isDarkMode = palette.mode === 'dark'
@@ -124,6 +141,27 @@ const TextField: FC<TextFieldProps> = (props): JSX.Element => {
           { ...(size === 'extra-large' && !multiline && styles.textInput_extraLarge) },
 
           // text input style multiline
+          // prettier-ignore
+          { ...(size === 'small' && multiline && {
+            minHeight: Number(rows) * 21,
+            maxHeight: Number(maxRows) * 21,
+          }) },
+          // prettier-ignore
+          { ...(size === 'medium' && multiline && {
+            minHeight: Number(rows) * 24,
+            maxHeight: Number(maxRows) * 24,
+          }) },
+          // prettier-ignore
+          { ...(size === 'large' && multiline && {
+            minHeight: Number(rows) * 26,
+            maxHeight: Number(maxRows) * 26,
+          }) },
+          // prettier-ignore
+          { ...(size === 'extra-large' && multiline && {
+            minHeight: Number(rows) * 28,
+            maxHeight: Number(maxRows) * 28,
+          }) },
+
           // prettier-ignore
           { ...(size === 'small' && multiline && styles.textInput_smallMultiline) },
           // prettier-ignore
@@ -238,6 +276,8 @@ TextField.defaultProps = {
   isValid: false,
   helperText: undefined,
   multiline: false,
+  rows: 2,
+  maxRows: 8,
 }
 
 const styles = StyleSheet.create({
@@ -276,27 +316,35 @@ const styles = StyleSheet.create({
   },
 
   textInput_smallMultiline: {
-    minHeight: TEXT_FIELD_SMALL_HEIGHT,
+    // minHeight: TEXT_FIELD_SMALL_HEIGHT,
     fontSize: 12,
     paddingHorizontal: themeHelpers.createSpacing(3),
+    paddingTop: createSpacing(2.6),
+    paddingBottom: createSpacing(2.6),
     textAlignVertical: 'top',
   },
   textInput_mediumMultiline: {
-    minHeight: TEXT_FIELD_MEDIUM_HEIGHT,
+    // minHeight: TEXT_FIELD_MEDIUM_HEIGHT,
     fontSize: 13.8,
     paddingHorizontal: themeHelpers.createSpacing(3.6),
+    paddingTop: createSpacing(2.8),
+    paddingBottom: createSpacing(2.8),
     textAlignVertical: 'top',
   },
   textInput_largeMultiline: {
-    minHeight: TEXT_FIELD_LARGE_HEIGHT,
+    // minHeight: TEXT_FIELD_LARGE_HEIGHT,
     fontSize: 15,
     paddingHorizontal: themeHelpers.createSpacing(4.4),
+    paddingTop: createSpacing(3),
+    paddingBottom: createSpacing(3),
     textAlignVertical: 'top',
   },
   textInput_extraLargeMultiline: {
-    minHeight: TEXT_FIELD_EXTRA_LARGE_HEIGHT,
+    // minHeight: TEXT_FIELD_EXTRA_LARGE_HEIGHT,
     fontSize: 16,
     paddingHorizontal: themeHelpers.createSpacing(4.4),
+    paddingTop: createSpacing(3.2),
+    paddingBottom: createSpacing(3.2),
     textAlignVertical: 'top',
   },
 
