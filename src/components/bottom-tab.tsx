@@ -13,7 +13,7 @@ import { NavigatorParamList } from '@/navigators/navigation.type'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 
 // utils
-import { screenUtils } from '@/utilities'
+import { platformUtils, screenUtils } from '@/utilities'
 import { createSpacing } from '@/helpers'
 import { useAuth } from '@/hooks/auth'
 
@@ -22,6 +22,7 @@ import FastImage from 'react-native-fast-image'
 
 // assets
 import { AssetsAvatars } from '@/assets/avatars'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 type TabItem = {
   path: keyof NavigatorParamList
@@ -63,6 +64,8 @@ interface Props extends BottomTabBarProps {}
 const BottomTab: FC<Props> = props => {
   const { state, navigation } = props
 
+  const insets = useSafeAreaInsets()
+
   const { isAuthenticated, user } = useAuth()
 
   const theme = useTheme()
@@ -102,6 +105,7 @@ const BottomTab: FC<Props> = props => {
         backgroundColor: theme.palette.background.paper,
         borderTopColor: theme.palette.divider,
         borderTopWidth: 1.2,
+        paddingBottom: insets.bottom,
         transform: [
           {
             translateY: animatedBottomTabRef,
