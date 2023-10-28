@@ -28,12 +28,12 @@
 		0BACD1882ADBA13B00D5F8D4 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BACD1822ADBA13B00D5F8D4 /* Ionicons.ttf */; };
 		0BACD1892ADBA13B00D5F8D4 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BACD1832ADBA13B00D5F8D4 /* Feather.ttf */; };
 		0BACD18A2ADBA13B00D5F8D4 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BACD1842ADBA13B00D5F8D4 /* MaterialIcons.ttf */; };
-		0C80B921A6F3F58F76C31292 /* libPods-ClasherSpace.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-ClasherSpace.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-ClasherSpace-ClasherSpaceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ClasherSpace-ClasherSpaceTests.a */; };
+		785E53F9CE9FF5F3B0003425 /* libPods-ClasherSpace.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 480DE160CD7E415122833F50 /* libPods-ClasherSpace.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		E76CA82F81F92BA65D368F93 /* libPods-ClasherSpace-ClasherSpaceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 288863820A736FE72602309C /* libPods-ClasherSpace-ClasherSpaceTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,11 +76,11 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ClasherSpace/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ClasherSpace/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ClasherSpace/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-ClasherSpace-ClasherSpaceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClasherSpace-ClasherSpaceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		288863820A736FE72602309C /* libPods-ClasherSpace-ClasherSpaceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClasherSpace-ClasherSpaceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-ClasherSpace.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClasherSpace.debug.xcconfig"; path = "Target Support Files/Pods-ClasherSpace/Pods-ClasherSpace.debug.xcconfig"; sourceTree = "<group>"; };
+		480DE160CD7E415122833F50 /* libPods-ClasherSpace.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClasherSpace.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5709B34CF0A7D63546082F79 /* Pods-ClasherSpace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClasherSpace.release.xcconfig"; path = "Target Support Files/Pods-ClasherSpace/Pods-ClasherSpace.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-ClasherSpace-ClasherSpaceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClasherSpace-ClasherSpaceTests.debug.xcconfig"; path = "Target Support Files/Pods-ClasherSpace-ClasherSpaceTests/Pods-ClasherSpace-ClasherSpaceTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-ClasherSpace.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClasherSpace.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ClasherSpace/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-ClasherSpace-ClasherSpaceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClasherSpace-ClasherSpaceTests.release.xcconfig"; path = "Target Support Files/Pods-ClasherSpace-ClasherSpaceTests/Pods-ClasherSpace-ClasherSpaceTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -91,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-ClasherSpace-ClasherSpaceTests.a in Frameworks */,
+				E76CA82F81F92BA65D368F93 /* libPods-ClasherSpace-ClasherSpaceTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,7 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-ClasherSpace.a in Frameworks */,
+				785E53F9CE9FF5F3B0003425 /* libPods-ClasherSpace.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,8 +168,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-ClasherSpace.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-ClasherSpace-ClasherSpaceTests.a */,
+				480DE160CD7E415122833F50 /* libPods-ClasherSpace.a */,
+				288863820A736FE72602309C /* libPods-ClasherSpace-ClasherSpaceTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -576,6 +576,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ClasherSpace/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Clasher Spacex";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -602,6 +603,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = ClasherSpace/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Clasher Spacex";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

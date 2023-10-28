@@ -1,12 +1,6 @@
-import { useCallback, useState } from 'react'
-
 // hooks
 import { useAuth } from '@/hooks/auth'
-import { useFocusEffect } from '@react-navigation/native'
 import { useTheme } from '@/hooks'
-
-// firebase
-import auth from '@react-native-firebase/auth'
 
 // components
 import { Screen } from '@/components/core'
@@ -15,21 +9,7 @@ import { BottomSheetConfirmLogout } from '@/components/auth'
 
 const ProfileScreen = (): JSX.Element => {
   const theme = useTheme()
-  const { auth_setUser, isAuthenticated } = useAuth()
-  const [loading, setLoading] = useState(false)
-
-  useFocusEffect(
-    useCallback(() => {
-      const unsubscribe = auth().onAuthStateChanged(user => {
-        auth_setUser(user ?? null)
-        if (loading) {
-          setLoading(false)
-        }
-      })
-
-      return () => unsubscribe()
-    }, [])
-  )
+  const { isAuthenticated } = useAuth()
 
   return (
     <>

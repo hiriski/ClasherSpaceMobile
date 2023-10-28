@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
-import auth from '@react-native-firebase/auth'
 
 // utils
 import { screenUtils } from '@/utilities'
@@ -67,31 +66,6 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
   const onValidSubmit: SubmitHandler<FormValues> = values => {
     auth_setRegisterLoading(true)
     const { email, password } = values
-
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        auth_setRegisterLoading(false)
-        if (typeof onSuccess === 'function') {
-          onSuccess()
-        }
-      })
-      .catch(error => {
-        auth_setRegisterLoading(false)
-        let toastTitle = ''
-        if (error?.code === 'auth/email-already-in-use') {
-          toastTitle = 'That email address is already in use!'
-        }
-        if (error?.code === 'auth/invalid-email') {
-          toastTitle = 'That email address is invalid!'
-        }
-        showToast({
-          type: 'error',
-          position: 'bottom',
-          variant: 'filled',
-          text1: toastTitle,
-        })
-      })
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {

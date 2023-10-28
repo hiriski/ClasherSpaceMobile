@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, TextField, Typography, Select } from '@/components/core'
+import { Button, TextField, Typography, Select, BottomSheetDropdown } from '@/components/core'
 
 // helpers / utils
 import { createSpacing, firebaseHelpers, log } from '@/helpers'
@@ -11,11 +11,8 @@ import { useForm, Controller, SubmitHandler, SubmitErrorHandler, Resolver } from
 import { yupResolver } from '@hookform/resolvers/yup'
 
 // hooks
-import { useFeedback } from '@/hooks'
+import { useFeedback, useToast } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
-
-// firestore
-import firestore from '@react-native-firebase/firestore'
 
 type FormValues = {
   userId: string | null
@@ -39,10 +36,6 @@ interface Props {
 
 const SELECT_OPTIONS = [
   {
-    label: 'Select Type',
-    value: null,
-  },
-  {
     label: 'Missing Feature',
     value: 'missing_feature',
   },
@@ -62,6 +55,8 @@ const SELECT_OPTIONS = [
 
 const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
+
+  const { showToast } = useToast()
 
   const { feedback_setHasSubmittedFeedback } = useFeedback()
 
@@ -85,22 +80,27 @@ const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
 
   const onValidSubmit: SubmitHandler<FormValues> = async values => {
     setIsLoading(true)
-    setTimeout(() => {
-      firestore()
-        .collection('feedbacks')
-        .add(firebaseHelpers.docsWithCreatedAt(values))
-        .then(() => {
-          setIsLoading(false)
-          if (typeof onSubmitSuccess === 'function') {
-            onSubmitSuccess()
-            feedback_setHasSubmittedFeedback(true)
-            reset()
-          }
-        })
-        .catch(() => {
-          setIsLoading(false)
-        })
-    }, 500)
+    // setTimeout(() => {
+    //   firestore()
+    //     .collection('feedbacks')
+    //     .add(firebaseHelpers.docsWithCreatedAt(values))
+    //     .then(() => {
+    //       setIsLoading(false)
+    //       if (typeof onSubmitSuccess === 'function') {
+    //         onSubmitSuccess()
+    //         reset()
+    //       }
+    //     })
+    //     .catch(() => {
+    //       showToast({
+    //         text1: 'Opss.. Failed to send feedback.',
+    //         variant: 'filled',
+    //         position: 'top',
+    //         type: 'error',
+    //       })
+    //       setIsLoading(false)
+    //     })
+    // }, 500)
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {
@@ -121,14 +121,17 @@ const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
           control={control}
           name='type'
           render={({ field: { onChange, value } }) => (
-            <Select
-              label='Feedback type'
-              variant='filled'
-              options={SELECT_OPTIONS}
+            <BottomSheetDropdown
               value={value}
-              onChange={val => onChange(val)}
+              onChange={onChange}
+              label='Feedback Type'
+              options={SELECT_OPTIONS}
+              closeAfterSelect={true}
               margin='normal'
               size='large'
+              variant='filled'
+              placeholder='Select Feedback Type'
+              bottomSheetHeight={320}
               isError={Boolean(errors?.type?.message)}
               helperText={errors?.type?.message ? errors?.type?.message : null}
             />
@@ -166,11 +169,78 @@ const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
               onChangeText={onChange}
               value={value}
               margin='normal'
+              size='small'
+              isError={Boolean(errors?.body?.message)}
+              helperText={errors?.body?.message ? errors?.body?.message : undefined}
+              multiline
+              rows={4}
+              maxRows={10}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name='body'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label='Feedback'
+              labelSize='medium'
+              placeholder='Type your feedback'
+              onBlur={onBlur}
+              variant='filled'
+              onChangeText={onChange}
+              value={value}
+              margin='normal'
+              size='medium'
+              isError={Boolean(errors?.body?.message)}
+              helperText={errors?.body?.message ? errors?.body?.message : undefined}
+              multiline
+              rows={4}
+              maxRows={10}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name='body'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label='Feedback'
+              labelSize='medium'
+              placeholder='Type your feedback'
+              onBlur={onBlur}
+              variant='filled'
+              onChangeText={onChange}
+              value={value}
+              margin='normal'
               size='large'
               isError={Boolean(errors?.body?.message)}
               helperText={errors?.body?.message ? errors?.body?.message : undefined}
               multiline
-              numberOfLines={8}
+              rows={4}
+              maxRows={10}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name='body'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label='Feedback'
+              labelSize='medium'
+              placeholder='Type your feedback'
+              onBlur={onBlur}
+              variant='filled'
+              onChangeText={onChange}
+              value={value}
+              margin='normal'
+              size='extra-large'
+              isError={Boolean(errors?.body?.message)}
+              helperText={errors?.body?.message ? errors?.body?.message : undefined}
+              multiline
+              rows={4}
+              maxRows={10}
             />
           )}
         />

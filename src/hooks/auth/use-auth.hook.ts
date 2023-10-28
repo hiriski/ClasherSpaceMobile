@@ -6,8 +6,6 @@ import { AuthContext, AuthDispatchContext, IAuthState } from '@/contexts'
 // action type
 import { AuthActionTypes } from '@/reducers'
 
-import auth from '@react-native-firebase/auth'
-
 // hooks
 import { useToast } from '@/hooks'
 
@@ -21,22 +19,7 @@ export const useAuth = () => {
     dispatch({ type: AuthActionTypes.setUser, payload })
   }
 
-  const auth_signOut = () => {
-    auth()
-      .signOut()
-      .then(() => {
-        auth_resetAuth()
-        showToast({
-          text1: "You'are logged out",
-          variant: 'filled',
-          type: 'info',
-          position: 'bottom',
-        })
-      })
-      .catch(e => {
-        auth_resetAuth()
-      })
-  }
+  const auth_signOut = () => {}
 
   const auth_resetAuth = () => {
     auth_signOut()

@@ -8,9 +8,6 @@ import { NavigatorParamList, ScreenType } from './navigation.type'
 import { AppState, AppStateStatus } from 'react-native'
 import { AppLanguageCode } from '@/interfaces'
 
-// firebase
-import auth from '@react-native-firebase/auth'
-
 // screens & navigator
 import { SplashScreen } from '@/screens/splash'
 
@@ -21,10 +18,8 @@ import BottomTabStackNavigator from './bottom-tab-stack.navigator'
 import { LayoutDetailScreen } from '@/screens/layout'
 import { LoginScreen, RegisterScreen } from '@/screens/auth'
 import { OnboardingScreen } from '@/screens/onboarding'
-import { FeedbackScreen } from '@/screens/feedback'
 
 // hooks
-import { useAuth } from '@/hooks/auth'
 import { useApp, useFeedback } from '@/hooks'
 import { useTranslation } from 'react-i18next'
 
@@ -38,7 +33,6 @@ const SCREENS: Array<ScreenType> = [
   { name: 'layout_detail_screen', component: LayoutDetailScreen },
   { name: 'register_screen', component: RegisterScreen },
   { name: 'login_screen', component: LoginScreen },
-  { name: 'feedback_screen', component: FeedbackScreen },
 ]
 
 const RootStack = createNativeStackNavigator<NavigatorParamList>()
@@ -53,7 +47,7 @@ const RootStackNavigator = (): JSX.Element | null => {
   const { app_setLang } = useApp()
   const { feedback_setHasSubmittedFeedback } = useFeedback()
 
-  const { auth_setUser } = useAuth()
+  // const { auth_setUser } = useAuth()
 
   const init = async (): Promise<void> => {
     // log.info('----- INIT DO SOMETHING -----')
@@ -108,14 +102,6 @@ const RootStackNavigator = (): JSX.Element | null => {
     }
   }, [])
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(user => {
-      // log.warn(`onAuthStateChanged user -> ${JSON.stringify(user)}`)
-      auth_setUser(user)
-    })
-    return subscriber // unsubscribe on unmount
-  }, [])
-
   if (!isAppLoaded) {
     return null
   }
@@ -128,9 +114,9 @@ const RootStackNavigator = (): JSX.Element | null => {
         animation: 'slide_from_right',
       }}
     >
-      {/* {SCREENS.map(x => {
+      {SCREENS.map(x => {
         return <RootStack.Screen key={x.name} component={x.component} name={x.name} options={x.options} />
-      })} */}
+      })}
     </RootStack.Navigator>
   )
 }

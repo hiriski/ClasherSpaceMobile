@@ -20,9 +20,6 @@ import { useAuth } from '@/hooks/auth'
 // rn image picker
 import { launchImageLibrary } from 'react-native-image-picker'
 
-// firebase
-import storage from '@react-native-firebase/storage'
-
 // fast image
 import FastImage from 'react-native-fast-image'
 
@@ -51,7 +48,6 @@ const UserProfileInfo = (): JSX.Element => {
           variant: 'filled',
           position: 'bottom',
         })
-
         auth().onAuthStateChanged(user => {
           if (user) {
             auth_setUser(user as IUser)
@@ -66,31 +62,6 @@ const UserProfileInfo = (): JSX.Element => {
 
   const handleUploadPhoto = async (fileUri: string, fileName: string) => {
     setUploadIsLoading(true)
-    const imageRef = storage().ref(`users/photos/${user?.uid}/${fileName}`)
-    await imageRef.putFile(fileUri, { contentType: 'image/jpg' }).catch(error => {
-      setUploadIsLoading(false)
-      showToast({
-        text1: 'Failed to upload profile picture.',
-        variant: 'filled',
-        position: 'top',
-        type: 'error',
-      })
-    })
-    const url = await imageRef.getDownloadURL().catch(error => {
-      throw error
-    })
-
-    if (url) {
-      handleUpdateUserPhoto(url)
-    } else {
-      setUploadIsLoading(false)
-      showToast({
-        text1: 'Failed to upload profile picture.',
-        variant: 'filled',
-        position: 'top',
-        type: 'error',
-      })
-    }
   }
 
   const onPressPicture = async (): Promise<void> => {

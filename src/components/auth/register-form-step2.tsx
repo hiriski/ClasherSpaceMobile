@@ -23,10 +23,6 @@ import { AssetsAvatars } from '@/assets/avatars'
 // rn image picker
 import { launchImageLibrary } from 'react-native-image-picker'
 
-// firebase
-import auth from '@react-native-firebase/auth'
-import storage from '@react-native-firebase/storage'
-
 // fast image
 import FastImage from 'react-native-fast-image'
 
@@ -61,64 +57,13 @@ const RegisterFormStep2 = (): JSX.Element => {
 
   const onValidSubmit: SubmitHandler<FormValues> = ({ name }) => {
     auth_setRegisterLoading(true)
-    auth()
-      .currentUser?.updateProfile({
-        displayName: name,
-      })
-      .then(() => {
-        auth_setRegisterLoading(false)
-        showToast({
-          type: 'success',
-          position: 'bottom',
-          variant: 'filled',
-          text1: 'Register Success',
-        })
-
-        auth().onAuthStateChanged(user => {
-          if (user) {
-            auth_setUser(user as IUser)
-          }
-        })
-
-        setTimeout(() => {
-          nav.navigate('profile_screen')
-        }, 320)
-      })
-      .catch(error => {
-        auth_setRegisterLoading(false)
-        log.error(`error-> ${error}`)
-      })
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {
     log.info(`values -> ${JSON.stringify(values)}`)
   }
 
-  const handleUpdateUserPhoto = async (photoURL: string): Promise<void> => {
-    auth()
-      .currentUser?.updateProfile({
-        photoURL,
-      })
-      .then(() => {
-        setUploadIsLoading(false)
-        showToast({
-          text1: 'Your profile picture updated successfully.',
-          variant: 'filled',
-          position: 'bottom',
-        })
-        auth().onAuthStateChanged(user => {
-          if (user) {
-            auth_setUser(user as IUser)
-          } else {
-            showToastError()
-          }
-        })
-      })
-      .catch(error => {
-        setUploadIsLoading(false)
-        showToastError()
-      })
-  }
+  const handleUpdateUserPhoto = async (photoURL: string): Promise<void> => {}
 
   const showToastError = useCallback(() => {
     showToast({
@@ -131,25 +76,6 @@ const RegisterFormStep2 = (): JSX.Element => {
 
   const handleUploadPhoto = async (fileUri: string, fileName: string) => {
     setUploadIsLoading(true)
-    try {
-      const imageRef = storage().ref(`users/photos/${user?.uid}/${fileName}`)
-      await imageRef.putFile(fileUri, { contentType: 'image/jpg' }).catch(error => {
-        throw error
-      })
-      const url = await imageRef.getDownloadURL().catch(error => {
-        throw error
-      })
-
-      if (url) {
-        handleUpdateUserPhoto(url)
-      } else {
-        setUploadIsLoading(false)
-        showToastError()
-      }
-    } catch (e) {
-      setUploadIsLoading(false)
-      showToastError()
-    }
   }
 
   const onPressPicture = async (): Promise<void> => {

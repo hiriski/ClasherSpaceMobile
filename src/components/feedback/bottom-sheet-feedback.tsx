@@ -20,6 +20,11 @@ import { createSpacing } from '@/helpers'
 // config
 import { themeConfig } from '@/config'
 
+const animationConfig = {
+  duration: 200,
+  overshootClamping: false,
+}
+
 const BottomSheetFeedback = () => {
   const ref = useRef<BottomSheet>(null)
   const theme = useTheme()
@@ -28,21 +33,25 @@ const BottomSheetFeedback = () => {
 
   const SNAP_POINTS = useMemo(() => [320, 732, screenUtils.height + insets.top], [])
 
+  // const bottomSheetBorderRadius = useMemo(() => {
+
+  // }, [SNAP_POINTS])
+
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false)
 
-  const { openBottomSheet, feedback_setOpenBottomSheet } = useFeedback()
+  const { openBottomSheet, feedback_setOpenBottomSheet, feedback_setHasSubmittedFeedback } = useFeedback()
 
   const { visibleBottomTab, setVisibleBottomTab } = useApp()
 
   const handleClose = (): void => {
-    ref.current?.snapToIndex(-1)
+    ref.current?.snapToIndex(-1, animationConfig)
     feedback_setOpenBottomSheet(false)
     setVisibleBottomTab(true)
   }
 
   useEffect(() => {
     if (openBottomSheet) {
-      ref?.current?.snapToIndex(1)
+      ref.current?.snapToIndex(1, animationConfig)
       setVisibleBottomTab(false)
       handleClose()
     }
@@ -61,17 +70,18 @@ const BottomSheetFeedback = () => {
   )
 
   const onPressCloseButton = useCallback(() => {
-    ref.current?.close()
+    ref.current?.close(animationConfig)
   }, [ref?.current, visibleBottomTab, openBottomSheet])
 
   const onSubmitSuccess = useCallback(() => {
     setIsSubmitSuccess(true)
-    ref.current?.snapToIndex(0)
+    ref.current?.snapToIndex(0, animationConfig)
   }, [ref?.current, visibleBottomTab, openBottomSheet, isSubmitSuccess])
 
   const onPressFinish = useCallback(() => {
     setIsSubmitSuccess(false)
-    ref.current?.close()
+    ref.current?.close(animationConfig)
+    feedback_setHasSubmittedFeedback(true)
   }, [ref?.current, visibleBottomTab, openBottomSheet, isSubmitSuccess])
 
   // backdrop

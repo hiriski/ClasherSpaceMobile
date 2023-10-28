@@ -1,6 +1,5 @@
 import { Image, StyleSheet, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
-import auth from '@react-native-firebase/auth'
 
 // utils
 import { screenUtils } from '@/utilities'
@@ -51,33 +50,6 @@ const LoginForm = (): JSX.Element => {
   const onValidSubmit: SubmitHandler<FormValues> = values => {
     auth_setLoginLoading(true)
     const { email, password } = values
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        auth_setLoginLoading(false)
-        nav.navigate('profile_screen')
-        showToast({
-          type: 'success',
-          position: 'bottom',
-          variant: 'filled',
-          text1: 'Login Success',
-        })
-      })
-      .catch(error => {
-        auth_setLoginLoading(false)
-        let toastTitle: string | null = null
-        if (error?.code === 'auth/invalid-login') {
-          toastTitle = 'Email or password invalid!'
-        }
-        if (toastTitle) {
-          showToast({
-            type: 'error',
-            position: 'bottom',
-            variant: 'filled',
-            text1: toastTitle,
-          })
-        }
-      })
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {

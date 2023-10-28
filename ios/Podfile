@@ -45,17 +45,6 @@ target 'ClasherSpace' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  # use_frameworks! :linkage => :static
-  # $RNFirebaseAsStaticFramework = true
-  # pod 'Firebase', :modular_headers => true
-  # pod 'FirebaseCore', :modular_headers => true
-  # pod 'GoogleUtilities', :modular_headers => true
-  # pod 'FirebaseStorage', :modular_headers => true
-  # pod 'FirebaseAppCheckInterop', :modular_headers => true
-  # pod 'FirebaseAuthInterop', :modular_headers => true
-  # pod 'FirebaseCoreExtension', :modular_headers => true
-  # pod 'GTMSessionFetcher', :modular_headers => true
-
 
   target 'ClasherSpaceTests' do
     inherit! :complete
