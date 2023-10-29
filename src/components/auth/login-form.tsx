@@ -79,7 +79,7 @@ const LoginForm = (): JSX.Element => {
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='extra-large'
+              size='large'
               isError={Boolean(errors?.email?.message)}
               helperText={errors?.email?.message ? errors?.email?.message : undefined}
             />
@@ -99,7 +99,7 @@ const LoginForm = (): JSX.Element => {
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='extra-large'
+              size='large'
               isError={Boolean(errors?.password?.message)}
               helperText={errors?.password?.message ? errors?.password?.message : undefined}
             />
