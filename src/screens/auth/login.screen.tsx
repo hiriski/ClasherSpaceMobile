@@ -1,18 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
 import { View, ScrollView, Animated, Keyboard } from 'react-native'
-import { StatusBar } from '@/components/core'
+import { IconButton, StatusBar } from '@/components/core'
 import { useTheme } from '@/hooks'
 import { LoginForm } from '@/components/auth'
 import { Assets } from '@/assets'
 import { StyleSheet } from 'react-native'
 import { themeConfig } from '@/config'
 import { screenUtils } from '@/utilities'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useNavigation } from '@react-navigation/native'
+import { NavigationProps } from '@/navigators'
 
 const ESTIMATE_FORM_HEIGHT = 465
 const EXTRA_KEYBOARD_OFFSET = 180
 
 const LoginScreen = (): JSX.Element => {
   const theme = useTheme()
+
+  const navigation = useNavigation<NavigationProps>()
+  const insets = useSafeAreaInsets()
 
   const [keyboardVisible, setKeyboardVisible] = useState(false)
 
@@ -45,6 +51,14 @@ const LoginScreen = (): JSX.Element => {
   return (
     <>
       <StatusBar translucent barStyle='light-content' />
+      <IconButton
+        size='large'
+        iconType='ionicons'
+        style={{ position: 'absolute', top: insets.top, left: 10, zIndex: 1 }}
+        iconColor='#ffffff'
+        icon='arrow-back'
+        onPress={() => navigation.goBack()}
+      />
       <Animated.Image
         source={Assets.clashOfClans1}
         style={{

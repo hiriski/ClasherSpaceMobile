@@ -1,5 +1,5 @@
 import { View, ScrollView, Animated, Keyboard } from 'react-native'
-import { StatusBar } from '@/components/core'
+import { IconButton, StatusBar } from '@/components/core'
 import { useTheme } from '@/hooks'
 import { RegisterForm, RegisterFormStep2 } from '@/components/auth'
 import { Assets } from '@/assets'
@@ -8,6 +8,9 @@ import { themeConfig } from '@/config'
 import { screenUtils } from '@/utilities'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import PagerView from 'react-native-pager-view'
+import { useNavigation } from '@react-navigation/native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { NavigationProps } from '@/navigators'
 
 const FORM_STEP_1_HEIGHT = 580
 const FORM_STEP_2_HEIGHT = 380
@@ -18,6 +21,9 @@ const RegisterScreen = (): JSX.Element => {
 
   const [key, setKey] = useState(0)
   const [keyboardVisible, setKeyboardVisible] = useState(false)
+
+  const navigation = useNavigation<NavigationProps>()
+  const insets = useSafeAreaInsets()
 
   const pagerRef = useRef<PagerView>(null)
   const animatedImageRef = useRef(new Animated.Value(screenUtils.height - FORM_STEP_1_HEIGHT)).current
@@ -65,6 +71,14 @@ const RegisterScreen = (): JSX.Element => {
   return (
     <>
       <StatusBar translucent barStyle='light-content' />
+      <IconButton
+        size='large'
+        iconType='ionicons'
+        style={{ position: 'absolute', top: insets.top, left: 10, zIndex: 1 }}
+        iconColor='#ffffff'
+        icon='arrow-back'
+        onPress={() => navigation.goBack()}
+      />
       <Animated.Image
         source={Assets.clashOfClans3}
         style={{
