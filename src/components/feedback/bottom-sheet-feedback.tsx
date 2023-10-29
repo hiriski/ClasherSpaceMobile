@@ -78,6 +78,7 @@ const BottomSheetFeedback = () => {
     setIsSubmitSuccess(false)
     ref.current?.close(animationConfig)
     feedback_setHasSubmittedFeedback(true)
+    setVisibleBottomTab(true)
   }, [ref?.current, visibleBottomTab, openBottomSheet, isSubmitSuccess])
 
   // backdrop
