@@ -176,8 +176,6 @@ const BottomSheetDropdown = <T extends unknown>(props: BottomSheetDropdownProps<
     return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress)
   }, [isOpen, navigation])
 
-  console.log('>>> RENDER ME')
-
   return (
     <>
       <Pressable onPress={onOpenBottomSheet}>
