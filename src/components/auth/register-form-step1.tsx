@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
 
@@ -14,7 +14,7 @@ import { useForm, Controller, SubmitHandler, SubmitErrorHandler } from 'react-ho
 import { yupResolver } from '@hookform/resolvers/yup'
 
 // hooks
-import { useTheme, useToast } from '@/hooks'
+import { useTheme } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
 
 // config
@@ -22,33 +22,27 @@ import { appConfig } from '@/config'
 
 // assets
 import { Assets } from '@/assets'
+import { IRequestRegister } from '@/api'
 
 type FormValues = {
+  name: string
   email: string
-  password: string
-  password_confirmation: string
 }
 
 const schema = Yup.object()
   .shape({
+    name: Yup.string().required('Please input your name'),
     email: Yup.string().email('Please input a valid email').required('Please input your email'),
-    password: Yup.string().required('Please input your password'),
-    password_confirmation: Yup.string()
-      .required('Please confirm your password')
-      .oneOf([Yup.ref('password')], 'Passwords must match'),
   })
   .required()
 
 interface Props {
-  onSuccess: () => void
+  onSubmit: (value: Pick<IRequestRegister, 'name' | 'email'>) => void
 }
 
-const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
+const RegisterFormStep1: FC<Props> = ({ onSubmit }): JSX.Element => {
   const nav = useNavigation<NavigationProps>()
-  const { showToast } = useToast()
   const theme = useTheme()
-
-  const { auth_setRegisterLoading, registerLoading } = useAuth()
 
   const {
     control,
@@ -57,15 +51,13 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
+      name: '',
       email: '',
-      password: '',
-      password_confirmation: '',
     },
   })
 
   const onValidSubmit: SubmitHandler<FormValues> = values => {
-    auth_setRegisterLoading(true)
-    const { email, password } = values
+    onSubmit(values)
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {
@@ -79,9 +71,30 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
         <Typography variant='h2' gutterBottom fontWeight='bold'>
           Sign Up ⚔️
         </Typography>
-        <Typography color='text.secondary'>Create to your {appConfig.appName} account</Typography>
+        <Typography color='text.secondary'>Create your {appConfig.appName} account</Typography>
       </View>
       <View style={{ marginBottom: createSpacing(2) }}>
+        <View style={{ marginBottom: createSpacing(2) }}>
+          <Controller
+            control={control}
+            name='name'
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextField
+                label='What your name ?'
+                labelSize='medium'
+                placeholder='Your name...'
+                onBlur={onBlur}
+                variant='filled'
+                onChangeText={onChange}
+                value={value}
+                margin='normal'
+                size='large'
+                isError={Boolean(errors?.name?.message)}
+                helperText={errors?.name?.message ? errors?.name?.message : undefined}
+              />
+            )}
+          />
+        </View>
         <Controller
           control={control}
           name='email'
@@ -101,52 +114,11 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
             />
           )}
         />
-        <Controller
-          control={control}
-          name='password'
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextField
-              label='Password'
-              labelSize='medium'
-              placeholder='Password'
-              variant='filled'
-              secureTextEntry={true}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              margin='normal'
-              size='large'
-              isError={Boolean(errors?.password?.message)}
-              helperText={errors?.password?.message ? errors?.password?.message : undefined}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name='password_confirmation'
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextField
-              label='Confirm Pasword'
-              labelSize='medium'
-              placeholder='Confirm Password'
-              variant='filled'
-              secureTextEntry={true}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              margin='normal'
-              size='large'
-              isError={Boolean(errors?.password_confirmation?.message)}
-              helperText={errors?.password_confirmation?.message ? errors?.password_confirmation?.message : undefined}
-            />
-          )}
-        />
       </View>
       <View style={{ marginBottom: createSpacing(3) }}>
         <Button
-          isLoading={registerLoading}
           onPress={handleSubmit(onValidSubmit, onInvalidSubmit)}
-          title='Create Account'
+          title='Next'
           size='extra-large'
           endIcon='arrow-forward'
           iconType='ionicons'
@@ -156,22 +128,6 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: createSpacing(6) }}>
         <Typography color='text.secondary'>Already have account ? </Typography>
         <Button onPress={() => nav.navigate('login_screen')} title='Login' variant='text' disablePadding />
-      </View>
-      <View style={{ marginTop: 'auto', alignItems: 'center' }}>
-        <Typography color='text.secondary' variant='subtitle2'>
-          By sign up, you agree to {appConfig.appName}{' '}
-        </Typography>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 'auto' }}>
-          <Typography color='text.primary' variant='subtitle2'>
-            Term of Conditions{' '}
-          </Typography>
-          <Typography color='text.secondary' variant='subtitle2'>
-            and{' '}
-          </Typography>
-          <Typography color='text.primary' variant='subtitle2'>
-            Privacy Policy
-          </Typography>
-        </View>
       </View>
     </View>
   )
@@ -196,4 +152,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default RegisterForm
+export default RegisterFormStep1

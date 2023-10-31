@@ -2,7 +2,7 @@ import { Image, StyleSheet, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
 
 // utils
-import { screenUtils } from '@/utilities'
+import { authUtils, screenUtils } from '@/utilities'
 import { createSpacing, log } from '@/helpers'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationProps } from '@/navigators'
@@ -14,6 +14,8 @@ import * as Yup from 'yup'
 import { useTheme, useToast } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
 import { Assets } from '@/assets'
+import { AuthApi } from '@/api/auth.api'
+import { useState } from 'react'
 
 type FormValues = {
   email: string
@@ -30,15 +32,15 @@ const schema = Yup.object()
 const LoginForm = (): JSX.Element => {
   const nav = useNavigation<NavigationProps>()
   const theme = useTheme()
-
+  const [isLoading, setIsLoading] = useState(false)
+  const { auth_setUser } = useAuth()
   const { showToast } = useToast()
-
-  const { auth_setLoginLoading, loginLoading } = useAuth()
 
   const {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -47,9 +49,26 @@ const LoginForm = (): JSX.Element => {
     },
   })
 
-  const onValidSubmit: SubmitHandler<FormValues> = values => {
-    auth_setLoginLoading(true)
-    const { email, password } = values
+  const onValidSubmit: SubmitHandler<FormValues> = async ({ email, password }) => {
+    setIsLoading(true)
+    try {
+      const response = await AuthApi.loginWithEmailAndPassword({ email, password })
+      setIsLoading(false)
+      if (response.token) {
+        authUtils.saveToken(response.token)
+        auth_setUser(response.user)
+        nav.replace('bottom_tab_stack')
+        reset()
+      }
+    } catch (e) {
+      showToast({
+        text1: 'Opss.. login failed',
+        variant: 'filled',
+        position: 'top',
+        type: 'error',
+      })
+      setIsLoading(false)
+    }
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {
@@ -80,6 +99,7 @@ const LoginForm = (): JSX.Element => {
               value={value}
               margin='normal'
               size='large'
+              autoCapitalize='none'
               isError={Boolean(errors?.email?.message)}
               helperText={errors?.email?.message ? errors?.email?.message : undefined}
             />
@@ -109,7 +129,7 @@ const LoginForm = (): JSX.Element => {
 
       <View style={{ marginBottom: createSpacing(3) }}>
         <Button
-          isLoading={loginLoading}
+          isLoading={isLoading}
           onPress={handleSubmit(onValidSubmit, onInvalidSubmit)}
           title='Login'
           size='extra-large'

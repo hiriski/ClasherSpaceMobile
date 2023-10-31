@@ -1,7 +1,7 @@
 import { View, ScrollView, Animated, Keyboard } from 'react-native'
 import { IconButton, StatusBar } from '@/components/core'
 import { useTheme } from '@/hooks'
-import { RegisterForm, RegisterFormStep2 } from '@/components/auth'
+import { RegisterFormStep1, RegisterFormStep2 } from '@/components/auth'
 import { Assets } from '@/assets'
 import { StyleSheet } from 'react-native'
 import { themeConfig } from '@/config'
@@ -11,14 +11,16 @@ import PagerView from 'react-native-pager-view'
 import { useNavigation } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { NavigationProps } from '@/navigators'
+import { IRequestRegister } from '@/api'
 
-const FORM_STEP_1_HEIGHT = 580
-const FORM_STEP_2_HEIGHT = 380
+const FORM_STEP_1_HEIGHT = 440
+const FORM_STEP_2_HEIGHT = 468
 const EXTRA_KEYBOARD_OFFSET = 180
 
 const RegisterScreen = (): JSX.Element => {
   const theme = useTheme()
 
+  const [formValue, setFormValue] = useState<IRequestRegister>({ name: '', email: '', password: '', password_confirmation: '' })
   const [key, setKey] = useState(0)
   const [keyboardVisible, setKeyboardVisible] = useState(false)
 
@@ -63,10 +65,19 @@ const RegisterScreen = (): JSX.Element => {
     }
   }, [])
 
-  const onStep1Success = useCallback(() => {
-    pagerRef?.current?.setPage(1)
-    setKey(1)
-  }, [pagerRef.current])
+  const onSubmitStep1 = useCallback(
+    (value: Pick<IRequestRegister, 'name' | 'email'>) => {
+      if (value.name && value.email) {
+        setFormValue({
+          ...formValue,
+          ...value,
+        })
+        pagerRef?.current?.setPage(1)
+        setKey(1)
+      }
+    },
+    [pagerRef.current]
+  )
 
   return (
     <>
@@ -90,10 +101,10 @@ const RegisterScreen = (): JSX.Element => {
       <View style={StyleSheet.flatten([styles.root, { backgroundColor: theme.palette.background.paper }])}>
         <PagerView ref={pagerRef} style={styles.pagerView} orientation='horizontal' initialPage={0} scrollEnabled={false}>
           <ScrollView key='1' showsVerticalScrollIndicator={false} keyboardShouldPersistTaps='handled'>
-            <RegisterForm onSuccess={onStep1Success} />
+            <RegisterFormStep1 onSubmit={onSubmitStep1} />
           </ScrollView>
           <ScrollView key='2' showsVerticalScrollIndicator={false} keyboardShouldPersistTaps='handled'>
-            <RegisterFormStep2 />
+            <RegisterFormStep2 values={formValue} />
           </ScrollView>
         </PagerView>
       </View>

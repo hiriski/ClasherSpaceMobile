@@ -30,10 +30,15 @@ export const useApp = () => {
     storageUtils.saveString('LANGUAGE', payload)
   }
 
+  const app_setIsAlreadyLaunched = (payload: boolean) => {
+    dispatch({ type: AppActionTypes.isAlreadyLaunched, payload })
+  }
+
   return {
     ...state,
     setVisibleBottomTab,
     setSplashScreen,
     app_setLang,
+    app_setIsAlreadyLaunched,
   }
 }

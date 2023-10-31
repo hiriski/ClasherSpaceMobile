@@ -8,6 +8,7 @@ import { AuthActionTypes } from '@/reducers'
 
 // hooks
 import { useToast } from '@/hooks'
+import { authUtils, storageUtils } from '@/utilities'
 
 export const useAuth = () => {
   const state = useContext(AuthContext)
@@ -16,13 +17,12 @@ export const useAuth = () => {
   const { showToast } = useToast()
 
   const auth_setUser = (payload: IAuthState['user']) => {
+    storageUtils.save('USER', payload)
     dispatch({ type: AuthActionTypes.setUser, payload })
   }
 
-  const auth_signOut = () => {}
-
   const auth_resetAuth = () => {
-    auth_signOut()
+    authUtils.removeTokenFromStorage()
     dispatch({ type: AuthActionTypes.resetAuth })
   }
 
@@ -45,7 +45,6 @@ export const useAuth = () => {
     ...state,
     isAuthenticated,
     auth_setUser,
-    auth_signOut,
     auth_resetAuth,
     auth_setLoginLoading,
     auth_setRegisterLoading,

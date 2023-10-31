@@ -116,7 +116,9 @@ const BottomTab: FC<Props> = props => {
         ],
       }}
     >
-      <View style={StyleSheet.flatten([styles.bottomTabRoot, { width: TAB_WIDTH }])}>
+      <View
+        style={StyleSheet.flatten([styles.bottomTabRoot, { width: TAB_WIDTH, backgroundColor: theme.palette.background.paper }])}
+      >
         <View style={StyleSheet.flatten([styles.customTab_root])}>
           {TAB_ITEMS.map((x, index) => (
             <TouchableOpacity

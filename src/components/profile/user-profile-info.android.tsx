@@ -21,14 +21,14 @@ import { useAuth } from '@/hooks/auth'
 import { launchImageLibrary } from 'react-native-image-picker'
 
 // firebase
-import storage from '@react-native-firebase/storage'
+// import storage from '@react-native-firebase/storage'
 
 // fast image
 import FastImage from 'react-native-fast-image'
 
 const AVATAR_SIZE = 132
 
-const UserProfileInfo = (): JSX.Element => {
+const UserProfileInfoAndroid = (): JSX.Element => {
   const [uploadIsLoading, setUploadIsLoading] = useState(false)
 
   const { showToast } = useToast()
@@ -229,4 +229,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default UserProfileInfo
+export default UserProfileInfoAndroid

@@ -25,7 +25,7 @@ import FastImage from 'react-native-fast-image'
 
 const AVATAR_SIZE = 132
 
-const UserProfileInfo = (): JSX.Element => {
+const UserProfileInfoIOS = (): JSX.Element => {
   const [uploadIsLoading, setUploadIsLoading] = useState(false)
 
   const { showToast } = useToast()
@@ -200,4 +200,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default UserProfileInfo
+export default UserProfileInfoIOS
