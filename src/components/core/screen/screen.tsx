@@ -10,8 +10,8 @@ import { Typography } from '@/components/core'
 import { ScreenTitle, ScreenTitleProps } from '@/components/core'
 
 // hooks
-import { useTheme } from '@/modules/theme/hooks'
-import { platformUtils } from '@/modules/app/utilities'
+import { useTheme } from '@//hooks'
+import { platformUtils } from '@/utilities'
 
 /**
  * All screen keyboard offsets.
