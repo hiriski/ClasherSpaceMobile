@@ -8,26 +8,24 @@
 import { TextStyle } from 'react-native'
 
 // interfaces.
-import { IFontStyle, IThemePalette, IThemeShape, IThemeTypographyOptions, ThemeSpacing } from '@/interfaces'
+import { IFontStyle, IThemePalette, IThemeShape, IThemeTypographyOptions, ThemeSpacing } from '@/modules/theme/interfaces'
+import { paletteLibs } from '@/libs/palette/_palette.lib'
 
-// libs
-import { grey } from '@/libs'
-
-const DEFAULT_FONT_FAMILY = 'Plus Jakarta Sans'
+export const DEFAULT_FONT_FAMILY = 'Plus Jakarta Sans'
 
 /**  Base palette */
 export const theme_paletteBase: Pick<IThemePalette, 'primary' | 'secondary' | 'common'> = {
   primary: {
-    main: '#4F62B1',
-    dark: '#394A98',
-    light: '#C0CEF7',
+    main: '#0080FF',
+    dark: '#0063DB',
+    light: '#CCEFFF',
     contrastText: '#fbfbfb',
   },
   secondary: {
-    main: '#F39A1A',
-    dark: '#D07B13',
-    light: '#FDE3A3',
-    contrastText: '#fbfbfb',
+    main: '#fbb021',
+    dark: '#DA9018',
+    light: '#FEF5D2',
+    contrastText: '#ffffff',
   },
   common: {
     white: '#ffffff',
@@ -39,9 +37,9 @@ export const theme_paletteBase: Pick<IThemePalette, 'primary' | 'secondary' | 'c
 export const theme_paletteLight: Omit<IThemePalette, 'common' | 'primary' | 'secondary'> = {
   mode: 'light',
   text: {
-    primary: grey[900],
-    secondary: grey[600],
-    disabled: grey[400],
+    primary: paletteLibs.grey[900],
+    secondary: paletteLibs.grey[600],
+    disabled: paletteLibs.grey[400],
   },
   success: {
     main: '#02bf71',
@@ -120,10 +118,10 @@ export const theme_paletteDark: Omit<IThemePalette, 'common' | 'primary' | 'seco
     contrastText: '#fff7f7',
   },
   background: {
-    default: grey[900],
+    default: paletteLibs.grey[900],
     paper: '#0e0e0e',
   },
-  divider: 'rgba(255, 255, 255, 0.5)',
+  divider: 'rgba(255, 255, 255, 0.05)',
   action: {
     active: '#fff',
     hover: 'rgba(255, 255, 255, 0.08)',
@@ -141,10 +139,10 @@ export const theme_paletteDark: Omit<IThemePalette, 'common' | 'primary' | 'seco
 
 // prettier-ignore
 const theme_typographyFontWeight: Record<keyof Pick<IFontStyle, | 'fontWeightLight' | 'fontWeightRegular' | 'fontWeightMedium' | 'fontWeightBold'>, TextStyle['fontWeight']> = {
-  fontWeightLight: '300',
-  fontWeightRegular: '500',
-  fontWeightMedium: '600',
-  fontWeightBold: '700',
+  fontWeightLight: '200',
+  fontWeightRegular: '400',
+  fontWeightMedium: '500',
+  fontWeightBold: '600',
 }
 
 /** Typography */
