@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "147795843711",
+    "project_id": "clasher-space",
+    "storage_bucket": "clasher-space.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147795843711:android:c9ac10d378af7829ab7d4a",
+        "android_client_info": {
+          "package_name": "io.github.hiriski.clasherspace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147795843711-uqdvc46guv8m49qfhg31qrlt5nrfpfas.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.hiriski.clasherspace",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "147795843711-ldhkh0lkc52ffidhvqt7i56fch7ndk36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7YQw_b-C_G6rfjtC_4aMcqTjKwg2cQoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147795843711-ldhkh0lkc52ffidhvqt7i56fch7ndk36.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
