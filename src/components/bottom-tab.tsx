@@ -1,60 +1,61 @@
 import { FC, useEffect, useRef } from 'react'
-import { View, TouchableOpacity, Animated, StyleSheet } from 'react-native'
+import { View, Animated, StyleSheet, Pressable } from 'react-native'
 
 // components
-import { Icon, Typography } from '@/components/core'
+import { Typography } from '@/components/core'
 
 // hooks
 import { useApp, useTheme } from '@/hooks'
 
 // interfaces
-import { RNVectorIconProvider } from '@/interfaces'
-import { NavigatorParamList } from '@/navigators/navigation.type'
+import { BottomTabNavigatorParamList, NavigatorParamList } from '@/navigators/navigation.type'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 
 // utils
 import { screenUtils } from '@/utilities'
 import { createSpacing } from '@/helpers'
 import { useAuth } from '@/hooks/auth'
+import { themeConfig } from '@/config'
 
 // fast image
 import FastImage from 'react-native-fast-image'
 
 // assets
 import { AssetsAvatars } from '@/assets/avatars'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import HomeIcon from '@/assets/svg/home-smile-angle-bold-duotone.svg'
+import LayerIcon from '@/assets/svg/layers-bold-duotone.svg'
+import UserIcon from '@/assets/svg/user-bold-duotone.svg'
 
 type TabItem = {
-  path: keyof NavigatorParamList
+  path: keyof BottomTabNavigatorParamList
   label: string
-  icon: string
-  focusIcon: string
-  iconProvider: RNVectorIconProvider
+  icon: any
+  focusIcon: any
 }
+
+const ICON_SIZE = 24
 
 const TAB_ITEMS: Array<TabItem> = [
   {
     path: 'dashboard_screen',
     label: 'Home',
-    icon: 'layers-outline',
-    focusIcon: 'layers',
-    iconProvider: 'ionicons',
+    icon: <HomeIcon color={themeConfig.paletteBase.primary.main} height={ICON_SIZE} width={ICON_SIZE} />,
+    focusIcon: <HomeIcon color='#ffffff' height={ICON_SIZE} width={ICON_SIZE} />,
   },
   {
-    path: 'base_layout_list_screen',
-    label: 'Layouts',
-    icon: 'map-outline',
-    focusIcon: 'map',
-    iconProvider: 'ionicons',
+    path: 'layout_list_screen',
+    label: 'Base',
+    icon: <LayerIcon color={themeConfig.paletteBase.primary.main} height={ICON_SIZE} width={ICON_SIZE} />,
+    focusIcon: <LayerIcon color='#ffffff' height={ICON_SIZE} width={ICON_SIZE} />,
   },
   {
     path: 'profile_screen',
     label: 'Profile',
-    icon: 'person-circle-outline',
-    focusIcon: 'person-circle',
-    iconProvider: 'ionicons',
+    icon: <UserIcon color={themeConfig.paletteBase.primary.main} height={ICON_SIZE} width={ICON_SIZE} />,
+    focusIcon: <UserIcon color='#ffffff' height={ICON_SIZE} width={ICON_SIZE} />,
   },
 ]
-
 const TAB_WIDTH = screenUtils.width
 const TAB_HEIGH = 68
 
@@ -62,6 +63,8 @@ interface Props extends BottomTabBarProps {}
 
 const BottomTab: FC<Props> = props => {
   const { state, navigation } = props
+
+  const insets = useSafeAreaInsets()
 
   const { isAuthenticated, user } = useAuth()
 
@@ -80,7 +83,7 @@ const BottomTab: FC<Props> = props => {
       }).start()
     } else {
       Animated.timing(animatedBottomTabRef, {
-        toValue: TAB_HEIGH + 20,
+        toValue: TAB_HEIGH + 62,
         duration: 250,
         useNativeDriver: true,
       }).start()
@@ -102,6 +105,7 @@ const BottomTab: FC<Props> = props => {
         backgroundColor: theme.palette.background.paper,
         borderTopColor: theme.palette.divider,
         borderTopWidth: 1.2,
+        paddingBottom: insets.bottom,
         transform: [
           {
             translateY: animatedBottomTabRef,
@@ -112,43 +116,60 @@ const BottomTab: FC<Props> = props => {
         ],
       }}
     >
-      <View style={StyleSheet.flatten([styles.bottomTabRoot, { width: TAB_WIDTH }])}>
+      <View
+        style={StyleSheet.flatten([styles.bottomTabRoot, { width: TAB_WIDTH, backgroundColor: theme.palette.background.paper }])}
+      >
         <View style={StyleSheet.flatten([styles.customTab_root])}>
           {TAB_ITEMS.map((x, index) => (
-            <TouchableOpacity
+            <Pressable
               key={x.path}
-              activeOpacity={0.85}
               onPress={() => onPress(x.path)}
-              style={StyleSheet.flatten([styles.tabItem, { ...(state.index === index && styles.tabItemFocused) }])}
+              style={({ pressed }) =>
+                StyleSheet.flatten([
+                  styles.tabItem,
+                  {
+                    ...(state.index === index && styles.tabItemFocused),
+                    ...(pressed && {
+                      backgroundColor: state.index !== index ? theme.palette.primary.light : undefined,
+                    }),
+                  },
+                ])
+              }
             >
               <View style={StyleSheet.flatten([styles.tabItemInner])}>
-                {isAuthenticated && user?.photoURL && x.path === 'profile_screen' ? (
+                {isAuthenticated && user?.photoUrl && x.path === 'profile_screen' ? (
                   <FastImage
                     style={StyleSheet.flatten([styles.tabBarAvatar])}
                     defaultSource={AssetsAvatars.avatarGuest}
                     source={{
-                      uri: user?.photoURL as string,
+                      uri: user?.photoUrl as string,
                       priority: FastImage.priority.normal,
                     }}
                     resizeMode={FastImage.resizeMode.cover}
                   />
+                ) : state.index === index ? (
+                  x.focusIcon
                 ) : (
-                  <Icon
-                    size={22}
-                    name={state.index === index ? x.focusIcon : x.icon}
-                    provider={x.iconProvider}
-                    color={state.index === index ? '#ffffff' : '#337FFF'}
-                  />
+                  x.icon
                 )}
-                {state.index === index && (
-                  <View style={StyleSheet.flatten([{ marginLeft: createSpacing(2) }])}>
-                    <Typography variant='body2' style={styles.tabItemLabel}>
-                      {x.label}
-                    </Typography>
-                  </View>
-                )}
+
+                <View style={StyleSheet.flatten([{ marginLeft: createSpacing(2) }])}>
+                  <Typography
+                    variant='body2'
+                    style={StyleSheet.flatten([
+                      styles.tabItemLabel,
+                      {
+                        ...(state.index === index
+                          ? { color: theme.palette.common.white }
+                          : { color: theme.palette.text.secondary }),
+                      },
+                    ])}
+                  >
+                    {x.label}
+                  </Typography>
+                </View>
               </View>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </View>
       </View>
@@ -172,8 +193,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   tabItem: {
-    height: TAB_HEIGH - 18,
-    width: TAB_WIDTH / 3 - 10,
+    height: TAB_HEIGH - 24,
+    width: TAB_WIDTH / 3 - 22,
+    marginHorizontal: 4,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 40,
@@ -187,7 +209,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tabItemLabel: {
-    color: '#ffffff',
     fontWeight: 'bold',
   },
   tabBarAvatar: {

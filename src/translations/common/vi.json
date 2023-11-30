@@ -1,0 +1,13 @@
+{
+  "common": {
+    "hello": "Xin Chào",
+    "greeting": {
+      "hi_there": "Chào bạn",
+      "not_logged_in": "Bạn chưa đăng nhập",
+      "good_morning": "⛅ Chào buổi sáng",
+      "good_evening": "☀️ Chào buổi tối",
+      "good_afternoon": "🌙 Chào buổi chiều",
+      "good_night": "🌙 Chúc ngủ ngon"
+    }
+  }
+}

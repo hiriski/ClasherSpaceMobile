@@ -20,13 +20,18 @@ import { createSpacing } from '@/helpers'
 // config
 import { themeConfig } from '@/config'
 
+const animationConfig = {
+  duration: 200,
+  overshootClamping: false,
+}
+
 const BottomSheetFeedback = () => {
   const ref = useRef<BottomSheet>(null)
   const theme = useTheme()
 
   const insets = useSafeAreaInsets()
 
-  const SNAP_POINTS = useMemo(() => [320, 732, screenUtils.height + insets.top], [])
+  const SNAP_POINTS = useMemo(() => [340, 732, screenUtils.height + insets.top], [])
 
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false)
 
@@ -35,14 +40,14 @@ const BottomSheetFeedback = () => {
   const { visibleBottomTab, setVisibleBottomTab } = useApp()
 
   const handleClose = (): void => {
-    ref.current?.snapToIndex(-1)
+    ref.current?.snapToIndex(-1, animationConfig)
     feedback_setOpenBottomSheet(false)
     setVisibleBottomTab(true)
   }
 
   useEffect(() => {
     if (openBottomSheet) {
-      ref?.current?.snapToIndex(1)
+      ref.current?.snapToIndex(1, animationConfig)
       setVisibleBottomTab(false)
       handleClose()
     }
@@ -61,20 +66,19 @@ const BottomSheetFeedback = () => {
   )
 
   const onPressCloseButton = useCallback(() => {
-    ref.current?.close()
+    ref.current?.close(animationConfig)
   }, [ref?.current, visibleBottomTab, openBottomSheet])
 
   const onSubmitSuccess = useCallback(() => {
     setIsSubmitSuccess(true)
-    ref.current?.snapToIndex(0)
+    ref.current?.snapToIndex(0, animationConfig)
   }, [ref?.current, visibleBottomTab, openBottomSheet, isSubmitSuccess])
 
   const onPressFinish = useCallback(() => {
     setIsSubmitSuccess(false)
-    ref.current?.close()
-    setTimeout(() => {
-      feedback_setHasSubmittedFeedback(true)
-    }, 300)
+    ref.current?.close(animationConfig)
+    feedback_setHasSubmittedFeedback(true)
+    setVisibleBottomTab(true)
   }, [ref?.current, visibleBottomTab, openBottomSheet, isSubmitSuccess])
 
   // backdrop
@@ -118,11 +122,14 @@ const BottomSheetFeedback = () => {
             <View style={StyleSheet.flatten([styles.boxIcon, { backgroundColor: theme.palette.success.main }])}>
               <MaterialCommunityIcon name='send-check' size={32} style={{ color: theme.palette.success.light }} />
             </View>
-            <Typography variant='h3' fontWeight='bold' gutterBottom={1.2} color='text.secondary' style={{ textAlign: 'center' }}>
+            <Typography variant='h3' fontWeight='bold' gutterBottom={2} color='text.secondary' style={{ textAlign: 'center' }}>
               Thank you!
             </Typography>
+            <Typography gutterBottom={1} color='text.secondary' style={{ textAlign: 'center' }}>
+              We love hearing from you!
+            </Typography>
             <Typography gutterBottom={5} color='text.secondary' style={{ textAlign: 'center' }}>
-              We love hearing from you! Thank you for leaving feedback for us.
+              Thank you for leaving feedback for us.
             </Typography>
             <View style={{ marginBottom: createSpacing(3), width: 180 }}>
               <Button onPress={onPressFinish} title='Done' size='large' rounded color='primary' variant='contained' />
@@ -130,21 +137,18 @@ const BottomSheetFeedback = () => {
           </View>
         ) : (
           <>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
               <MaterialCommunityIcon
                 name='message-badge'
                 size={26}
                 style={{ marginRight: createSpacing(2), color: theme.palette.success.main }}
               />
               <Typography variant='h2' fontWeight='bold' gutterBottom>
-                Send Feedback
+                Feedback
               </Typography>
             </View>
-            <Typography gutterBottom color='text.secondary'>
-              Are you in need of a feature? or found something to improve?
-            </Typography>
-            <Typography gutterBottom={4} color='text.secondary'>
-              A nasty little bug annoys you? Please let us know here!
+            <Typography variant='h5' gutterBottom={4} color='text.secondary'>
+              I would love to hear you thoughts and ideas on how I can improve your experience
             </Typography>
             <Divider />
             <FeedbackForm onSubmitSuccess={onSubmitSuccess} />

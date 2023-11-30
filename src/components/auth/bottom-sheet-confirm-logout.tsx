@@ -13,7 +13,8 @@ import { Typography } from '@/components/core'
 import { themeConfig } from '@/config'
 import { useApp, useTheme } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
-import { screenUtils } from '@/utilities'
+import { authUtils, screenUtils } from '@/utilities'
+import { AuthApi } from '@/api'
 
 const BottomSheetContent = () => {
   const theme = useTheme()
@@ -57,8 +58,13 @@ const BottomSheetConfirmLogout = () => {
 
   const { visibleBottomTab, setVisibleBottomTab } = useApp()
 
-  const handleLogout = (): void => {
-    auth_resetAuth()
+  const handleLogout = async (): Promise<void> => {
+    try {
+      await AuthApi.revokeToken({ currentAccessToken: authUtils.getToken() as string })
+      auth_resetAuth()
+    } catch (e) {
+      auth_resetAuth()
+    }
   }
 
   const onBottomSheetClose = useCallback(() => {

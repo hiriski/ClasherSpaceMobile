@@ -1,8 +1,11 @@
 import { IAppState } from '@/contexts/app'
+import { AppLanguageCode } from '@/interfaces'
 
 export enum AppActionTypes {
   setVisibleSplashScreen = '@app/setVisibleSplashScreen',
   setVisibleBottomTab = '@app/setVisibleBottomTab',
+  setLang = '@app/setLang',
+  isAlreadyLaunched = '@app/isAlreadyLaunched',
 }
 
 /**
@@ -18,9 +21,19 @@ type SetVisibleBottomTab = {
   type: AppActionTypes.setVisibleBottomTab
   payload: boolean
 }
+
+type SetLang = {
+  type: AppActionTypes.setLang
+  payload: AppLanguageCode
+}
+
+type SetIsAlreadyLaunched = {
+  type: AppActionTypes.isAlreadyLaunched
+  payload: boolean
+}
 /** ---------------------------------- */
 
-export type AppReducerActions = SetVisibleSplashScreen | SetVisibleBottomTab
+export type AppReducerActions = SetVisibleSplashScreen | SetVisibleBottomTab | SetLang | SetIsAlreadyLaunched
 
 /**
  * app reducer
@@ -39,6 +52,16 @@ export const appReducer = (state: IAppState, action: AppReducerActions): IAppSta
       return {
         ...state,
         visibleBottomTab: payload,
+      }
+    case AppActionTypes.setLang:
+      return {
+        ...state,
+        lang: payload,
+      }
+    case AppActionTypes.isAlreadyLaunched:
+      return {
+        ...state,
+        app_isAlreadyLaunched: payload,
       }
     default:
       return state

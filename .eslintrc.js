@@ -8,6 +8,7 @@ module.exports = {
       files: ['*.js', '.jsx', '*.ts', '*.tsx'],
       rules: {
         semi: 0,
+        'no-extra-semi': 0,
         'react/react-in-jsx-scope': 0,
         'react-hooks/exhaustive-deps': 0,
         'react-native/no-inline-styles': 0,
