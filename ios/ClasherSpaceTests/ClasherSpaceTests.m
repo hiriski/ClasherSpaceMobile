@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface ClasherSpaceTests : XCTestCase
+@interface ClasherSpaceTest : XCTestCase
 
 @end
 
-@implementation ClasherSpaceTests
+@implementation ClasherSpaceTest
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {
