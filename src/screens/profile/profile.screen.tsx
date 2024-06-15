@@ -1,18 +1,35 @@
+import { useCallback, useState } from 'react'
+
 // hooks
 import { useAuth } from '@/hooks/auth'
+import { useFocusEffect } from '@react-navigation/native'
 import { useTheme } from '@/hooks'
+
+// firebase
+// import auth from '@react-native-firebase/auth'
 
 // components
 import { Screen } from '@/components/core'
-import { GuestProfileInfo } from '@/components/profile'
+import { UserProfileInfo, GuestProfileInfo } from '@/components/profile'
 import { BottomSheetConfirmLogout } from '@/components/auth'
-import { platformUtils } from '@/utilities'
-import UserProfileInfoIOS from '@/components/profile/user-profile-info.ios'
-import UserProfileInfoAndroid from '@/components/profile/user-profile-info.android'
 
 const ProfileScreen = (): JSX.Element => {
   const theme = useTheme()
-  const { isAuthenticated } = useAuth()
+  const { auth_setUser, isAuthenticated } = useAuth()
+  const [loading, setLoading] = useState(false)
+
+  useFocusEffect(
+    useCallback(() => {
+      const unsubscribe = auth().onAuthStateChanged(user => {
+        auth_setUser(user ?? null)
+        if (loading) {
+          setLoading(false)
+        }
+      })
+
+      return () => unsubscribe()
+    }, [])
+  )
 
   return (
     <>
@@ -25,7 +42,7 @@ const ProfileScreen = (): JSX.Element => {
         headerBackgroundColor={theme.palette.background.default}
         style={{ paddingHorizontal: theme.horizontalSpacing }}
       >
-        {isAuthenticated ? platformUtils.isIOS ? <UserProfileInfoIOS /> : <UserProfileInfoAndroid /> : <GuestProfileInfo />}
+        {isAuthenticated ? <UserProfileInfo /> : <GuestProfileInfo />}
       </Screen>
       <BottomSheetConfirmLogout />
     </>

@@ -1,26 +1,33 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, TextField, Typography, BottomSheetDropdown } from '@/components/core'
+import { Button, TextField, Typography, Select } from '@/components/core'
+
+// helpers / utils
+import { createSpacing, firebaseHelpers, log } from '@/helpers'
 
 // hook form
 import * as Yup from 'yup'
 import { useForm, Controller, SubmitHandler, SubmitErrorHandler, Resolver } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-// helpers / utils
-import { createSpacing, log } from '@/helpers'
-
 // hooks
-import { useToast } from '@/hooks'
-import { FeedbackApi, IRequestCreateFeedback } from '@/api'
+import { useFeedback } from '@/hooks'
+import { useAuth } from '@/hooks/auth'
 
-type FormValues = IRequestCreateFeedback
+// firestore
+// import firestore from '@react-native-firebase/firestore'
+
+type FormValues = {
+  userId: string | null
+  email: string
+  type: string
+  body: string
+}
 
 const schema = Yup.object()
   .shape({
-    type: Yup.string()
-      .required('Please select feedback type')
-      .oneOf(['bug', 'missing_feature', 'improvement', 'other'], 'Please select feedback type'),
+    userId: Yup.string().nullable(),
+    type: Yup.string().required('Please select feedback type'),
     email: Yup.string().email('Please input a valid email').required('Please input your email'),
     body: Yup.string().required('Please input message'),
   })
@@ -31,6 +38,10 @@ interface Props {
 }
 
 const SELECT_OPTIONS = [
+  {
+    label: 'Select Type',
+    value: null,
+  },
   {
     label: 'Missing Feature',
     value: 'missing_feature',
@@ -52,47 +63,56 @@ const SELECT_OPTIONS = [
 const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const { showToast } = useToast()
+  const { feedback_setHasSubmittedFeedback } = useFeedback()
+
+  const { user } = useAuth()
 
   const {
     control,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(schema) as Resolver<FormValues, any>,
     defaultValues: {
+      userId: '',
       email: '',
       type: '',
       body: '',
-    } as unknown as FormValues,
+    },
   })
 
   const onValidSubmit: SubmitHandler<FormValues> = async values => {
     setIsLoading(true)
-    try {
-      const response = await FeedbackApi.createFeedback(values)
-      setIsLoading(false)
-      if (response.id) {
-        if (typeof onSubmitSuccess === 'function') {
-          onSubmitSuccess()
-          reset()
-        }
-      }
-    } catch (e) {
-      showToast({
-        text1: 'Opss.. Failed to send feedback.',
-        variant: 'filled',
-        position: 'top',
-        type: 'error',
-      })
-      setIsLoading(false)
-    }
+    setTimeout(() => {
+      firestore()
+        .collection('feedbacks')
+        .add(firebaseHelpers.docsWithCreatedAt(values))
+        .then(() => {
+          setIsLoading(false)
+          if (typeof onSubmitSuccess === 'function') {
+            onSubmitSuccess()
+            feedback_setHasSubmittedFeedback(true)
+            reset()
+          }
+        })
+        .catch(() => {
+          setIsLoading(false)
+        })
+    }, 500)
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {
     log.info(`values -> ${JSON.stringify(values)}`)
   }
+
+  useEffect(() => {
+    if (user?.email) {
+      setValue('userId', user.uid)
+      setValue('email', user.email)
+    }
+  }, [user])
 
   return (
     <View style={styles.root}>
@@ -101,17 +121,14 @@ const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
           control={control}
           name='type'
           render={({ field: { onChange, value } }) => (
-            <BottomSheetDropdown
-              value={value}
-              onChange={onChange}
-              label='Feedback Type'
+            <Select
+              label='Feedback type'
+              variant='filled'
               options={SELECT_OPTIONS}
-              closeAfterSelect={true}
+              value={value}
+              onChange={val => onChange(val)}
               margin='normal'
               size='large'
-              variant='filled'
-              placeholder='Select Feedback Type'
-              bottomSheetHeight={320}
               isError={Boolean(errors?.type?.message)}
               helperText={errors?.type?.message ? errors?.type?.message : null}
             />
@@ -130,7 +147,6 @@ const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
               onChangeText={onChange}
               value={value}
               margin='normal'
-              autoCapitalize='none'
               size='large'
               isError={Boolean(errors?.email?.message)}
               helperText={errors?.email?.message ? errors?.email?.message : 'This email to reply to your feedback'}
@@ -144,7 +160,7 @@ const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
             <TextField
               label='Feedback'
               labelSize='medium'
-              placeholder='Your feedback..'
+              placeholder='Type your feedback'
               onBlur={onBlur}
               variant='filled'
               onChangeText={onChange}
@@ -154,8 +170,7 @@ const FeedbackForm: FC<Props> = ({ onSubmitSuccess }): JSX.Element => {
               isError={Boolean(errors?.body?.message)}
               helperText={errors?.body?.message ? errors?.body?.message : undefined}
               multiline
-              rows={4}
-              maxRows={10}
+              numberOfLines={8}
             />
           )}
         />

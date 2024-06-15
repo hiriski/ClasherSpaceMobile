@@ -21,6 +21,14 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { translations } from '@/config/i18n.config'
 import { appConfig } from './config'
+import { StatusBar } from 'react-native'
+
+// toast
+import Toast, { ToastConfig } from 'react-native-toast-message'
+
+// config
+import { toastConfig } from '@/config'
+import { NavigationContainer } from './navigators'
 
 enableScreens(true)
 
@@ -43,7 +51,9 @@ const App = (): JSX.Element => {
             <GestureHandlerRootView style={{ flex: 1 }}>
               <BottomSheetModalProvider>
                 <SafeAreaProvider>
-                  <AppContainer />
+                  <StatusBar translucent backgroundColor='transparent' />
+                  <NavigationContainer />
+                  <Toast position='bottom' config={toastConfig as ToastConfig} />
                 </SafeAreaProvider>
               </BottomSheetModalProvider>
             </GestureHandlerRootView>

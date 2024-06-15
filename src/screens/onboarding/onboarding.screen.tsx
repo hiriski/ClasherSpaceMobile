@@ -5,7 +5,7 @@ import { View } from 'react-native'
 import { Button, Screen, Typography } from '@/components/core'
 
 // hooks
-import { useApp, useTheme } from '@/hooks'
+import { useTheme } from '@/hooks'
 import { useNavigation } from '@react-navigation/native'
 
 // utils
@@ -18,14 +18,8 @@ const OnboardingScreen = (): JSX.Element => {
   const theme = useTheme()
   const nav = useNavigation<NavigationProps>()
 
-  const { app_setIsAlreadyLaunched } = useApp()
-
   const onPressFinish = useCallback(() => {
-    app_setIsAlreadyLaunched(true)
-
-    // save it for later
     storageUtils.save('IS_ALREADY_LAUNCHED', true)
-
     nav.replace('bottom_tab_stack')
   }, [])
 

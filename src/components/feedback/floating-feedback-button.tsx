@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import { Button } from '@/components/core'
 import { useFeedback } from '@/hooks'
-import { platformUtils } from '@/utilities'
 
 const FloatingFeedbackButton = () => {
   const { feedback_setOpenBottomSheet } = useFeedback()
@@ -25,7 +24,7 @@ const FloatingFeedbackButton = () => {
 const styles = StyleSheet.create({
   root: {
     position: 'absolute',
-    bottom: platformUtils.isIOS ? 120 : 100,
+    bottom: 100,
     right: 0,
   },
   overrideBtn: {

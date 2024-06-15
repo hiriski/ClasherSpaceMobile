@@ -1,5 +1,4 @@
 export * from './avatar'
-export * from './bottom-sheet-dropdown'
 export * from './box-icon'
 export * from './button'
 export * from './card'

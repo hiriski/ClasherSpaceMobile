@@ -10,7 +10,6 @@ import { appConfig } from '@/config'
 export interface IAppState {
   splashScreenVisible: boolean
   visibleBottomTab: boolean
-  app_isAlreadyLaunched: boolean
   lang: AppLanguageCode
 }
 
@@ -26,7 +25,6 @@ export const AppDispatchContext = createContext<Dispatch<AppReducerActions>>(nul
 export const appContext_initialState: IAppState = {
   splashScreenVisible: true,
   visibleBottomTab: true,
-  app_isAlreadyLaunched: false,
   lang: appConfig.defaultLang as AppLanguageCode,
 }
 

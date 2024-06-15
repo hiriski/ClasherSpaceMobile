@@ -1,5 +1,4 @@
 export * from './app.util'
-export * from './auth.util'
 export * from './platform.util'
 export * from './screen.util'
 export * from './storage.util'

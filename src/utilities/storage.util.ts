@@ -1,5 +1,4 @@
-import { STORAGE_KEYS } from '../constants'
-
+import { STORAGE_KEYS } from '@/constants'
 import { MMKV } from 'react-native-mmkv'
 
 export const storage = new MMKV()

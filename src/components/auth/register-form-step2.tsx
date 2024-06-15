@@ -1,9 +1,9 @@
-import { FC, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
 
 // utils
-import { authUtils, screenUtils } from '@/utilities'
+import { screenUtils } from '@/utilities'
 import { createSpacing, log } from '@/helpers'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationProps } from '@/navigators'
@@ -17,93 +17,107 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useTheme, useToast } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
 
+import { IUser } from '@/interfaces'
 import { AssetsAvatars } from '@/assets/avatars'
 
 // rn image picker
 import { launchImageLibrary } from 'react-native-image-picker'
 
 // firebase
+// import auth from '@react-native-firebase/auth'
 // import storage from '@react-native-firebase/storage'
 
 // fast image
 import FastImage from 'react-native-fast-image'
-import { AuthApi, IRequestRegister } from '@/api'
-import { appConfig } from '@/config'
 
 type FormValues = {
-  password: string
-  password_confirmation: string
-  photoUrl: string | null
+  name: string
 }
 
 const schema = Yup.object()
   .shape({
-    password: Yup.string().required('Please input your password'),
-    password_confirmation: Yup.string()
-      .required('Please confirm your password')
-      .oneOf([Yup.ref('password')], 'Passwords must match'),
+    name: Yup.string().required('Please input your name'),
   })
   .required()
 
-interface Props {
-  values: IRequestRegister
-}
-
-const RegisterFormStep2: FC<Props> = ({ values }): JSX.Element => {
+const RegisterFormStep2 = (): JSX.Element => {
   const nav = useNavigation<NavigationProps>()
   const { showToast } = useToast()
   const theme = useTheme()
 
-  const [isLoading, setIsLoading] = useState(false)
   const [uploadIsLoading, setUploadIsLoading] = useState(false)
-
-  const { auth_setUser, user } = useAuth()
+  const { auth_setRegisterLoading, registerLoading, auth_setUser, user } = useAuth()
 
   const {
-    reset,
     control,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
-      password: '',
-      password_confirmation: '',
-      photoUrl: null,
+      name: '',
     },
   })
 
-  const onValidSubmit: SubmitHandler<FormValues> = async (valuesStep2): Promise<void> => {
-    setIsLoading(true)
-    try {
-      const response = await AuthApi.registerWithEmailAndPassword({ ...values, ...valuesStep2 })
-      setIsLoading(false)
-      if (response.token) {
-        authUtils.saveToken(response.token)
-        auth_setUser(response.user)
-        nav.replace('bottom_tab_stack')
-        reset()
-        showToast({
-          text1: 'Register Success',
-          variant: 'filled',
-          position: 'top',
-          type: 'success',
-        })
-      }
-    } catch (e) {
-      setIsLoading(false)
-      showToast({
-        text1: 'Opss.. register failed',
-        variant: 'filled',
-        position: 'top',
-        type: 'error',
+  const onValidSubmit: SubmitHandler<FormValues> = ({ name }) => {
+    auth_setRegisterLoading(true)
+    auth()
+      .currentUser?.updateProfile({
+        displayName: name,
       })
-    }
+      .then(() => {
+        auth_setRegisterLoading(false)
+        showToast({
+          type: 'success',
+          position: 'bottom',
+          variant: 'filled',
+          text1: 'Register Success',
+        })
+
+        auth().onAuthStateChanged(user => {
+          if (user) {
+            auth_setUser(user as IUser)
+          }
+        })
+
+        setTimeout(() => {
+          nav.navigate('profile_screen')
+        }, 320)
+      })
+      .catch(error => {
+        auth_setRegisterLoading(false)
+        log.error(`error-> ${error}`)
+      })
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {
     log.info(`values -> ${JSON.stringify(values)}`)
+  }
+
+  const handleUpdateUserPhoto = async (photoURL: string): Promise<void> => {
+    auth()
+      .currentUser?.updateProfile({
+        photoURL,
+      })
+      .then(() => {
+        setUploadIsLoading(false)
+        showToast({
+          text1: 'Your profile picture updated successfully.',
+          variant: 'filled',
+          position: 'bottom',
+        })
+        auth().onAuthStateChanged(user => {
+          if (user) {
+            auth_setUser(user as IUser)
+          } else {
+            showToastError()
+          }
+        })
+      })
+      .catch(error => {
+        setUploadIsLoading(false)
+        showToastError()
+      })
   }
 
   const showToastError = useCallback(() => {
@@ -117,17 +131,22 @@ const RegisterFormStep2: FC<Props> = ({ values }): JSX.Element => {
 
   const handleUploadPhoto = async (fileUri: string, fileName: string) => {
     setUploadIsLoading(true)
-    const imageRef = storage().ref(`users/photos/${fileName}`)
-    await imageRef.putFile(fileUri, { contentType: 'image/jpg' }).catch(error => {
-      setUploadIsLoading(false)
-      showToastError()
-    })
-    const url = await imageRef.getDownloadURL().catch(error => {
-      throw error
-    })
-    if (url) {
-      setValue('photoUrl', url)
-    } else {
+    try {
+      const imageRef = storage().ref(`users/photos/${user?.uid}/${fileName}`)
+      await imageRef.putFile(fileUri, { contentType: 'image/jpg' }).catch(error => {
+        throw error
+      })
+      const url = await imageRef.getDownloadURL().catch(error => {
+        throw error
+      })
+
+      if (url) {
+        handleUpdateUserPhoto(url)
+      } else {
+        setUploadIsLoading(false)
+        showToastError()
+      }
+    } catch (e) {
       setUploadIsLoading(false)
       showToastError()
     }
@@ -160,12 +179,12 @@ const RegisterFormStep2: FC<Props> = ({ values }): JSX.Element => {
             </View>
           )}
           <View style={styles.avatarImageContainer}>
-            {user?.photoUrl ? (
+            {user?.photoURL ? (
               <FastImage
                 style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
                 defaultSource={AssetsAvatars.avatarGuest}
                 source={{
-                  uri: user?.photoUrl as string,
+                  uri: user?.photoURL as string,
                   priority: FastImage.priority.high,
                 }}
                 resizeMode={FastImage.resizeMode.cover}
@@ -179,81 +198,43 @@ const RegisterFormStep2: FC<Props> = ({ values }): JSX.Element => {
           Almost done
         </Typography>
         <Typography variant='h2' gutterBottom fontWeight='bold'>
-          Create your password
+          How we call you ?
         </Typography>
       </View>
-
       <View style={{ marginBottom: createSpacing(2) }}>
         <Controller
           control={control}
-          name='password'
+          name='name'
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
-              label='Password'
+              label='What your name ?'
               labelSize='medium'
-              placeholder='Password'
-              variant='filled'
-              secureTextEntry={true}
+              placeholder='Your name...'
               onBlur={onBlur}
+              variant='filled'
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='large'
-              isError={Boolean(errors?.password?.message)}
-              helperText={errors?.password?.message ? errors?.password?.message : undefined}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name='password_confirmation'
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextField
-              label='Confirm Password'
-              labelSize='medium'
-              placeholder='Confirm Password'
-              variant='filled'
-              secureTextEntry={true}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              margin='normal'
-              size='large'
-              isError={Boolean(errors?.password_confirmation?.message)}
-              helperText={errors?.password_confirmation?.message ? errors?.password_confirmation?.message : undefined}
+              size='extra-large'
+              isError={Boolean(errors?.name?.message)}
+              helperText={errors?.name?.message ? errors?.name?.message : undefined}
             />
           )}
         />
       </View>
       <View style={{ marginBottom: createSpacing(4) }}>
         <Button
-          isLoading={isLoading}
+          isLoading={registerLoading}
           onPress={handleSubmit(onValidSubmit, onInvalidSubmit)}
-          title='Create Account'
+          title='Finish'
           size='extra-large'
           endIcon='arrow-forward'
           iconType='ionicons'
           rounded
         />
       </View>
-      {/* <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <Button onPress={() => nav.navigate('profile_screen')} size='extra-large' title='Skip' variant='text' disablePadding />
-      </View> */}
-      <View style={{ marginTop: 'auto', alignItems: 'center' }}>
-        <Typography color='text.secondary' variant='subtitle2'>
-          By sign up, you agree to {appConfig.appName}{' '}
-        </Typography>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 'auto' }}>
-          <Typography color='text.primary' variant='subtitle2'>
-            Term of Conditions{' '}
-          </Typography>
-          <Typography color='text.secondary' variant='subtitle2'>
-            and{' '}
-          </Typography>
-          <Typography color='text.primary' variant='subtitle2'>
-            Privacy Policy
-          </Typography>
-        </View>
       </View>
     </View>
   )
