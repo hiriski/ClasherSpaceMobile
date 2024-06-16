@@ -10,9 +10,10 @@ import { ProfileScreen } from '@/screens/profile'
 
 // interfaces
 import { ScreenType } from './navigation.type'
+import VideoScreen from '@/screens/video/video.screen'
 
 // screens list
-export const BOTTOM_TAB_SCREENS: ScreenType[] = [
+export const bottomTabScreens: ScreenType[] = [
   {
     name: 'dashboard_screen',
     label: 'Dashboard',
@@ -22,6 +23,11 @@ export const BOTTOM_TAB_SCREENS: ScreenType[] = [
     name: 'layout_list_screen',
     label: 'Layouts',
     component: LayoutListScreen,
+  },
+  {
+    name: 'video_screen',
+    label: 'Stream',
+    component: VideoScreen,
   },
   {
     name: 'profile_screen',
@@ -36,7 +42,7 @@ const BottomTabStackNavigator = (): JSX.Element | null => {
   return (
     // eslint-disable-next-line react/no-unstable-nested-components
     <BottomTabStack.Navigator screenOptions={{ headerShown: false }} tabBar={props => <BottomTab {...props} />}>
-      {BOTTOM_TAB_SCREENS.map(x => {
+      {bottomTabScreens.map(x => {
         return <BottomTabStack.Screen key={x.name} component={x.component} name={x.name} />
       })}
     </BottomTabStack.Navigator>
