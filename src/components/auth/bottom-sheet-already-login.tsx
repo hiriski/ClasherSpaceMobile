@@ -10,7 +10,7 @@ import { BaseBottomSheet } from '@/components/base'
 // components
 import { Typography } from '@/components/core'
 
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 import { useTheme } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
 import { screenUtils } from '@/utilities'

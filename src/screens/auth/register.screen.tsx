@@ -4,7 +4,7 @@ import { useTheme } from '@/hooks'
 import { RegisterForm, RegisterFormStep2 } from '@/components/auth'
 import { Assets } from '@/assets'
 import { StyleSheet } from 'react-native'
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 import { screenUtils } from '@/utilities'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import PagerView from 'react-native-pager-view'
@@ -19,7 +19,7 @@ const RegisterScreen = (): JSX.Element => {
   const [key, setKey] = useState(0)
   const [keyboardVisible, setKeyboardVisible] = useState(false)
 
-  const pagerRef = useRef<PagerView>(null)
+  const pagerRef = useRef<typeof PagerView>(null)
   const animatedImageRef = useRef(new Animated.Value(screenUtils.height - FORM_STEP_1_HEIGHT)).current
 
   useEffect(() => {

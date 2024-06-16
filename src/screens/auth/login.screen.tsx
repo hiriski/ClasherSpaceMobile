@@ -5,7 +5,7 @@ import { useTheme } from '@/hooks'
 import { LoginForm } from '@/components/auth'
 import { Assets } from '@/assets'
 import { StyleSheet } from 'react-native'
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 import { screenUtils } from '@/utilities'
 
 const ESTIMATE_FORM_HEIGHT = 465

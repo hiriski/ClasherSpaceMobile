@@ -15,7 +15,7 @@ import { createSpacing } from '@/helpers'
 import { ToastShowParams } from 'react-native-toast-message'
 
 // theme config
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 import { ToastType, ToastVariant } from '@/interfaces'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 

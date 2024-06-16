@@ -19,7 +19,7 @@ import { themeHelpers } from '@/helpers'
 // interfaces.
 import { IconTypeIconButton, IconButtonColor, IconButtonVariant } from './icon-button.interface'
 import { IThemePalette } from '@/interfaces'
-import { appConfig } from '@/config'
+import { appConfig } from '@/configs'
 
 // App config.
 

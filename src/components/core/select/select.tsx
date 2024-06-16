@@ -10,7 +10,7 @@ import {
   TextFieldProps,
 } from '../text-field/text-field'
 import { themeHelpers } from '@/helpers'
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 import { Typography } from '../typography'
 import { useTheme } from '@/hooks'
 import { grey, red } from '@/libs'

@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 // theme config
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 
 // interfaces
 import { ITheme, IThemePalette, PaletteMode } from '@/interfaces'

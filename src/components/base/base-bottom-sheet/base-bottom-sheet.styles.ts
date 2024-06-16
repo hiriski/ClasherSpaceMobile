@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 
-import { theme_paletteLight } from '@/config'
+import { theme_paletteLight } from '@/configs'
 
 export const bottomSheetStyles = StyleSheet.create({
   bottomSheet_root: {

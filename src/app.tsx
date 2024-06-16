@@ -18,7 +18,7 @@ import { AuthContextProvider, FeedbackContextProvider, ThemeContextProvider } fr
 // i18n
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import { translations } from '@/config/i18n.config'
+import { translations } from '@/configs/i18n.config'
 
 // toast
 import Toast, { ToastConfig } from 'react-native-toast-message'
@@ -27,8 +27,8 @@ import Toast, { ToastConfig } from 'react-native-toast-message'
 import { NavigationContainer } from './navigator'
 
 // configs
-import { appConfig } from './config'
-import { toastConfig } from '@/config'
+import { appConfig } from './configs'
+import { toastConfig } from '@/configs'
 
 // store
 import { Provider as StoreProvider } from 'react-redux'

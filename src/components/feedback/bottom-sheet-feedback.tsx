@@ -18,7 +18,7 @@ import { screenUtils } from '@/utilities'
 import { createSpacing } from '@/helpers'
 
 // config
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 import { useAppDispatch } from '@/store'
 
 const BottomSheetFeedback = () => {

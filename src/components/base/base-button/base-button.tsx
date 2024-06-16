@@ -8,7 +8,7 @@ import { Typography } from '@/components/core/typography'
 import { ThemeSize } from '@/interfaces'
 
 // theme config
-import { themeConfig, theme_shape } from '@/config/theme.config'
+import { themeConfig, theme_shape } from '@/configs/theme.config'
 
 // utils
 import { themeHelpers } from '@/helpers/theme.helper'

@@ -20,7 +20,7 @@ import { createSpacing } from '@/helpers'
 // styles
 import { bottomSheetStyles as styles } from './base-bottom-sheet.styles'
 import { IconButtonProps } from 'react-native-vector-icons/Icon'
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 import { RNVectorIconProvider } from '@/interfaces'
 import { BackdropPressBehavior } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types'
 

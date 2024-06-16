@@ -11,7 +11,7 @@ import { Ionicon } from '@/components/core/icons'
 import { ThemeSize } from '@/interfaces'
 
 // theme config
-import { theme_paletteBase } from '@/config'
+import { theme_paletteBase } from '@/configs'
 
 // utils
 import { commonUtils } from '@/utilities'

@@ -18,16 +18,17 @@ const ProfileScreen = (): JSX.Element => {
   const { auth_setUser, isAuthenticated } = useAuth()
   const [loading, setLoading] = useState(false)
 
+  console.log('isAuthenticated', isAuthenticated)
+
   useFocusEffect(
     useCallback(() => {
-      const unsubscribe = auth().onAuthStateChanged(user => {
-        auth_setUser(user ?? null)
-        if (loading) {
-          setLoading(false)
-        }
-      })
-
-      return () => unsubscribe()
+      // const unsubscribe = auth().onAuthStateChanged(user => {
+      //   auth_setUser(user ?? null)
+      //   if (loading) {
+      //     setLoading(false)
+      //   }
+      // })
+      // return () => unsubscribe()
     }, [])
   )
 

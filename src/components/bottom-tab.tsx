@@ -14,7 +14,7 @@ import { screenUtils } from '@/utilities'
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Assets } from '@/assets'
-import { themeConfig, theme_paletteBase, theme_paletteLight } from '@/config'
+import { themeConfig, theme_paletteBase, theme_paletteLight } from '@/configs'
 
 type TabItem = {
   path: keyof BottomTabNavigatorParamList

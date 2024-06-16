@@ -5,7 +5,7 @@ import { Image, StyleSheet, View, ActivityIndicator } from 'react-native'
 import { Screen, Typography } from '@/components/core'
 
 // config
-import { appConfig, themeConfig } from '@/config'
+import { appConfig, themeConfig } from '@/configs'
 
 // utils
 import { screenUtils, uiUtils } from '@/utilities'

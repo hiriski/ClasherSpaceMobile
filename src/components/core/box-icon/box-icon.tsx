@@ -8,7 +8,7 @@ import { Icon } from '@/components/core'
 import { themeHelpers } from '@/helpers'
 
 // config
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 
 // hooks
 import { useTheme } from '@/hooks'

@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native'
 
 // interfaces
 import { ThemeSize } from '@/interfaces'
-import { themeConfig, theme_paletteLight, theme_spacing } from '@/config'
+import { themeConfig, theme_paletteLight, theme_spacing } from '@/configs'
 import { ColorValue } from 'react-native'
 
 export interface ScreenTitleProps {

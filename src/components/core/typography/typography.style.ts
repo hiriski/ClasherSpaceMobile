@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 // theme config
-import { theme_typography } from '@/config'
+import { theme_typography } from '@/configs'
 
 export const typographyStyles = StyleSheet.create({
   baseStyle: {

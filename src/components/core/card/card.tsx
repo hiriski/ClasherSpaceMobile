@@ -1,4 +1,4 @@
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 import { useTheme } from '@/hooks'
 import { platformUtils } from '@/utilities'
 import { FC, ReactNode } from 'react'

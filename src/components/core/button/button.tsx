@@ -20,7 +20,7 @@ import { AdornmentIconTypeButton, ButtonColor, ButtonVariant } from './button.in
 import { useTheme } from '@/hooks'
 
 // config
-import { appConfig, themeConfig } from '@/config'
+import { appConfig, themeConfig } from '@/configs'
 
 export interface CoreButtonProps extends BaseButtonProps {
   color?: ButtonColor

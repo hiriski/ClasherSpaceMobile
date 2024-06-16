@@ -19,7 +19,7 @@ import { useTheme, useToast } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
 
 // config
-import { appConfig } from '@/config'
+import { appConfig } from '@/configs'
 
 // assets
 import { Assets } from '@/assets'

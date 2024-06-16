@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react'
 import { StyleSheet, View, TextInput, TextInputProps, TextStyle } from 'react-native'
 
 // theme config.
-import { themeConfig, theme_shape } from '@/config'
+import { themeConfig, theme_shape } from '@/configs'
 
 // core components.
 import { Typography } from '@/components/core'

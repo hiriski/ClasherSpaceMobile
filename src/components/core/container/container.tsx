@@ -3,7 +3,7 @@ import { View, ViewStyle } from 'react-native'
 
 // utils
 import { createSpacing } from '@/helpers'
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 
 export interface ContainerProps {
   children: ReactNode

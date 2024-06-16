@@ -12,7 +12,7 @@ import { grey } from '@/libs'
 
 // Utils
 import { RNVectorIconProvider } from '@/interfaces'
-import { themeConfig, theme_paletteLight } from '@/config'
+import { themeConfig, theme_paletteLight } from '@/configs'
 
 export interface MenuItemProps {
   title: string
