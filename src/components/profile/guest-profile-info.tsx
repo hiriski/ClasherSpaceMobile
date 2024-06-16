@@ -11,7 +11,7 @@ import { Button, Typography } from '@/components/core'
 import { AssetsAvatars } from '@/assets/avatars'
 
 // interfaces
-import { NavigationProps } from '@/navigators'
+import { NavigationProps } from '@/navigator'
 
 // helpers / utils
 import { createSpacing } from '@/helpers'

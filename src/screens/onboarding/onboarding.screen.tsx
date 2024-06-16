@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import { storageUtils } from '@/utilities'
 
 // interfaces
-import { NavigationProps } from '@/navigators'
+import { NavigationProps } from '@/navigator'
 
 const OnboardingScreen = (): JSX.Element => {
   const theme = useTheme()

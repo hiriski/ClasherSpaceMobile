@@ -2,7 +2,7 @@ import { ComponentType } from 'react'
 import { NativeStackNavigationOptions, NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
 
 export type NavigatorParamList = {
-  splash_screen: undefined
+  // splash_screen: undefined
   onboarding_screen: undefined
   bottom_tab_stack: undefined
   layout_list_screen: undefined
@@ -16,6 +16,7 @@ export type NavigatorParamList = {
 export type BottomTabNavigatorParamList = {
   dashboard_screen: undefined
   layout_list_screen: undefined
+  video_screen: undefined
   profile_screen: undefined
 }
 

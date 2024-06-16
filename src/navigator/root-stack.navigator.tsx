@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 // react navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -6,10 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 // interfaces
 import { NavigatorParamList, ScreenType } from './navigation.type'
 import { AppState, AppStateStatus } from 'react-native'
-import { AppLanguageCode } from '@/interfaces'
-
-// firebase
-// import auth from '@react-native-firebase/auth'
 
 // screens & navigator
 import { SplashScreen } from '@/screens/splash'
@@ -31,8 +27,7 @@ import { useTranslation } from 'react-i18next'
 import { storageUtils } from '@/utilities'
 import { useAppDispatch } from '@/store'
 
-const SCREENS: Array<ScreenType> = [
-  { name: 'splash_screen', component: SplashScreen },
+const rootRoutes: Array<ScreenType> = [
   { name: 'onboarding_screen', component: OnboardingScreen },
   { name: 'bottom_tab_stack', component: BottomTabStackNavigator },
   { name: 'layout_detail_screen', component: LayoutDetailScreen },
@@ -54,14 +49,17 @@ const RootStackNavigator = (): JSX.Element | null => {
   const { lang, appPersisted_setSetLang } = useApp()
   const { feedback_setHasSubmittedFeedback } = useFeedback()
 
-  // const { auth_setUser } = useAuth()
+  const initialRouteName = useMemo<keyof Partial<NavigatorParamList>>(() => {
+    return isAlreadyLaunched ? 'bottom_tab_stack' : 'onboarding_screen'
+  }, [isAlreadyLaunched])
 
-  const init = async (): Promise<void> => {
+  const initApp = async (): Promise<void> => {
     // log.info('----- INIT DO SOMETHING -----')
   }
 
   const checkAlreadyLaunched = async (): Promise<void> => {
     const value = await storageUtils.get('IS_ALREADY_LAUNCHED')
+    console.log('value->>>', value)
     if (value) {
       setIsAlreadyLaunched(Boolean(value) ?? false)
     } else {
@@ -86,12 +84,15 @@ const RootStackNavigator = (): JSX.Element | null => {
   useEffect(() => {
     ;(async () => {
       checkAlreadyLaunched().then(() => {
-        setIsAppLoaded(true)
+        setTimeout(() => {
+          setIsAppLoaded(true)
+        }, 1000)
       })
       checkHasSubmittedFeedback()
     })()
 
-    init()
+    initApp()
+
     // ! check appstate, and run function in case user change permmission
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (
@@ -109,27 +110,19 @@ const RootStackNavigator = (): JSX.Element | null => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   const subscriber = auth().onAuthStateChanged(user => {
-  //     // log.warn(`onAuthStateChanged user -> ${JSON.stringify(user)}`)
-  //     auth_setUser(user)
-  //   })
-  //   return subscriber // unsubscribe on unmount
-  // }, [])
-
   if (!isAppLoaded) {
-    return null
+    return <SplashScreen />
   }
 
   return (
     <RootStack.Navigator
-      initialRouteName={isAlreadyLaunched ? 'bottom_tab_stack' : 'onboarding_screen'}
+      initialRouteName={initialRouteName}
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
       }}
     >
-      {SCREENS.map(x => {
+      {rootRoutes.map(x => {
         return <RootStack.Screen key={x.name} component={x.component} name={x.name} options={x.options} />
       })}
     </RootStack.Navigator>

@@ -6,7 +6,7 @@ import { Button, TextField, Typography } from '@/components/core'
 import { screenUtils } from '@/utilities'
 import { createSpacing, log } from '@/helpers'
 import { useNavigation } from '@react-navigation/native'
-import { NavigationProps } from '@/navigators'
+import { NavigationProps } from '@/navigator'
 
 // hook form
 import * as Yup from 'yup'
