@@ -19,10 +19,13 @@ import { createSpacing } from '@/helpers'
 
 // config
 import { themeConfig } from '@/config'
+import { useAppDispatch } from '@/store'
 
 const BottomSheetFeedback = () => {
   const ref = useRef<BottomSheet>(null)
   const theme = useTheme()
+
+  const dispatch = useAppDispatch()
 
   const insets = useSafeAreaInsets()
 
@@ -32,18 +35,18 @@ const BottomSheetFeedback = () => {
 
   const { openBottomSheet, feedback_setOpenBottomSheet } = useFeedback()
 
-  const { visibleBottomTab, setVisibleBottomTab } = useApp()
+  const { visibleBottomTab, app_setVisibleBottomTab } = useApp()
 
   const handleClose = (): void => {
     ref.current?.snapToIndex(-1)
     feedback_setOpenBottomSheet(false)
-    setVisibleBottomTab(true)
+    dispatch(app_setVisibleBottomTab(true))
   }
 
   useEffect(() => {
     if (openBottomSheet) {
       ref?.current?.snapToIndex(1)
-      setVisibleBottomTab(false)
+      dispatch(app_setVisibleBottomTab(false))
       handleClose()
     }
   }, [visibleBottomTab, openBottomSheet])
@@ -52,9 +55,9 @@ const BottomSheetFeedback = () => {
     (index: number) => {
       if (index < 0) {
         handleClose()
-        setVisibleBottomTab(true)
+        dispatch(app_setVisibleBottomTab(true))
       } else {
-        setVisibleBottomTab(false)
+        dispatch(app_setVisibleBottomTab(false))
       }
     },
     [openBottomSheet]

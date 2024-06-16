@@ -30,6 +30,11 @@ import Toast, { ToastConfig } from 'react-native-toast-message'
 import { toastConfig } from '@/config'
 import { NavigationContainer } from './navigators'
 
+// store
+import { Provider as StoreProvider } from 'react-redux'
+import { persistor, store } from './store/store.config'
+import { PersistGate } from 'redux-persist/integration/react'
+
 enableScreens(true)
 
 i18n.use(initReactI18next).init({
@@ -44,23 +49,25 @@ i18n.use(initReactI18next).init({
 
 const App = (): JSX.Element => {
   return (
-    <AppContextProvider>
-      <ThemeContextProvider>
-        <AuthContextProvider>
-          <FeedbackContextProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <BottomSheetModalProvider>
-                <SafeAreaProvider>
-                  <StatusBar translucent backgroundColor='transparent' />
-                  <NavigationContainer />
-                  <Toast position='bottom' config={toastConfig as ToastConfig} />
-                </SafeAreaProvider>
-              </BottomSheetModalProvider>
-            </GestureHandlerRootView>
-          </FeedbackContextProvider>
-        </AuthContextProvider>
-      </ThemeContextProvider>
-    </AppContextProvider>
+    <ThemeContextProvider>
+      <AuthContextProvider>
+        <FeedbackContextProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <BottomSheetModalProvider>
+              <SafeAreaProvider>
+                <StoreProvider store={store}>
+                  <PersistGate persistor={persistor}>
+                    <StatusBar translucent backgroundColor='transparent' />
+                    <NavigationContainer />
+                    <Toast position='bottom' config={toastConfig as ToastConfig} />
+                  </PersistGate>
+                </StoreProvider>
+              </SafeAreaProvider>
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
+        </FeedbackContextProvider>
+      </AuthContextProvider>
+    </ThemeContextProvider>
   )
 }
 

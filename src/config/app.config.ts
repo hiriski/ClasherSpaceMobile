@@ -6,6 +6,5 @@ export const appConfig = {
   defaultVectorIcon: 'ionicons',
   clashOfClansApiKey: Config.CLASH_OF_CLAN_API_KEY,
   defaultLang: 'en',
-  // apiBaseUrl: Config.API_BASE_URL,
-  apiBaseUrl: 'https://apiclasherspacedev.kujang.space/api',
+  apiBaseUrl: Config.API_BASE_URL,
 }

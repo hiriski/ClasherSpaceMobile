@@ -24,12 +24,12 @@ import { OnboardingScreen } from '@/screens/onboarding'
 import { FeedbackScreen } from '@/screens/feedback'
 
 // hooks
-import { useAuth } from '@/hooks/auth'
 import { useApp, useFeedback } from '@/hooks'
 import { useTranslation } from 'react-i18next'
 
 // helpers / utils
 import { storageUtils } from '@/utilities'
+import { useAppDispatch } from '@/store'
 
 const SCREENS: Array<ScreenType> = [
   { name: 'splash_screen', component: SplashScreen },
@@ -44,16 +44,17 @@ const SCREENS: Array<ScreenType> = [
 const RootStack = createNativeStackNavigator<NavigatorParamList>()
 
 const RootStackNavigator = (): JSX.Element | null => {
+  const dispatch = useAppDispatch()
   const appState = useRef<AppStateStatus>(AppState.currentState)
   const [isAppLoaded, setIsAppLoaded] = useState(false)
   const [isAlreadyLaunched, setIsAlreadyLaunched] = useState(false)
   const [_, setAppStateVisible] = useState(appState.current)
 
   const { i18n } = useTranslation()
-  const { app_setLang } = useApp()
+  const { lang, appPersisted_setSetLang } = useApp()
   const { feedback_setHasSubmittedFeedback } = useFeedback()
 
-  const { auth_setUser } = useAuth()
+  // const { auth_setUser } = useAuth()
 
   const init = async (): Promise<void> => {
     // log.info('----- INIT DO SOMETHING -----')
@@ -75,12 +76,12 @@ const RootStackNavigator = (): JSX.Element | null => {
 
   useEffect(() => {
     ;(async () => {
-      const savedLanguageCode = await storageUtils.getString('LANGUAGE')
-      if (savedLanguageCode && i18n.language !== savedLanguageCode) {
-        app_setLang(savedLanguageCode as AppLanguageCode)
+      if (lang && i18n.language !== lang) {
+        dispatch(appPersisted_setSetLang(lang))
+        i18n.changeLanguage(lang)
       }
     })()
-  }, [])
+  }, [lang])
 
   useEffect(() => {
     ;(async () => {

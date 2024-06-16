@@ -1,3 +1,10 @@
 {
-  "cSpell.words": ["firestore", "Ionicons", "Jost"]
+  "cSpell.words": [
+    "firestore",
+    "Ionicons",
+    "Jost",
+    "MMKV",
+    "persistor",
+    "reduxjs"
+  ]
 }
