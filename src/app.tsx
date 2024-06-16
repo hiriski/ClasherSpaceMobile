@@ -1,8 +1,4 @@
-// app container
-import AppContainer from './app.container'
-
-// context provider
-import { AppContextProvider, AuthContextProvider, FeedbackContextProvider, ThemeContextProvider } from '@/contexts'
+import { StatusBar } from 'react-native'
 
 // react native screens.
 import { enableScreens } from 'react-native-screens'
@@ -16,19 +12,23 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 // bottom sheet modal provider
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 
+// context provider
+import { AuthContextProvider, FeedbackContextProvider, ThemeContextProvider } from '@/contexts'
+
 // i18n
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { translations } from '@/config/i18n.config'
-import { appConfig } from './config'
-import { StatusBar } from 'react-native'
 
 // toast
 import Toast, { ToastConfig } from 'react-native-toast-message'
 
-// config
+// navigation container
+import { NavigationContainer } from './navigator'
+
+// configs
+import { appConfig } from './config'
 import { toastConfig } from '@/config'
-import { NavigationContainer } from './navigators'
 
 // store
 import { Provider as StoreProvider } from 'react-redux'

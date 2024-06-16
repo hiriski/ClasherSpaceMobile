@@ -7,10 +7,10 @@ import BottomTab from '@/components/bottom-tab'
 import { DashboardScreen } from '@/screens/dashboard'
 import { LayoutListScreen } from '@/screens/layout'
 import { ProfileScreen } from '@/screens/profile'
+import VideoScreen from '@/screens/video/video.screen'
 
 // interfaces
 import { ScreenType } from './navigation.type'
-import VideoScreen from '@/screens/video/video.screen'
 
 // screens list
 export const bottomTabScreens: ScreenType[] = [

@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { NavigationProps } from '@/navigators/navigation.type'
+import { NavigationProps } from '@/navigator/navigation.type'
 
 // hooks
 import { useNavigation } from '@react-navigation/native'
