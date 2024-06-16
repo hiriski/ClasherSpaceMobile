@@ -6,7 +6,7 @@ import { AuthContext, AuthDispatchContext, IAuthState } from '@/contexts'
 // action type
 import { AuthActionTypes } from '@/reducers'
 
-import auth from '@react-native-firebase/auth'
+// import auth from '@react-native-firebase/auth'
 
 // hooks
 import { useToast } from '@/hooks'

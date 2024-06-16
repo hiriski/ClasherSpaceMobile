@@ -1,18 +1,13 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { STORAGE_KEYS } from '@/constants'
+import { MMKV } from 'react-native-mmkv'
+
+export const storage = new MMKV()
 
 /**
- * Loads a string from storage.
- *
- * @param key The key to fetch.
+ * get a string from storage.
  */
-export async function getString(key: STORAGE_KEYS): Promise<string | null> {
-  try {
-    return await AsyncStorage.getItem(key)
-  } catch {
-    // not sure why this would fail... even reading the RN docs I'm unclear
-    return null
-  }
+export function getString(key: STORAGE_KEYS): string {
+  return storage.getString(key) ?? ''
 }
 
 /**
@@ -21,62 +16,37 @@ export async function getString(key: STORAGE_KEYS): Promise<string | null> {
  * @param key The key to fetch.
  * @param value The value to store.
  */
-export async function saveString(key: STORAGE_KEYS, value: string): Promise<boolean> {
-  try {
-    await AsyncStorage.setItem(key, value)
-    return true
-  } catch {
-    return false
-  }
+export function saveString(key: STORAGE_KEYS, value: string): void {
+  storage.set(key, String(value))
 }
 
 /**
  * Gets something from storage and runs it thru JSON.parse.
- *
- * @param key The key to fetch.
  */
-export async function get(key: STORAGE_KEYS): Promise<any | null> {
-  try {
-    const value = await AsyncStorage.getItem(key)
-    return JSON.parse(value as string)
-  } catch {
-    return null
-  }
+export function get<T = any>(key: STORAGE_KEYS): T | null {
+  const value = storage.getString(key)
+  return value ? JSON.parse(value as string) : null
 }
 
 /**
  * Saves an object to storage.
- *
- * @param key The key to fetch.
- * @param value The value to store.
  */
-export async function save(key: STORAGE_KEYS, value: any): Promise<boolean> {
-  try {
-    await AsyncStorage.setItem(key, JSON.stringify(value))
-    return true
-  } catch {
-    return false
-  }
+export function save(key: STORAGE_KEYS, value: any): void {
+  storage.set(key, JSON.stringify(value))
 }
 
 /**
  * Removes something from storage.
- *
- * @param key The key to kill.
  */
-export async function remove(key: STORAGE_KEYS): Promise<void> {
-  try {
-    await AsyncStorage.removeItem(key)
-  } catch {}
+export function remove(key: STORAGE_KEYS): void {
+  storage.delete(key)
 }
 
 /**
  * Burn it all to the ground.
  */
-export async function clear(): Promise<void> {
-  try {
-    await AsyncStorage.clear()
-  } catch {}
+export function clear(): void {
+  storage.clearAll()
 }
 
-export const storageUtils = { getString, saveString, get, save, clear }
+export const storageUtils = { getString, saveString, get, save, remove, clear }

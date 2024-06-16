@@ -6,7 +6,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import { useTheme } from '@/hooks'
 
 // firebase
-import auth from '@react-native-firebase/auth'
+// import auth from '@react-native-firebase/auth'
 
 // components
 import { Screen } from '@/components/core'

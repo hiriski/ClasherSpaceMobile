@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
-import auth from '@react-native-firebase/auth'
+// import auth from '@react-native-firebase/auth'
 
 // utils
 import { screenUtils } from '@/utilities'

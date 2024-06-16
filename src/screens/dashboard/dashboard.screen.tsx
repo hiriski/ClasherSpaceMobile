@@ -11,25 +11,34 @@ import BottomSheetFeedback from '@/components/feedback/bottom-sheet-feedback'
 import { useTranslation } from 'react-i18next'
 import { AppLanguageCode } from '@/interfaces'
 import { appLibs } from '@/libs'
+import { useAppDispatch } from '@/store'
 
 const DashboardScreen = (): JSX.Element => {
   const theme = useTheme()
   const nav = useNavigation<NavigationProps>()
-  const { setVisibleBottomTab, visibleBottomTab, lang, app_setLang } = useApp()
+  const dispatch = useAppDispatch()
+
+  const { app_setVisibleBottomTab, visibleBottomTab, lang, appPersisted_setSetLang } = useApp()
   const { t, i18n } = useTranslation()
 
   const { hasSubmittedFeedback } = useFeedback()
 
+  console.log('i18n.language', i18n.language)
+  console.log('appPersisted_lang', lang)
+
   const onPressToggleBottomTab = useCallback(() => {
-    setVisibleBottomTab(!visibleBottomTab)
+    dispatch(app_setVisibleBottomTab(!visibleBottomTab))
   }, [visibleBottomTab])
 
-  // prettier-ignore
-  const onChangeLang = useCallback((_code: AppLanguageCode) => {
-    if (i18n.language !== _code) {
-      app_setLang(_code)
-    }
-  },[lang, i18n.language])
+  const onChangeLang = useCallback(
+    (langCode: AppLanguageCode) => {
+      if (i18n.language !== langCode) {
+        dispatch(appPersisted_setSetLang(langCode))
+        i18n.changeLanguage(langCode)
+      }
+    },
+    [lang, i18n.language]
+  )
 
   return (
     <>

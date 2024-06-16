@@ -2,8 +2,7 @@ import { themeConfig } from '@/config'
 import { useTheme } from '@/hooks'
 import { platformUtils } from '@/utilities'
 import { FC, ReactNode } from 'react'
-import { ColorValue, StyleSheet, ViewProps } from 'react-native'
-import DropShadow from 'react-native-drop-shadow'
+import { View, ColorValue, StyleSheet, ViewProps } from 'react-native'
 
 export interface CardProps {
   elevation?: number
@@ -19,7 +18,7 @@ export interface CardProps {
 const Card: FC<CardProps> = ({ elevation, borderRadius, showBorder, children, backgroundColor, px, py, style }) => {
   const theme = useTheme()
   return (
-    <DropShadow
+    <View
       style={StyleSheet.flatten([
         { ...(platformUtils.isIOS ? styles.cardStyleIos : styles.cardStyle) },
         {
@@ -33,7 +32,7 @@ const Card: FC<CardProps> = ({ elevation, borderRadius, showBorder, children, ba
       ])}
     >
       {children}
-    </DropShadow>
+    </View>
   )
 }
 

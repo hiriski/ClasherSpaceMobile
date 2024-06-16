@@ -38,7 +38,7 @@ function navigationRestoredDefaultState(persistNavigation: NavigationConfig['per
  * Custom hook for persisting navigation state.
  */
 export function useNavigationPersistence() {
-  const { splashScreenVisible, setSplashScreen } = useApp()
+  // const { splashScreenVisible, setSplashScreen } = useApp()
 
   const isMounted = useIsMounted()
 
@@ -80,7 +80,7 @@ export function useNavigationPersistence() {
   }
 
   useEffect(() => {
-    setSplashScreen(true)
+    // setSplashScreen(true)
     setInitialNavigationState({
       index: 0,
       routes: [{ name: 'splash_screen' }],
@@ -94,11 +94,11 @@ export function useNavigationPersistence() {
         // console.log('!isRestored')
         await restoreState()
       }
-      if (splashScreenVisible) {
-        setTimeout(() => {
-          setSplashScreen(false)
-        }, 2000)
-      }
+      // if (splashScreenVisible) {
+      //   setTimeout(() => {
+      //     // setSplashScreen(false)
+      //   }, 2000)
+      // }
     })()
   }, [isRestored])
 

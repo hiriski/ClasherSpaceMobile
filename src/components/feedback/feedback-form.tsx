@@ -15,7 +15,7 @@ import { useFeedback } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
 
 // firestore
-import firestore from '@react-native-firebase/firestore'
+// import firestore from '@react-native-firebase/firestore'
 
 type FormValues = {
   userId: string | null

@@ -1,39 +1,15 @@
-import { useContext } from 'react'
-
-// context
-import { AppContext, AppDispatchContext } from '@/contexts/app'
-
-// action type
-import { AppActionTypes } from '@/reducers'
-import { AppLanguageCode } from '@/interfaces'
-import { storageUtils } from '@/utilities'
-import { useTranslation } from 'react-i18next'
+import { app_selector, app_reducerActions } from '@/store/app/app.slice'
+import { appPersisted_selector, appPersisted_reducerActions } from '@/store/app/app.persisted.slice'
+import { useAppSelector } from '@/store'
 
 export const useApp = () => {
-  const state = useContext(AppContext)
-  const dispatch = useContext(AppDispatchContext)
-
-  const { i18n } = useTranslation()
-
-  const setSplashScreen = (payload: boolean) => {
-    dispatch({ type: AppActionTypes.setVisibleSplashScreen, payload })
-  }
-
-  const setVisibleBottomTab = (payload: boolean) => {
-    dispatch({ type: AppActionTypes.setVisibleBottomTab, payload })
-  }
-
-  const app_setLang = (payload: AppLanguageCode) => {
-    dispatch({ type: AppActionTypes.setLang, payload })
-    i18n.changeLanguage(payload)
-    // save it to storage
-    storageUtils.saveString('LANGUAGE', payload)
-  }
+  const appState = useAppSelector(app_selector)
+  const appPersistedState = useAppSelector(appPersisted_selector)
 
   return {
-    ...state,
-    setVisibleBottomTab,
-    setSplashScreen,
-    app_setLang,
+    ...appState,
+    ...appPersistedState,
+    ...app_reducerActions,
+    ...appPersisted_reducerActions,
   }
 }

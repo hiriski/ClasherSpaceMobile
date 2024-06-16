@@ -14,6 +14,7 @@ import { themeConfig } from '@/config'
 import { useApp, useTheme } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
 import { screenUtils } from '@/utilities'
+import { useAppDispatch } from '@/store'
 
 const BottomSheetContent = () => {
   const theme = useTheme()
@@ -53,22 +54,23 @@ const BottomSheetContent = () => {
 
 const BottomSheetConfirmLogout = () => {
   const nav = useNavigation<NavigationProps>()
+  const dispatch = useAppDispatch()
   const { auth_resetAuth, openBottomSheetConfirmLogout, auth_setOpenBottomSheetConfirmLogout } = useAuth()
 
-  const { visibleBottomTab, setVisibleBottomTab } = useApp()
+  const { visibleBottomTab, app_setVisibleBottomTab } = useApp()
 
   const handleLogout = (): void => {
     auth_resetAuth()
   }
 
   const onBottomSheetClose = useCallback(() => {
-    setVisibleBottomTab(true)
+    dispatch(app_setVisibleBottomTab(true))
     auth_setOpenBottomSheetConfirmLogout(false)
   }, [visibleBottomTab, openBottomSheetConfirmLogout])
 
   useEffect(() => {
     if (openBottomSheetConfirmLogout) {
-      setVisibleBottomTab(false)
+      dispatch(app_setVisibleBottomTab(false))
     }
   }, [openBottomSheetConfirmLogout, visibleBottomTab])
 

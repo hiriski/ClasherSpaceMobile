@@ -24,8 +24,8 @@ import { AssetsAvatars } from '@/assets/avatars'
 import { launchImageLibrary } from 'react-native-image-picker'
 
 // firebase
-import auth from '@react-native-firebase/auth'
-import storage from '@react-native-firebase/storage'
+// import auth from '@react-native-firebase/auth'
+// import storage from '@react-native-firebase/storage'
 
 // fast image
 import FastImage from 'react-native-fast-image'

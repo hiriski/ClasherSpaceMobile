@@ -26,12 +26,11 @@ const AppContainer = () => {
 
   return (
     <>
-      <StatusBar translucent backgroundColor='transparent' />
       <NavigationContainer onReady={onNavigationIsReady} />
       <Toast position='bottom' config={toastConfig as ToastConfig} />
       {/* {(splashScreenVisible || !isNavigationStateRestored) && <SplashScreen />} */}
     </>
-  )
+  ) 
 }
 
 export default AppContainer

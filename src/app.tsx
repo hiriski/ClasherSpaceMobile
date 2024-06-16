@@ -13,11 +13,27 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 // safe area provider
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
+// bottom sheet modal provider
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+
 // i18n
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { translations } from '@/config/i18n.config'
 import { appConfig } from './config'
+import { StatusBar } from 'react-native'
+
+// toast
+import Toast, { ToastConfig } from 'react-native-toast-message'
+
+// config
+import { toastConfig } from '@/config'
+import { NavigationContainer } from './navigators'
+
+// store
+import { Provider as StoreProvider } from 'react-redux'
+import { persistor, store } from './store/store.config'
+import { PersistGate } from 'redux-persist/integration/react'
 
 enableScreens(true)
 
@@ -33,19 +49,25 @@ i18n.use(initReactI18next).init({
 
 const App = (): JSX.Element => {
   return (
-    <AppContextProvider>
-      <ThemeContextProvider>
-        <AuthContextProvider>
-          <FeedbackContextProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
+    <ThemeContextProvider>
+      <AuthContextProvider>
+        <FeedbackContextProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <BottomSheetModalProvider>
               <SafeAreaProvider>
-                <AppContainer />
+                <StoreProvider store={store}>
+                  <PersistGate persistor={persistor}>
+                    <StatusBar translucent backgroundColor='transparent' />
+                    <NavigationContainer />
+                    <Toast position='bottom' config={toastConfig as ToastConfig} />
+                  </PersistGate>
+                </StoreProvider>
               </SafeAreaProvider>
-            </GestureHandlerRootView>
-          </FeedbackContextProvider>
-        </AuthContextProvider>
-      </ThemeContextProvider>
-    </AppContextProvider>
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
+        </FeedbackContextProvider>
+      </AuthContextProvider>
+    </ThemeContextProvider>
   )
 }
 
