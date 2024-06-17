@@ -1,5 +1,5 @@
 import { FC, memo, useEffect } from 'react'
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
 
 // utils
@@ -10,27 +10,29 @@ import { createSpacing, log } from '@/helpers'
 import * as Yup from 'yup'
 import { useForm, Controller, SubmitHandler, SubmitErrorHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { appConfig } from '@/configs'
+import { Image } from 'react-native'
+import { useTheme } from '@/hooks'
 import { Assets } from '@/assets'
 
 type FormValues = {
-  email: string
+  name: string
 }
 
 const schema = Yup.object()
   .shape({
-    email: Yup.string().email('Please input a valid email').required('Please input your email'),
+    name: Yup.string().required('Please input your name').min(3).max(50),
   })
   .required()
 
 type Props = {
   value: string
-  onSubmit: (email: string) => void
-  onPressBack: () => void
-  name: string
+  onSubmit: (name: string) => void
 }
 
-const RegisterFormStep2: FC<Props> = ({ value, onSubmit, onPressBack, name }: Props): JSX.Element => {
-  log.info('RENDER RegisterFormStep2')
+const RegisterFormStep1: FC<Props> = ({ value, onSubmit }: Props): JSX.Element => {
+  const theme = useTheme()
+  log.info('RENDER RegisterFormStep1')
   const {
     control,
     handleSubmit,
@@ -39,12 +41,12 @@ const RegisterFormStep2: FC<Props> = ({ value, onSubmit, onPressBack, name }: Pr
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
-      email: '',
+      name: '',
     },
   })
 
-  const onValidSubmit: SubmitHandler<FormValues> = ({ email }) => {
-    onSubmit(email)
+  const onValidSubmit: SubmitHandler<FormValues> = ({ name }) => {
+    onSubmit(name)
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {
@@ -52,34 +54,41 @@ const RegisterFormStep2: FC<Props> = ({ value, onSubmit, onPressBack, name }: Pr
   }
 
   useEffect(() => {
-    setValue('email', value)
+    setValue('name', value)
   }, [value])
 
   return (
     <View style={styles.root}>
       <View style={styles.formHeader}>
-        <Image source={Assets.hiGesture} style={styles.img} resizeMode='contain' />
-        <Typography variant='h1' fontWeight='700' gutterBottom color='text.primary'>
-          Hi, {name}
+        <Image source={theme.isDarkMode ? Assets.logoLightXs : Assets.logoDarkXs} style={styles.logo} resizeMode='contain' />
+        <Typography variant='h2' fontWeight='bold' style={{ textAlign: 'center' }}>
+          Create your
+        </Typography>
+        <Typography variant='h2' fontWeight='bold' style={{ textAlign: 'center', marginBottom: createSpacing(5) }}>
+          {appConfig.appName} account
+        </Typography>
+        <Typography variant='h6' gutterBottom color='text.secondary'>
+          Tell us about yourself
         </Typography>
       </View>
+
       <View style={{ marginBottom: createSpacing(2) }}>
         <Controller
           control={control}
-          name='email'
+          name='name'
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
-              label='What your email?'
+              label='How we call you?'
               labelSize='medium'
-              placeholder='Email'
+              placeholder='Your name...'
               onBlur={onBlur}
               variant='filled'
               onChangeText={onChange}
               value={value}
               margin='normal'
               size='extra-large'
-              isError={Boolean(errors?.email?.message)}
-              helperText={errors?.email?.message ? errors?.email?.message : undefined}
+              isError={Boolean(errors?.name?.message)}
+              helperText={errors?.name?.message ? errors?.name?.message : undefined}
             />
           )}
         />
@@ -94,12 +103,10 @@ const RegisterFormStep2: FC<Props> = ({ value, onSubmit, onPressBack, name }: Pr
           rounded
         />
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-        <Button onPress={onPressBack} size='extra-large' title='Back' variant='text' disablePadding />
-      </View>
     </View>
   )
 }
+const LOGO_SIZE = 72
 
 const styles = StyleSheet.create({
   root: {
@@ -110,14 +117,16 @@ const styles = StyleSheet.create({
     paddingBottom: createSpacing(3),
   },
   formHeader: {
-    marginBottom: createSpacing(5),
+    marginTop: createSpacing(5),
+    marginBottom: createSpacing(4),
+    alignItems: 'center',
+    paddingHorizontal: 44,
   },
-  img: {
-    height: 80,
-    width: 80,
-    marginLeft: -8,
-    marginBottom: createSpacing(3),
+  logo: {
+    height: LOGO_SIZE,
+    width: LOGO_SIZE,
+    marginBottom: createSpacing(4),
   },
 })
 
-export default memo(RegisterFormStep2)
+export default memo(RegisterFormStep1)

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
 // import auth from '@react-native-firebase/auth'
@@ -23,8 +23,11 @@ import { appConfig } from '@/configs'
 
 // assets
 import { Assets } from '@/assets'
+import { useAppDispatch } from '@/store'
+import { navigate } from '@/navigator/navigation.util'
 
 type FormValues = {
+  name: string
   email: string
   password: string
   password_confirmation: string
@@ -32,6 +35,7 @@ type FormValues = {
 
 const schema = Yup.object()
   .shape({
+    name: Yup.string().required('Please input your name'),
     email: Yup.string().email('Please input a valid email').required('Please input your email'),
     password: Yup.string().required('Please input your password'),
     password_confirmation: Yup.string()
@@ -49,7 +53,11 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
   const { showToast } = useToast()
   const theme = useTheme()
 
-  const { auth_setRegisterLoading, registerLoading } = useAuth()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const dispatch = useAppDispatch()
+
+  const { auth_registerWithEmailAndPassword } = useAuth()
 
   const {
     control,
@@ -58,6 +66,7 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
       password_confirmation: '',
@@ -65,32 +74,31 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
   })
 
   const onValidSubmit: SubmitHandler<FormValues> = values => {
-    auth_setRegisterLoading(true)
-    const { email, password } = values
+    setIsLoading(true)
 
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        auth_setRegisterLoading(false)
-        if (typeof onSuccess === 'function') {
-          onSuccess()
+    dispatch(auth_registerWithEmailAndPassword(values))
+      .then(result => {
+        if (result.meta.requestStatus === 'fulfilled') {
+          navigate.nav
         }
-      })
-      .catch(error => {
-        auth_setRegisterLoading(false)
-        let toastTitle = ''
-        if (error?.code === 'auth/email-already-in-use') {
-          toastTitle = 'That email address is already in use!'
-        }
-        if (error?.code === 'auth/invalid-email') {
-          toastTitle = 'That email address is invalid!'
-        }
+        console.log('RESULT', result)
+        let toastTitle = 'error!'
+        // if (error?.code === 'auth/email-already-in-use') {
+        //   toastTitle = 'That email address is already in use!'
+        // }
+        // if (error?.code === 'auth/invalid-email') {
+        //   toastTitle = 'That email address is invalid!'
+        // }
         showToast({
           type: 'error',
           position: 'bottom',
           variant: 'filled',
           text1: toastTitle,
         })
+      })
+      .catch(e => {})
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -100,14 +108,26 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
 
   return (
     <View style={styles.root}>
-      <View style={styles.formHeader}>
-        <Image source={theme.isDarkMode ? Assets.logoLightXs : Assets.logoDarkXs} style={styles.logo} resizeMode='contain' />
-        <Typography variant='h2' gutterBottom fontWeight='bold'>
-          Sign Up ⚔️
-        </Typography>
-        <Typography color='text.secondary'>Create to your {appConfig.appName} account</Typography>
-      </View>
       <View style={{ marginBottom: createSpacing(2) }}>
+        <Controller
+          control={control}
+          name='name'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label='Your name'
+              labelSize='medium'
+              placeholder='Your name'
+              onBlur={onBlur}
+              variant='filled'
+              onChangeText={onChange}
+              value={value}
+              margin='normal'
+              size='extra-large'
+              isError={Boolean(errors?.name?.message)}
+              helperText={errors?.name?.message ? errors?.name?.message : undefined}
+            />
+          )}
+        />
         <Controller
           control={control}
           name='email'
@@ -170,7 +190,7 @@ const RegisterForm: FC<Props> = ({ onSuccess }): JSX.Element => {
       </View>
       <View style={{ marginBottom: createSpacing(3) }}>
         <Button
-          isLoading={registerLoading}
+          isLoading={isLoading}
           onPress={handleSubmit(onValidSubmit, onInvalidSubmit)}
           title='Create Account'
           size='extra-large'
@@ -210,15 +230,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingTop: createSpacing(6),
     paddingBottom: createSpacing(3),
-  },
-  formHeader: {
-    marginBottom: createSpacing(4),
-    alignItems: 'center',
-  },
-  logo: {
-    height: 52,
-    width: 52,
-    marginBottom: createSpacing(4),
   },
 })
 

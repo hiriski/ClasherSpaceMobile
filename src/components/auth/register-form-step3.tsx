@@ -1,4 +1,4 @@
-import { FC, memo, useEffect } from 'react'
+import { FC, memo } from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
 
@@ -13,33 +13,35 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Assets } from '@/assets'
 
 type FormValues = {
-  email: string
+  password: string
+  password_confirmation: string
 }
 
 const schema = Yup.object()
   .shape({
-    email: Yup.string().email('Please input a valid email').required('Please input your email'),
+    password: Yup.string().required('Please input your password'),
+    password_confirmation: Yup.string()
+      .required('Please confirm your password')
+      .oneOf([Yup.ref('password')], 'Passwords must match'),
   })
   .required()
 
 type Props = {
-  value: string
   onSubmit: (email: string) => void
   onPressBack: () => void
-  name: string
 }
 
-const RegisterFormStep2: FC<Props> = ({ value, onSubmit, onPressBack, name }: Props): JSX.Element => {
-  log.info('RENDER RegisterFormStep2')
+const RegisterFormStep3: FC<Props> = ({ onSubmit, onPressBack }: Props): JSX.Element => {
+  log.info('RENDER RegisterFormStep3')
   const {
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
-      email: '',
+      password: '',
+      password_confirmation: '',
     },
   })
 
@@ -51,35 +53,55 @@ const RegisterFormStep2: FC<Props> = ({ value, onSubmit, onPressBack, name }: Pr
     log.info(`values -> ${JSON.stringify(values)}`)
   }
 
-  useEffect(() => {
-    setValue('email', value)
-  }, [value])
-
   return (
     <View style={styles.root}>
       <View style={styles.formHeader}>
-        <Image source={Assets.hiGesture} style={styles.img} resizeMode='contain' />
+        <Image source={Assets.passwordIcon} style={styles.img} resizeMode='contain' />
         <Typography variant='h1' fontWeight='700' gutterBottom color='text.primary'>
-          Hi, {name}
+          Almost done
+        </Typography>
+        <Typography variant='h6' fontWeight='700' gutterBottom color='text.primary'>
+          Create your password
         </Typography>
       </View>
       <View style={{ marginBottom: createSpacing(2) }}>
         <Controller
           control={control}
-          name='email'
+          name='password'
           render={({ field: { onChange, onBlur, value } }) => (
             <TextField
-              label='What your email?'
+              label='Password'
               labelSize='medium'
-              placeholder='Email'
-              onBlur={onBlur}
+              placeholder='Password'
               variant='filled'
+              secureTextEntry={true}
+              onBlur={onBlur}
               onChangeText={onChange}
               value={value}
               margin='normal'
               size='extra-large'
-              isError={Boolean(errors?.email?.message)}
-              helperText={errors?.email?.message ? errors?.email?.message : undefined}
+              isError={Boolean(errors?.password?.message)}
+              helperText={errors?.password?.message ? errors?.password?.message : undefined}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name='password_confirmation'
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextField
+              label='Confirm Pasword'
+              labelSize='medium'
+              placeholder='Confirm Password'
+              variant='filled'
+              secureTextEntry={true}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              margin='normal'
+              size='extra-large'
+              isError={Boolean(errors?.password_confirmation?.message)}
+              helperText={errors?.password_confirmation?.message ? errors?.password_confirmation?.message : undefined}
             />
           )}
         />
@@ -120,4 +142,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default memo(RegisterFormStep2)
+export default memo(RegisterFormStep3)

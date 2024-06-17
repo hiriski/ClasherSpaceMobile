@@ -18,6 +18,9 @@ export const Assets = {
   clashOfClans2: require('./images/clash_of_clans_2.jpg'),
   clashOfClans3: require('./images/clash_of_clans_3.jpg'),
 
+  hiGesture: require('./images/5466104.webp'),
+  passwordIcon: require('./images/password.png'),
+
   SVGUserDuoToneIcon,
   SVGWidgetDuoToneIcon,
   SVGLayersDuoToneIcon,

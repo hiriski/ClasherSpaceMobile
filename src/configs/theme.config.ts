@@ -18,15 +18,15 @@ const DEFAULT_FONT_FAMILY = 'Plus Jakarta Sans'
 /**  Base palette */
 export const theme_paletteBase: Pick<IThemePalette, 'primary' | 'secondary' | 'common'> = {
   primary: {
-    main: '#4F62B1',
-    dark: '#394A98',
-    light: '#C0CEF7',
+    main: '#f27c00',
+    dark: '#AE4800',
+    light: '#FEEFCB',
     contrastText: '#fbfbfb',
   },
   secondary: {
-    main: '#F39A1A',
-    dark: '#D07B13',
-    light: '#FDE3A3',
+    main: '#1573FF',
+    dark: '#0A41B7',
+    light: '#D0EAFF',
     contrastText: '#fbfbfb',
   },
   common: {

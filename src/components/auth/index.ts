@@ -1,5 +1,7 @@
 export { default as RegisterForm } from './register-form'
+export { default as RegisterFormStep1 } from './register-form-step1'
 export { default as RegisterFormStep2 } from './register-form-step2'
+export { default as RegisterFormStep3 } from './register-form-step3'
 export { default as LoginForm } from './login-form'
 export { default as BottomSheetAlreadyLogin } from './bottom-sheet-already-login'
 export { default as BottomSheetConfirmLogout } from './bottom-sheet-confirm-logout'
