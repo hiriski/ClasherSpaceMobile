@@ -4,7 +4,7 @@ const { height, width } = Dimensions.get('window')
 
 const isExtraSmallScreen: boolean = width < 360
 
-const isSmallScreen: boolean = width < 380
+const isSmallScreen: boolean = width < 400
 
 export const screenUtils = {
   height,

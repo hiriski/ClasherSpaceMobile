@@ -187,10 +187,10 @@ const RegisterScreen = (): JSX.Element => {
           scrollEnabled={false}
           onPageSelected={({ nativeEvent }) => setKey(nativeEvent.position)}
         >
-          <View key='1' style={{ width: screenUtils.width }}>
+          <View key='1' style={styles.pagerViewItem}>
             {key === 0 && <RegisterFormStep1 onSubmit={onSubmitStep1} defaultValue={values.name} />}
           </View>
-          <View key='2' style={{ width: screenUtils.width }}>
+          <View key='2' style={styles.pagerViewItem}>
             {key === 1 && (
               <RegisterFormStep2
                 onSubmit={onSubmitStep2}
@@ -200,7 +200,7 @@ const RegisterScreen = (): JSX.Element => {
               />
             )}
           </View>
-          <View key='3' style={{ width: screenUtils.width }}>
+          <View key='3' style={styles.pagerViewItem}>
             {isLoading ? (
               <View style={{ alignItems: 'center', justifyContent: 'center', height: FORM_STEP_3_HEIGHT - 50 }}>
                 <Spinner />
@@ -237,6 +237,10 @@ const styles = StyleSheet.create({
   },
   pagerView: {
     flex: 1,
+  },
+  pagerViewItem: {
+    flex: 1,
+    width: screenUtils.width,
   },
 })
 

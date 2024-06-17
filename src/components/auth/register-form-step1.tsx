@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     marginTop: createSpacing(5),
     marginBottom: createSpacing(4),
     alignItems: 'center',
-    paddingHorizontal: 44,
+    paddingHorizontal: screenUtils.isSmallScreen ? 30 : 44,
   },
   logo: {
     height: LOGO_SIZE,
@@ -162,4 +162,5 @@ const styles = StyleSheet.create({
   },
 })
 
+console.log('screenUtils', screenUtils.width)
 export default memo(RegisterFormStep1)
