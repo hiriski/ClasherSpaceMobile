@@ -31,8 +31,20 @@ const rootRoutes: Array<ScreenType> = [
   { name: 'onboarding_screen', component: OnboardingScreen },
   { name: 'bottom_tab_stack', component: BottomTabStackNavigator },
   { name: 'layout_detail_screen', component: LayoutDetailScreen },
-  { name: 'register_screen', component: RegisterScreen },
-  { name: 'login_screen', component: LoginScreen },
+  {
+    name: 'register_screen',
+    component: RegisterScreen,
+    options: {
+      animation: 'simple_push',
+    },
+  },
+  {
+    name: 'login_screen',
+    component: LoginScreen,
+    options: {
+      animation: 'simple_push',
+    },
+  },
   { name: 'feedback_screen', component: FeedbackScreen },
 ]
 
