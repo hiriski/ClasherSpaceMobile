@@ -6,10 +6,10 @@ import { LoginForm } from '@/components/auth'
 import { Assets } from '@/assets'
 import { StyleSheet } from 'react-native'
 import { themeConfig } from '@/configs'
-import { screenUtils } from '@/utilities'
+import { platformUtils, screenUtils } from '@/utilities'
 
-const ESTIMATE_FORM_HEIGHT = 465
-const EXTRA_KEYBOARD_OFFSET = 180
+const ESTIMATE_FORM_HEIGHT = 535
+const EXTRA_KEYBOARD_OFFSET = platformUtils.isIOS ? 300 : 180
 
 const LoginScreen = (): JSX.Element => {
   const theme = useTheme()

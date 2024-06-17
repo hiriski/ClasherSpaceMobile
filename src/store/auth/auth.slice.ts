@@ -8,6 +8,7 @@ import {
   auth_revokeToken,
   auth_registerWithEmailAndPassword,
   auth_loginWithEmailAndPassword,
+  auth_googleSignIn,
 } from './auth.action'
 
 // interfaces
@@ -76,6 +77,15 @@ export const authSlice = createSlice({
 
     // login
     builder.addCase(auth_loginWithEmailAndPassword.fulfilled, (state, action) => {
+      const response: IResponseLoginSuccess = action.payload as IResponseLoginSuccess
+      if (response?.token) {
+        state.user = response.user
+        state.accessToken = response.token
+      }
+    })
+
+    // login
+    builder.addCase(auth_googleSignIn.fulfilled, (state, action) => {
       const response: IResponseLoginSuccess = action.payload as IResponseLoginSuccess
       if (response?.token) {
         state.user = response.user

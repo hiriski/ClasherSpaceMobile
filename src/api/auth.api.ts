@@ -15,6 +15,14 @@ export interface IRequestRegister {
   password_confirmation: string
 }
 
+export interface IRequestGoogleSignIn {
+  providerAccountId: string // uuid
+  providerEmail: string
+  providerAccountName: string
+  providerPhotoUrl: string | null
+  providerName: 'google' | 'facebook' | 'github'
+}
+
 export interface IRequestVerifyResetPasswordLink {
   token: string
   email: string
@@ -41,6 +49,10 @@ export const AuthAPI = {
   },
   loginWithEmailAndPassword: async (body: IRequestLogin): Promise<IResponseLoginSuccess | IApiResponseError> => {
     const response = await axiosInstance.post('/api/auth/login', body)
+    return response.data
+  },
+  googleSignIn: async (body: IRequestGoogleSignIn): Promise<IResponseLoginSuccess | IApiResponseError> => {
+    const response = await axiosInstance.post('/api/auth/google/mobile', body)
     return response.data
   },
   getAuthenticatedUser: async (): Promise<IUser | IApiResponseError> => {

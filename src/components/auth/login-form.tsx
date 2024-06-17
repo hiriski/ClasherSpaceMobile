@@ -1,5 +1,5 @@
 import { Image, StyleSheet, View } from 'react-native'
-import { Button, TextField, Typography } from '@/components/core'
+import { Button, Divider, TextField, Typography } from '@/components/core'
 // import auth from '@react-native-firebase/auth'
 
 // utils
@@ -16,6 +16,7 @@ import { useAuth } from '@/hooks/auth'
 import { Assets } from '@/assets'
 import { useAppDispatch } from '@/store'
 import { useState } from 'react'
+import GoogleLoginButton from './google-login-button'
 
 type FormValues = {
   email: string
@@ -91,6 +92,22 @@ const LoginForm = (): JSX.Element => {
         </Typography>
         <Typography color='text.secondary'>Login to your account</Typography>
       </View>
+
+      <View style={{ marginBottom: createSpacing(2) }}>
+        <GoogleLoginButton text='Sign in with Google' onStart={() => setIsLoading(true)} onFinish={() => setIsLoading(false)} />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 0,
+            marginTop: 12,
+          }}
+        >
+          <Divider style={{ width: '100%' }} />
+        </View>
+      </View>
+
       <View style={{ marginBottom: createSpacing(2) }}>
         <Controller
           control={control}

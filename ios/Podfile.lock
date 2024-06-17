@@ -1,4 +1,10 @@
 PODS:
+  - AppAuth (1.7.5):
+    - AppAuth/Core (= 1.7.5)
+    - AppAuth/ExternalUserAgent (= 1.7.5)
+  - AppAuth/Core (1.7.5)
+  - AppAuth/ExternalUserAgent (1.7.5):
+    - AppAuth/Core
   - BEMCheckBox (1.4.1)
   - boost (1.83.0)
   - BVLinearGradient (2.8.3):
@@ -81,6 +87,10 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30911.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleSignIn (7.1.0):
+    - AppAuth (< 2.0, >= 1.7.3)
+    - GTMAppAuth (< 5.0, >= 4.1.1)
+    - GTMSessionFetcher/Core (~> 3.3)
   - GoogleUtilities (7.13.3):
     - GoogleUtilities/AppDelegateSwizzler (= 7.13.3)
     - GoogleUtilities/Environment (= 7.13.3)
@@ -125,6 +135,10 @@ PODS:
   - GoogleUtilities/UserDefaults (7.13.3):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
+  - GTMAppAuth (4.1.1):
+    - AppAuth/Core (~> 1.7)
+    - GTMSessionFetcher/Core (< 4.0, >= 3.3)
+  - GTMSessionFetcher/Core (3.4.1)
   - hermes-engine (0.74.1):
     - hermes-engine/Pre-built (= 0.74.1)
   - hermes-engine/Pre-built (0.74.1)
@@ -1420,6 +1434,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNGoogleSignin (12.2.1):
+    - GoogleSignIn (~> 7.1)
+    - React-Core
   - RNNotifee (7.8.2):
     - React-Core
     - RNNotifee/NotifeeCore (= 7.8.2)
@@ -1554,6 +1571,7 @@ DEPENDENCIES:
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -1562,6 +1580,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppAuth
     - BEMCheckBox
     - Firebase
     - FirebaseAnalytics
@@ -1572,7 +1591,10 @@ SPEC REPOS:
     - FirebaseMessaging
     - GoogleAppMeasurement
     - GoogleDataTransport
+    - GoogleSignIn
     - GoogleUtilities
+    - GTMAppAuth
+    - GTMSessionFetcher
     - libwebp
     - MMKV
     - MMKVCore
@@ -1720,6 +1742,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@shopify/flash-list"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNGoogleSignin:
+    :path: "../node_modules/@react-native-google-signin/google-signin"
   RNNotifee:
     :path: "../node_modules/@notifee/react-native"
   RNReanimated:
@@ -1732,6 +1756,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
@@ -1748,7 +1773,10 @@ SPEC CHECKSUMS:
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   GoogleAppMeasurement: f3abf08495ef2cba7829f15318c373b8d9226491
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
+  GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
+  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
+  GTMSessionFetcher: 8000756fc1c19d2e5697b90311f7832d2e33f6cd
   hermes-engine: 16b8530de1b383cdada1476cf52d1b52f0692cbc
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   MMKV: 506311d0494023c2f7e0b62cc1f31b7370fa3cfb
@@ -1816,6 +1844,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: c8d34d9ad44a3258a77e548bba6dc3561af7cf2d
   RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b
   RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7
+  RNGoogleSignin: 08dc4ba7eac2096c7fecfe109f0950fa4683c803
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNReanimated: 7ad0f08a845cb60955ee5d461d2156d7b9707118
   RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208

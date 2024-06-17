@@ -1,6 +1,6 @@
-import { FC, memo, useCallback, useEffect } from 'react'
+import { FC, memo, useCallback, useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, TextField, Typography } from '@/components/core'
+import { Button, Divider, TextField, Typography } from '@/components/core'
 
 // utils
 import { screenUtils } from '@/utilities'
@@ -15,6 +15,7 @@ import { Image } from 'react-native'
 import { useTheme } from '@/hooks'
 import { Assets } from '@/assets'
 import { useNavigation } from '@/navigator'
+import GoogleLoginButton from './google-login-button'
 
 type FormValues = {
   name: string
@@ -35,6 +36,8 @@ const RegisterFormStep1: FC<Props> = ({ defaultValue, onSubmit }: Props): JSX.El
   const theme = useTheme()
 
   const navigation = useNavigation()
+
+  const [isLoadingGoogleLogin, setIsLoadingGoogleLogin] = useState(false)
 
   const {
     control,
@@ -77,6 +80,25 @@ const RegisterFormStep1: FC<Props> = ({ defaultValue, onSubmit }: Props): JSX.El
         <Typography variant='h6' gutterBottom color='text.secondary'>
           Tell us about yourself
         </Typography>
+      </View>
+
+      <View style={{ marginBottom: createSpacing(2) }}>
+        <GoogleLoginButton
+          text='Sign up with Google'
+          onStart={() => setIsLoadingGoogleLogin(true)}
+          onFinish={() => setIsLoadingGoogleLogin(false)}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 0,
+            marginTop: 12,
+          }}
+        >
+          <Divider style={{ width: '100%' }} />
+        </View>
       </View>
 
       <View style={{ marginBottom: createSpacing(2) }}>

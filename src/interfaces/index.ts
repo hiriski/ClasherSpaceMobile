@@ -1,5 +1,5 @@
 export * from './app.interface'
 export * from './theme.interface'
 export * from './toast.interface'
-export * from './auth.interface'
+export * from './user.interface'
 export * from './common.interface'

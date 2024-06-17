@@ -3,7 +3,7 @@ import { Spinner, StatusBar } from '@/components/core'
 import { useTheme, useToast } from '@/hooks'
 import { Assets } from '@/assets'
 import { StyleSheet } from 'react-native'
-import { screenUtils } from '@/utilities'
+import { platformUtils, screenUtils } from '@/utilities'
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import PagerView from 'react-native-pager-view'
 import { IRequestRegister } from '@/api'
@@ -14,10 +14,10 @@ import { IUnprocessableEntity } from '@/interfaces/http.interface'
 import { useNavigation } from '@/navigator'
 import { RegisterFormStep1, RegisterFormStep2, RegisterFormStep3 } from '@/components/auth'
 
-const FORM_STEP_1_HEIGHT = 430
+const FORM_STEP_1_HEIGHT = 510
 const FORM_STEP_2_HEIGHT = 346
 const FORM_STEP_3_HEIGHT = 460
-const EXTRA_KEYBOARD_OFFSET = 180
+const EXTRA_KEYBOARD_OFFSET = platformUtils.isIOS ? 300 : 180
 
 type FormValuesStep3 = {
   password: string
