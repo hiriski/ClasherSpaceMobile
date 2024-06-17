@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { AuthAPI, IRequestRegister } from '@/api'
+import { AuthAPI, IRequestLogin, IRequestRegister } from '@/api'
 import { IUser } from '@/interfaces'
 import { isAxiosError } from 'axios'
+import { Alert } from 'react-native'
 
 export const auth_getAuthenticatedUser = createAsyncThunk('@auth/getAuthenticatedUser', async (): Promise<IUser> => {
   return await AuthAPI.getAuthenticatedUser()
@@ -13,7 +14,18 @@ export const auth_registerWithEmailAndPassword = createAsyncThunk('@auth/registe
     return await AuthAPI.registerWithEmailAndPassword(body)
   } catch(e) {
     if(isAxiosError(e)) {
-      return rejectWithValue(e?.response)
+      return rejectWithValue(e?.response?.data)
+    }
+  }
+})
+
+// prettier-ignore
+export const auth_loginWithEmailAndPassword = createAsyncThunk('@auth/loginWithEmailAndPassword', async (body: IRequestLogin, { rejectWithValue }) => {
+  try {
+    return await AuthAPI.loginWithEmailAndPassword(body)
+  } catch(e) {
+    if(isAxiosError(e)) {
+      return rejectWithValue(e?.response?.data)
     }
   }
 })

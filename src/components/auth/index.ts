@@ -1,4 +1,3 @@
-export { default as RegisterForm } from './register-form'
 export { default as RegisterFormStep1 } from './register-form-step1'
 export { default as RegisterFormStep2 } from './register-form-step2'
 export { default as RegisterFormStep3 } from './register-form-step3'

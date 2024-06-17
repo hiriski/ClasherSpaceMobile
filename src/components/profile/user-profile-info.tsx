@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { Image, StyleSheet, TouchableOpacity, View, ActivityIndicator } from 'react-native'
 
 // hooks
@@ -26,6 +26,8 @@ import { launchImageLibrary } from 'react-native-image-picker'
 
 // fast image
 import FastImage from 'react-native-fast-image'
+import BottomSheetConfirmLogout from '../auth/bottom-sheet-confirm-logout'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 
 const AVATAR_SIZE = 132
 
@@ -34,35 +36,15 @@ const UserProfileInfo = (): JSX.Element => {
 
   const { showToast } = useToast()
 
-  const { user, auth_setOpenBottomSheetConfirmLogout, auth_setUser } = useAuth()
+  const bottomSheetRef = useRef<BottomSheetModal>(null)
+
+  const { user, auth_setUser } = useAuth()
 
   const onPressLogout = useCallback(() => {
-    auth_setOpenBottomSheetConfirmLogout(true)
-  }, [])
+    bottomSheetRef.current?.present()
+  }, [bottomSheetRef.current])
 
-  const handleUpdateUserPhoto = async (photoURL: string | null): Promise<void> => {
-    auth()
-      .currentUser?.updateProfile({
-        photoURL,
-      })
-      .then(() => {
-        setUploadIsLoading(false)
-        showToast({
-          text1: 'Your profile picture updated successfully.',
-          variant: 'filled',
-          position: 'bottom',
-        })
-        auth().onAuthStateChanged(user => {
-          if (user) {
-            auth_setUser(user as IUser)
-          }
-        })
-      })
-      .catch(error => {
-        setUploadIsLoading(false)
-        log.error(`error-> ${error}`)
-      })
-  }
+  const handleUpdateUserPhoto = async (photoURL: string | null): Promise<void> => {}
 
   const handleUploadPhoto = async (fileUri: string, fileName: string) => {
     setUploadIsLoading(true)
@@ -98,7 +80,7 @@ const UserProfileInfo = (): JSX.Element => {
         selectionLimit: 1,
       })
       if (!result.didCancel && result?.assets?.[0]?.uri) {
-        handleUploadPhoto(result.assets?.[0]?.uri, result.assets?.[0]?.fileName as string)
+        // handleUploadPhoto(result.assets?.[0]?.uri, result.assets?.[0]?.fileName as string)
       } else {
         // user cancel picker image
       }
@@ -164,6 +146,7 @@ const UserProfileInfo = (): JSX.Element => {
           iconType='ionicons'
         />
       </View>
+      <BottomSheetConfirmLogout ref={bottomSheetRef} />
     </View>
   )
 }

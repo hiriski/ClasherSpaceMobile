@@ -5,8 +5,7 @@ import { Button, TextField, Typography } from '@/components/core'
 // utils
 import { screenUtils } from '@/utilities'
 import { createSpacing, log } from '@/helpers'
-import { useNavigation } from '@react-navigation/native'
-import { NavigationProps } from '@/navigator'
+import { useNavigation } from '@/navigator'
 
 // hook form
 import { useForm, Controller, SubmitHandler, SubmitErrorHandler } from 'react-hook-form'
@@ -15,6 +14,8 @@ import * as Yup from 'yup'
 import { useTheme, useToast } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
 import { Assets } from '@/assets'
+import { useAppDispatch } from '@/store'
+import { useState } from 'react'
 
 type FormValues = {
   email: string
@@ -29,12 +30,14 @@ const schema = Yup.object()
   .required()
 
 const LoginForm = (): JSX.Element => {
-  const nav = useNavigation<NavigationProps>()
+  const navigation = useNavigation()
   const theme = useTheme()
+  const dispatch = useAppDispatch()
 
   const { showToast } = useToast()
+  const [isLoading, setIsLoading] = useState(false)
 
-  const { auth_setLoginLoading, loginLoading } = useAuth()
+  const { auth_loginWithEmailAndPassword } = useAuth()
 
   const {
     control,
@@ -49,27 +52,18 @@ const LoginForm = (): JSX.Element => {
   })
 
   const onValidSubmit: SubmitHandler<FormValues> = values => {
-    auth_setLoginLoading(true)
-    const { email, password } = values
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        auth_setLoginLoading(false)
-        nav.navigate('profile_screen')
-        showToast({
-          type: 'success',
-          position: 'bottom',
-          variant: 'filled',
-          text1: 'Login Success',
-        })
-      })
-      .catch(error => {
-        auth_setLoginLoading(false)
-        let toastTitle: string | null = null
-        if (error?.code === 'auth/invalid-login') {
-          toastTitle = 'Email or password invalid!'
-        }
-        if (toastTitle) {
+    setIsLoading(true)
+    dispatch(auth_loginWithEmailAndPassword(values))
+      .then(result => {
+        if (result.meta.requestStatus === 'fulfilled') {
+          navigation.navigate('profile_screen')
+        } else if (result.meta.requestStatus === 'rejected') {
+          let toastTitle = 'Login failed'
+          // @ts-ignore
+          const httpResponse: IUnprocessableEntity = result.payload
+          if (httpResponse.message) {
+            toastTitle = httpResponse.message
+          }
           showToast({
             type: 'error',
             position: 'bottom',
@@ -77,6 +71,10 @@ const LoginForm = (): JSX.Element => {
             text1: toastTitle,
           })
         }
+      })
+      .catch()
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -107,7 +105,7 @@ const LoginForm = (): JSX.Element => {
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='extra-large'
+              size='large'
               isError={Boolean(errors?.email?.message)}
               helperText={errors?.email?.message ? errors?.email?.message : undefined}
             />
@@ -127,7 +125,7 @@ const LoginForm = (): JSX.Element => {
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='extra-large'
+              size='large'
               isError={Boolean(errors?.password?.message)}
               helperText={errors?.password?.message ? errors?.password?.message : undefined}
             />
@@ -137,7 +135,7 @@ const LoginForm = (): JSX.Element => {
 
       <View style={{ marginBottom: createSpacing(3) }}>
         <Button
-          isLoading={loginLoading}
+          isLoading={isLoading}
           onPress={handleSubmit(onValidSubmit, onInvalidSubmit)}
           title='Login'
           size='extra-large'
@@ -148,12 +146,13 @@ const LoginForm = (): JSX.Element => {
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <Typography color='text.secondary'>Don't have an account ? </Typography>
-        <Button onPress={() => nav.navigate('register_screen')} title='Register' variant='text' disablePadding />
+        <Button onPress={() => navigation.navigate('register_screen')} title='Register' variant='text' disablePadding />
       </View>
     </View>
   )
 }
 
+const LOGO_SIZE = 72
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -163,12 +162,14 @@ const styles = StyleSheet.create({
     paddingBottom: createSpacing(3),
   },
   formHeader: {
+    marginTop: createSpacing(5),
     marginBottom: createSpacing(4),
     alignItems: 'center',
+    paddingHorizontal: 44,
   },
   logo: {
-    height: 52,
-    width: 52,
+    height: LOGO_SIZE,
+    width: LOGO_SIZE,
     marginBottom: createSpacing(4),
   },
 })

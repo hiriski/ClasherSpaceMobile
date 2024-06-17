@@ -1,3 +1,4 @@
+import { log } from '@/helpers'
 import axiosInstance from '@/http/axios-instance'
 import { IUser } from '@/interfaces'
 import { IApiResponseError, IUnprocessableEntity } from '@/interfaces/http.interface'
@@ -34,6 +35,7 @@ export interface IResponseRegisterSuccess extends IResponseLoginSuccess {}
 
 export const AuthAPI = {
   registerWithEmailAndPassword: async (body: IRequestRegister): Promise<IResponseRegisterSuccess | IUnprocessableEntity> => {
+    // try {
     const response = await axiosInstance.post('/api/auth/register', body)
     return response.data
   },
@@ -47,6 +49,7 @@ export const AuthAPI = {
   },
   revokeToken: async (currentAccessToken: string) => {
     const response = await axiosInstance.post('/api/auth/revoke-token', { currentAccessToken })
+    log.warn('revokeToken', JSON.stringify(response))
     return response.data
   },
   sendResetPasswordLink: async (email: string) => {

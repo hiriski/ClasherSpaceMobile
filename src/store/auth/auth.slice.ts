@@ -3,11 +3,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 // app config
 import { RootState } from '@/store/store.root-reducer'
-import { auth_getAuthenticatedUser, auth_revokeToken, auth_registerWithEmailAndPassword } from './auth.action'
+import {
+  auth_getAuthenticatedUser,
+  auth_revokeToken,
+  auth_registerWithEmailAndPassword,
+  auth_loginWithEmailAndPassword,
+} from './auth.action'
 
 // interfaces
 import { IUser } from '@/interfaces'
-import { IResponseLoginSuccess } from '@/api'
+import { IResponseLoginSuccess, IResponseRegisterSuccess } from '@/api'
 
 // type for our state
 export type AuthSliceState = {
@@ -62,10 +67,19 @@ export const authSlice = createSlice({
 
     // register
     builder.addCase(auth_registerWithEmailAndPassword.fulfilled, (state, action) => {
-      if (action.payload?.token) {
-        const payload = action.payload as IResponseLoginSuccess
-        state.user = payload.user
-        state.accessToken = payload.token
+      const response: IResponseRegisterSuccess = action.payload as IResponseRegisterSuccess
+      if (response?.token) {
+        state.user = response.user
+        state.accessToken = response.token
+      }
+    })
+
+    // login
+    builder.addCase(auth_loginWithEmailAndPassword.fulfilled, (state, action) => {
+      const response: IResponseLoginSuccess = action.payload as IResponseLoginSuccess
+      if (response?.token) {
+        state.user = response.user
+        state.accessToken = response.token
       }
     })
   },

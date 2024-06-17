@@ -1,104 +1,140 @@
-import { memo, useCallback, useEffect } from 'react'
+import { forwardRef, memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { NavigationProps } from '@/navigator/navigation.type'
-
-// hooks
-import { useNavigation } from '@react-navigation/native'
 import { createSpacing } from '@/helpers'
-import { BaseBottomSheet } from '@/components/base'
 
 // components
-import { Typography } from '@/components/core'
+import { Button, Typography } from '@/components/core'
 
 import { themeConfig } from '@/configs'
-import { useApp, useTheme } from '@/hooks'
+import { useTheme } from '@/hooks'
 import { useAuth } from '@/hooks/auth'
-import { screenUtils } from '@/utilities'
+import { BottomSheetBackdropProps, BottomSheetModal } from '@gorhom/bottom-sheet'
+import BaseBottomSheetBackdrop from '../base/base-bottom-sheet/base-bottom-sheet-backdrop'
+import { bottomSheetStyles } from '../base/base-bottom-sheet/base-bottom-sheet.styles'
 import { useAppDispatch } from '@/store'
 
-const BottomSheetContent = () => {
+type Props = {}
+
+type Ref = BottomSheetModal
+
+const BottomSheetConfirmLogout = forwardRef<Ref, Props>((props, ref) => {
   const theme = useTheme()
-  const { isAuthenticated } = useAuth()
-
-  return (
-    <View
-      style={StyleSheet.flatten([
-        styles.root,
-        {
-          backgroundColor: theme.palette.background.paper,
-          borderRadius: theme.shape.borderRadius,
-        },
-      ])}
-    >
-      <View style={styles.content}>
-        {isAuthenticated ? (
-          <>
-            <Typography variant='h5' fontWeight='bold' gutterBottom style={{ textAlign: 'center' }}>
-              Are you sure ?
-            </Typography>
-            <Typography variant='h6' fontWeight='bold' gutterBottom style={{ textAlign: 'center' }}>
-              Do you want to log out ?
-            </Typography>
-          </>
-        ) : (
-          <>
-            <Typography variant='h5' fontWeight='bold' gutterBottom style={{ textAlign: 'center' }}>
-              See you..
-            </Typography>
-          </>
-        )}
-      </View>
-    </View>
-  )
-}
-
-const BottomSheetConfirmLogout = () => {
-  const nav = useNavigation<NavigationProps>()
+  const { isAuthenticated, accessToken, auth_revokeToken } = useAuth()
   const dispatch = useAppDispatch()
-  const { auth_resetAuth, openBottomSheetConfirmLogout, auth_setOpenBottomSheetConfirmLogout } = useAuth()
 
-  const { visibleBottomTab, app_setVisibleBottomTab } = useApp()
+  const [isLoading, setIsLoading] = useState(false)
+  const [snapIndex, setSnapIndex] = useState(0)
+  const snapPoints = useMemo(() => [240, 170], [])
 
-  const handleLogout = (): void => {
-    auth_resetAuth()
-  }
+  // backdrop
+  const renderBackdrop = useCallback(
+    (backdropProps: BottomSheetBackdropProps) => <BaseBottomSheetBackdrop {...backdropProps} pressBehavior='close' />,
+    []
+  )
 
-  const onBottomSheetClose = useCallback(() => {
-    dispatch(app_setVisibleBottomTab(true))
-    auth_setOpenBottomSheetConfirmLogout(false)
-  }, [visibleBottomTab, openBottomSheetConfirmLogout])
+  const handleSheetChanges = useCallback(
+    (index: number) => {
+      setSnapIndex(index)
+    },
+    [snapIndex]
+  )
+
+  const handleClose = useCallback(() => {
+    ref?.current?.close()
+  }, [snapIndex, ref?.current])
+
+  const onPressLogout = useCallback(() => {
+    setIsLoading(true)
+    handleClose()
+    dispatch(auth_revokeToken(accessToken as string)).finally(() => {
+      setSnapIndex(1)
+      setIsLoading(false)
+    })
+  }, [isAuthenticated, isLoading, setSnapIndex])
 
   useEffect(() => {
-    if (openBottomSheetConfirmLogout) {
-      dispatch(app_setVisibleBottomTab(false))
-    }
-  }, [openBottomSheetConfirmLogout, visibleBottomTab])
+    setSnapIndex(0)
+  }, [snapIndex])
 
   return (
-    <BaseBottomSheet
-      open={openBottomSheetConfirmLogout}
-      onClose={onBottomSheetClose}
-      enableCloseButton={false}
-      snapPoints={[260]}
-      onOpenSnapToIndex={0}
-      enableFooterButton={true}
-      enableFooterButtonTitle='Yes, Logout'
-      onPressFooterButton={handleLogout}
-      footerButtonPressBehavior='close'
-      footerButtonEndIcon='arrow-forward'
-      footerButtonIconProvider='ionicons'
-      footerButtonSize='extra-large'
-      footerButtonColor='error'
-      footerButtonVariant='contained'
-      footerButtonStyle={{
-        width: screenUtils.isSmallScreen ? 220 : 300,
-        alignSelf: 'center',
-      }}
+    <BottomSheetModal
+      ref={ref}
+      index={snapIndex}
+      stackBehavior='push'
+      enableDismissOnClose={true}
+      backdropComponent={renderBackdrop}
+      snapPoints={snapPoints}
+      enablePanDownToClose={true}
+      style={StyleSheet.flatten([bottomSheetStyles.bottomSheet_root])}
+      handleIndicatorStyle={bottomSheetStyles.bottomSheet_handleIndicatorStyle}
+      backgroundStyle={StyleSheet.flatten([
+        bottomSheetStyles.bottomSheet_backgroundStyle,
+        {
+          backgroundColor: theme.palette.background.paper,
+          borderRadius: themeConfig.shape.borderRadius * 6,
+        },
+      ])}
+      onChange={handleSheetChanges}
     >
-      <BottomSheetContent />
-    </BaseBottomSheet>
+      <View
+        style={StyleSheet.flatten([
+          styles.root,
+          {
+            backgroundColor: theme.palette.background.paper,
+            borderRadius: theme.shape.borderRadius,
+          },
+        ])}
+      >
+        <View style={styles.content}>
+          {isAuthenticated ? (
+            <View>
+              <Typography variant='h6' fontWeight='bold' color='text.secondary' style={{ textAlign: 'center', marginBottom: 10 }}>
+                Logged out
+              </Typography>
+              <Typography variant='h3' fontWeight='bold' gutterBottom style={{ textAlign: 'center', marginBottom: 24 }}>
+                Do you want to log out?
+              </Typography>
+              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Button
+                  title='LOGOUT'
+                  variant='contained'
+                  color='error'
+                  size='large'
+                  rounded
+                  style={{ width: 160 }}
+                  startIcon='enter-outline'
+                  iconType='ionicons'
+                  onPress={onPressLogout}
+                  isLoading={isLoading}
+                />
+                <Button title='No' variant='text' color='info' size='extra-large' onPress={handleClose} />
+              </View>
+            </View>
+          ) : (
+            <View>
+              <Typography variant='h3' fontWeight='bold' style={{ textAlign: 'center', marginBottom: 16 }}>
+                See you...
+              </Typography>
+              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Button
+                  title='Back to home'
+                  variant='contained'
+                  color='info'
+                  size='large'
+                  rounded
+                  style={{ width: 160 }}
+                  startIcon='arrow-back'
+                  iconType='ionicons'
+                  onPress={onPressLogout}
+                />
+              </View>
+            </View>
+          )}
+        </View>
+      </View>
+    </BottomSheetModal>
   )
-}
+})
 
 const styles = StyleSheet.create({
   root: {},

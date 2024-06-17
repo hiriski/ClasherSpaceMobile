@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useEffect } from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
 
@@ -27,16 +27,17 @@ const schema = Yup.object()
   .required()
 
 type Props = {
-  onSubmit: (email: string) => void
+  defaultValue: FormValues
+  onSubmit: (values: FormValues) => void
   onPressBack: () => void
 }
 
-const RegisterFormStep3: FC<Props> = ({ onSubmit, onPressBack }: Props): JSX.Element => {
-  log.info('RENDER RegisterFormStep3')
+const RegisterFormStep3: FC<Props> = ({ onSubmit, onPressBack, defaultValue }: Props): JSX.Element => {
   const {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -45,13 +46,18 @@ const RegisterFormStep3: FC<Props> = ({ onSubmit, onPressBack }: Props): JSX.Ele
     },
   })
 
-  const onValidSubmit: SubmitHandler<FormValues> = ({ email }) => {
-    onSubmit(email)
+  const onValidSubmit: SubmitHandler<FormValues> = values => {
+    onSubmit(values)
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {
     log.info(`values -> ${JSON.stringify(values)}`)
   }
+
+  useEffect(() => {
+    setValue('password', defaultValue.password)
+    setValue('password_confirmation', defaultValue.password_confirmation)
+  }, [defaultValue])
 
   return (
     <View style={styles.root}>
@@ -79,7 +85,7 @@ const RegisterFormStep3: FC<Props> = ({ onSubmit, onPressBack }: Props): JSX.Ele
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='extra-large'
+              size='large'
               isError={Boolean(errors?.password?.message)}
               helperText={errors?.password?.message ? errors?.password?.message : undefined}
             />
@@ -99,7 +105,7 @@ const RegisterFormStep3: FC<Props> = ({ onSubmit, onPressBack }: Props): JSX.Ele
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='extra-large'
+              size='large'
               isError={Boolean(errors?.password_confirmation?.message)}
               helperText={errors?.password_confirmation?.message ? errors?.password_confirmation?.message : undefined}
             />
@@ -109,7 +115,7 @@ const RegisterFormStep3: FC<Props> = ({ onSubmit, onPressBack }: Props): JSX.Ele
       <View style={{ marginBottom: createSpacing(4) }}>
         <Button
           onPress={handleSubmit(onValidSubmit, onInvalidSubmit)}
-          title='NEXT'
+          title='SUBMIT'
           size='extra-large'
           endIcon='arrow-forward'
           iconType='ionicons'
@@ -133,6 +139,7 @@ const styles = StyleSheet.create({
   },
   formHeader: {
     marginBottom: createSpacing(5),
+    alignItems: 'center',
   },
   img: {
     height: 80,

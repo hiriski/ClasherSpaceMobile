@@ -1,4 +1,4 @@
-import { FC, memo, useEffect } from 'react'
+import { FC, memo, useCallback, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button, TextField, Typography } from '@/components/core'
 
@@ -14,6 +14,7 @@ import { appConfig } from '@/configs'
 import { Image } from 'react-native'
 import { useTheme } from '@/hooks'
 import { Assets } from '@/assets'
+import { useNavigation } from '@/navigator'
 
 type FormValues = {
   name: string
@@ -26,13 +27,15 @@ const schema = Yup.object()
   .required()
 
 type Props = {
-  value: string
+  defaultValue: string
   onSubmit: (name: string) => void
 }
 
-const RegisterFormStep1: FC<Props> = ({ value, onSubmit }: Props): JSX.Element => {
+const RegisterFormStep1: FC<Props> = ({ defaultValue, onSubmit }: Props): JSX.Element => {
   const theme = useTheme()
-  log.info('RENDER RegisterFormStep1')
+
+  const navigation = useNavigation()
+
   const {
     control,
     handleSubmit,
@@ -53,9 +56,13 @@ const RegisterFormStep1: FC<Props> = ({ value, onSubmit }: Props): JSX.Element =
     log.info(`values -> ${JSON.stringify(values)}`)
   }
 
+  const onPressLogin = useCallback(() => {
+    navigation.navigate('login_screen')
+  }, [])
+
   useEffect(() => {
-    setValue('name', value)
-  }, [value])
+    setValue('name', defaultValue)
+  }, [defaultValue])
 
   return (
     <View style={styles.root}>
@@ -86,7 +93,7 @@ const RegisterFormStep1: FC<Props> = ({ value, onSubmit }: Props): JSX.Element =
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='extra-large'
+              size='large'
               isError={Boolean(errors?.name?.message)}
               helperText={errors?.name?.message ? errors?.name?.message : undefined}
             />
@@ -102,6 +109,10 @@ const RegisterFormStep1: FC<Props> = ({ value, onSubmit }: Props): JSX.Element =
           iconType='ionicons'
           rounded
         />
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: createSpacing(6) }}>
+        <Typography color='text.secondary'>Already have account ? </Typography>
+        <Button onPress={onPressLogin} title='Login' variant='text' disablePadding />
       </View>
     </View>
   )

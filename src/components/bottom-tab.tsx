@@ -128,7 +128,7 @@ const BottomTab: FC<Props> = props => {
       />
       <View style={styles.tab_root}>
         {TAB_ITEMS.map((x, index) => (
-          <View style={styles.tabItem_root}>
+          <View key={x.path} style={styles.tabItem_root}>
             <Pressable
               key={x.path}
               onPress={() => onPress(x.path)}

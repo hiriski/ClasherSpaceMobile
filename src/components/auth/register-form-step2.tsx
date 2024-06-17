@@ -23,14 +23,13 @@ const schema = Yup.object()
   .required()
 
 type Props = {
-  value: string
+  defaultValue: string
   onSubmit: (email: string) => void
   onPressBack: () => void
   name: string
 }
 
-const RegisterFormStep2: FC<Props> = ({ value, onSubmit, onPressBack, name }: Props): JSX.Element => {
-  log.info('RENDER RegisterFormStep2')
+const RegisterFormStep2: FC<Props> = ({ defaultValue, onSubmit, onPressBack, name }: Props): JSX.Element => {
   const {
     control,
     handleSubmit,
@@ -52,8 +51,8 @@ const RegisterFormStep2: FC<Props> = ({ value, onSubmit, onPressBack, name }: Pr
   }
 
   useEffect(() => {
-    setValue('email', value)
-  }, [value])
+    setValue('email', defaultValue)
+  }, [defaultValue])
 
   return (
     <View style={styles.root}>
@@ -77,7 +76,7 @@ const RegisterFormStep2: FC<Props> = ({ value, onSubmit, onPressBack, name }: Pr
               onChangeText={onChange}
               value={value}
               margin='normal'
-              size='extra-large'
+              size='large'
               isError={Boolean(errors?.email?.message)}
               helperText={errors?.email?.message ? errors?.email?.message : undefined}
             />

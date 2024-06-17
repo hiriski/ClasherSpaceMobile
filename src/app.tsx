@@ -53,17 +53,17 @@ const App = (): JSX.Element => {
       <AuthContextProvider>
         <FeedbackContextProvider>
           <GestureHandlerRootView style={{ flex: 1 }}>
-            <BottomSheetModalProvider>
-              <SafeAreaProvider>
-                <StoreProvider store={store}>
-                  <PersistGate persistor={persistor}>
+            <SafeAreaProvider>
+              <StoreProvider store={store}>
+                <PersistGate persistor={persistor}>
+                  <BottomSheetModalProvider>
                     <StatusBar translucent backgroundColor='transparent' />
                     <NavigationContainer />
                     <Toast position='bottom' config={toastConfig as ToastConfig} />
-                  </PersistGate>
-                </StoreProvider>
-              </SafeAreaProvider>
-            </BottomSheetModalProvider>
+                  </BottomSheetModalProvider>
+                </PersistGate>
+              </StoreProvider>
+            </SafeAreaProvider>
           </GestureHandlerRootView>
         </FeedbackContextProvider>
       </AuthContextProvider>

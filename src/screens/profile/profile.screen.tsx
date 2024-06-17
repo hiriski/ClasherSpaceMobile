@@ -11,14 +11,10 @@ import { useTheme } from '@/hooks'
 // components
 import { Screen } from '@/components/core'
 import { UserProfileInfo, GuestProfileInfo } from '@/components/profile'
-import { BottomSheetConfirmLogout } from '@/components/auth'
 
 const ProfileScreen = (): JSX.Element => {
   const theme = useTheme()
-  const { auth_setUser, isAuthenticated } = useAuth()
-  const [loading, setLoading] = useState(false)
-
-  console.log('isAuthenticated', isAuthenticated)
+  const { isAuthenticated } = useAuth()
 
   useFocusEffect(
     useCallback(() => {
@@ -45,7 +41,6 @@ const ProfileScreen = (): JSX.Element => {
       >
         {isAuthenticated ? <UserProfileInfo /> : <GuestProfileInfo />}
       </Screen>
-      <BottomSheetConfirmLogout />
     </>
   )
 }
