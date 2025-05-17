@@ -52,12 +52,6 @@
 	<string>Access to pick a photo</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Feather.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>Zocial.ttf</string>
 		<string>PlusJakartaSans-ExtraLight.ttf</string>
 		<string>PlusJakartaSans-ExtraLightItalic.ttf</string>
 		<string>PlusJakartaSans-Light.ttf</string>
@@ -72,28 +66,11 @@
 		<string>PlusJakartaSans-BoldItalic.ttf</string>
 		<string>PlusJakartaSans-ExtraBold.ttf</string>
 		<string>PlusJakartaSans-ExtraBoldItalic.ttf</string>
-		<string>Jost-Thin.ttf</string>
-		<string>Jost-ThinItalic.ttf</string>
-		<string>Jost-Light.ttf</string>
-		<string>Jost-LightItalic.ttf</string>
-		<string>Jost-Regular.ttf</string>
-		<string>Jost-Italic.ttf</string>
-		<string>Jost-Medium.ttf</string>
-		<string>Jost-MediumItalic.ttf</string>
-		<string>Jost-SemiBold.ttf</string>
-		<string>Jost-SemiBoldItalic.ttf</string>
-		<string>Jost-Bold.ttf</string>
-		<string>Jost-BoldItalic.ttf</string>
-		<string>Jost-ExtraBold.ttf</string>
-		<string>Jost-ExtraBoldItalic.ttf</string>
-		<string>Jost-Black.ttf</string>
-		<string>Jost-BlackItalic.ttf</string>
-		<string>Feather.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>Zocial.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

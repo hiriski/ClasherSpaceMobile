@@ -42,17 +42,115 @@ const RegisterFormStep2: FC<Props> = ({ defaultValue, onSubmit, onPressBack, nam
     },
   })
 
-  const onValidSubmit: SubmitHandler<FormValues> = ({ email }) => {
-    onSubmit(email)
+  const onValidSubmit: SubmitHandler<FormValues> = ({ name }) => {
+    auth_setRegisterLoading(true)
+    auth()
+      .currentUser?.updateProfile({
+        displayName: name,
+      })
+      .then(() => {
+        auth_setRegisterLoading(false)
+        showToast({
+          type: 'success',
+          position: 'bottom',
+          variant: 'filled',
+          text1: 'Register Success',
+        })
+
+        auth()?.onAuthStateChanged(user => {
+          if (user) {
+            auth_setUser(user as IUser)
+          }
+        })
+
+        setTimeout(() => {
+          nav.navigate('profile_screen')
+        }, 320)
+      })
+      .catch(error => {
+        auth_setRegisterLoading(false)
+        log.error(`error-> ${error}`)
+      })
   }
 
   const onInvalidSubmit: SubmitErrorHandler<FormValues> = values => {
     log.info(`values -> ${JSON.stringify(values)}`)
   }
 
-  useEffect(() => {
-    setValue('email', defaultValue)
-  }, [defaultValue])
+  const handleUpdateUserPhoto = async (photoURL: string): Promise<void> => {
+    auth()
+      .currentUser?.updateProfile({
+        photoURL,
+      })
+      .then(() => {
+        setUploadIsLoading(false)
+        showToast({
+          text1: 'Your profile picture updated successfully.',
+          variant: 'filled',
+          position: 'bottom',
+        })
+        auth()?.onAuthStateChanged(user => {
+          if (user) {
+            auth_setUser(user as IUser)
+          } else {
+            showToastError()
+          }
+        })
+      })
+      .catch(error => {
+        setUploadIsLoading(false)
+        showToastError()
+      })
+  }
+
+  const showToastError = useCallback(() => {
+    showToast({
+      text1: 'Failed to upload profile picture.',
+      variant: 'filled',
+      position: 'top',
+      type: 'error',
+    })
+  }, [])
+
+  const handleUploadPhoto = async (fileUri: string, fileName: string) => {
+    setUploadIsLoading(true)
+    try {
+      const imageRef = storage().ref(`users/photos/${user?.uid}/${fileName}`)
+      await imageRef.putFile(fileUri, { contentType: 'image/jpg' }).catch(error => {
+        throw error
+      })
+      const url = await imageRef.getDownloadURL().catch(error => {
+        throw error
+      })
+
+      if (url) {
+        handleUpdateUserPhoto(url)
+      } else {
+        setUploadIsLoading(false)
+        showToastError()
+      }
+    } catch (e) {
+      setUploadIsLoading(false)
+      showToastError()
+    }
+  }
+
+  const onPressPicture = async (): Promise<void> => {
+    if (!uploadIsLoading) {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        maxWidth: 500,
+        maxHeight: 500,
+        includeExtra: true,
+        selectionLimit: 1,
+      })
+      if (!result.didCancel && result?.assets?.[0]?.uri) {
+        handleUploadPhoto(result.assets?.[0]?.uri, result.assets?.[0]?.fileName as string)
+      } else {
+        // user cancel picker image
+      }
+    }
+  }
 
   return (
     <View style={styles.root}>
