@@ -20,7 +20,7 @@ const ProfileScreen = (): JSX.Element => {
 
   useFocusEffect(
     useCallback(() => {
-      const unsubscribe = auth().onAuthStateChanged(user => {
+      const unsubscribe = auth()?.onAuthStateChanged(user => {
         auth_setUser(user ?? null)
         if (loading) {
           setLoading(false)

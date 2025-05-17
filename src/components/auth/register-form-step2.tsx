@@ -74,7 +74,7 @@ const RegisterFormStep2 = (): JSX.Element => {
           text1: 'Register Success',
         })
 
-        auth().onAuthStateChanged(user => {
+        auth()?.onAuthStateChanged(user => {
           if (user) {
             auth_setUser(user as IUser)
           }
@@ -106,7 +106,7 @@ const RegisterFormStep2 = (): JSX.Element => {
           variant: 'filled',
           position: 'bottom',
         })
-        auth().onAuthStateChanged(user => {
+        auth()?.onAuthStateChanged(user => {
           if (user) {
             auth_setUser(user as IUser)
           } else {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { JSX, ReactElement, useEffect, useRef, useState } from 'react'
 
 // react navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 // interfaces
 import { NavigatorParamList, ScreenType } from './navigation.type'
 import { AppState, AppStateStatus } from 'react-native'
-import { AppLanguageCode } from '@/interfaces'
+// import { AppLanguageCode } from '@/interfaces'
 
 // firebase
 // import auth from '@react-native-firebase/auth'
@@ -43,12 +43,14 @@ const SCREENS: Array<ScreenType> = [
 
 const RootStack = createNativeStackNavigator<NavigatorParamList>()
 
-const RootStackNavigator = (): JSX.Element | null => {
+const RootStackNavigator = (): ReactElement | null => {
   const dispatch = useAppDispatch()
   const appState = useRef<AppStateStatus>(AppState.currentState)
   const [isAppLoaded, setIsAppLoaded] = useState(false)
   const [isAlreadyLaunched, setIsAlreadyLaunched] = useState(false)
   const [_, setAppStateVisible] = useState(appState.current)
+
+  console.log('isAlreadyLaunched', isAlreadyLaunched)
 
   const { i18n } = useTranslation()
   const { lang, appPersisted_setSetLang } = useApp()

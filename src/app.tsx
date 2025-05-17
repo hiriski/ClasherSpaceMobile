@@ -34,6 +34,7 @@ import { NavigationContainer } from './navigators'
 import { Provider as StoreProvider } from 'react-redux'
 import { persistor, store } from './store/store.config'
 import { PersistGate } from 'redux-persist/integration/react'
+import { JSX } from 'react'
 
 enableScreens(true)
 

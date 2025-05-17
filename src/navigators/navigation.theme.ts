@@ -1,6 +1,8 @@
 import type { Theme as NavigationTheme } from '@react-navigation/native'
+import { DefaultTheme } from '@react-navigation/native'
 
 export const navigationLightTheme: NavigationTheme = {
+  ...DefaultTheme,
   dark: false,
   colors: {
     primary: 'rgb(0, 122, 255)',
@@ -13,6 +15,7 @@ export const navigationLightTheme: NavigationTheme = {
 }
 
 export const navigationDarkTheme: NavigationTheme = {
+  ...DefaultTheme,
   dark: true,
   colors: {
     primary: 'rgb(10, 132, 255)',
