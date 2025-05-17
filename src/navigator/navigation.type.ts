@@ -5,8 +5,8 @@ export type NavigatorParamList = {
   // splash_screen: undefined
   onboarding_screen: undefined
   bottom_tab_stack: undefined
-  layout_list_screen: undefined
-  layout_detail_screen: undefined
+  base_layout_list_screen: undefined
+  base_layout_detail_screen: undefined
   notifications_screen: undefined
   register_screen: undefined
   login_screen: undefined
@@ -17,6 +17,7 @@ export type BottomTabNavigatorParamList = {
   dashboard_screen: undefined
   layout_list_screen: undefined
   video_screen: undefined
+  base_layout_list_screen: undefined
   profile_screen: undefined
 }
 

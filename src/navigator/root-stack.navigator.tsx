@@ -18,7 +18,7 @@ import { SplashScreen } from '@/screens/splash'
 import BottomTabStackNavigator from './bottom-tab-stack.navigator'
 
 // screens
-import { LayoutDetailScreen } from '@/screens/layout'
+import { BaseLayoutDetailScreen } from '@/screens/base-layout'
 import { LoginScreen, RegisterScreen } from '@/screens/auth'
 import { OnboardingScreen } from '@/screens/onboarding'
 import { FeedbackScreen } from '@/screens/feedback'
@@ -50,6 +50,9 @@ const rootRoutes: Array<ScreenType> = [
     },
   },
   { name: 'feedback_screen', component: FeedbackScreen },
+  { name: 'base_layout_detail_screen', component: BaseLayoutDetailScreen },
+  { name: 'register_screen', component: RegisterScreen },
+  { name: 'login_screen', component: LoginScreen },
 ]
 
 const RootStack = createNativeStackNavigator<NavigatorParamList>()

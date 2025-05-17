@@ -38,15 +38,8 @@ const Card: FC<CardProps> = ({ elevation, borderRadius, showBorder, children, ba
 
 const styles = StyleSheet.create({
   cardStyle: {
-    borderWidth: 1,
-    borderColor: 'transparent',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 12,
+    elevation: 5,
+    shadowColor: 'rgba(0,0,0,0.2)',
   },
   cardStyleIos: {
     borderWidth: 1,

@@ -25,6 +25,7 @@ export const Assets = {
   SVGWidgetDuoToneIcon,
   SVGLayersDuoToneIcon,
   SVGVideoDuoToneIcon,
+  placeholder: require('./images/placeholder.jpg'),
 
   ...AssetsAvatars,
 }

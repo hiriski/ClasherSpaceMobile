@@ -1,11 +1,13 @@
 {
   "cSpell.words": [
-    "firestore",
     "GoogleSignin",
     "Ionicons",
     "Jost",
     "MMKV",
     "persistor",
-    "reduxjs"
+    "reduxjs",
+    "clashofclans",
+    "firestore",
+    "supercell"
   ]
 }
