@@ -5,7 +5,7 @@ export const StorageKeys = {
   NAVIGATION_STATE: 'NAVIGATION_STATE',
   SUBMITTED_FEEDBACK: 'SUBMITTED_FEEDBACK',
   LANGUAGE: 'LANGUAGE', // 'en' | 'id' | 'vi'
-  PERSIST_ROOT: '@PERSIST_ROOT',
+  PERSIST_ROOT: 'PERSIST_ROOT',
 }
 
 export type STORAGE_KEYS = keyof typeof StorageKeys

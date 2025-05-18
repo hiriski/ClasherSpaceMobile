@@ -1,4 +1,4 @@
-export interface IBaseApiResponse<T> {
+export interface IApiResponse<T> {
   data: T
 }
 

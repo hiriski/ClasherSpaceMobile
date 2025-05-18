@@ -33,7 +33,7 @@ export const auth_loginWithEmailAndPassword = createAsyncThunk('@auth/loginWithE
 // prettier-ignore
 export const auth_googleSignIn = createAsyncThunk('@auth/googleSignIn', async (body: IRequestGoogleSignIn, { rejectWithValue }) => {
   try {
-    return await AuthAPI.googleSignIn(body)
+    return await AuthAPI.googleSignIn(body) 
   } catch(e) {
     if(isAxiosError(e)) {
       return rejectWithValue(e?.response?.data)

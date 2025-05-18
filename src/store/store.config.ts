@@ -18,6 +18,7 @@ import { persistStorage } from './store.storage'
 import { StorageKeys } from '@/constants'
 import { appPersistedSlice } from './app'
 import { authSlice } from './auth'
+import { baseLayoutSlice } from './base-layout'
 
 // reducers
 // import { appApi } from '@/modules/app/redux'
@@ -25,9 +26,9 @@ import { authSlice } from './auth'
 // persist config
 const persistConfig: PersistConfig<RootState> = {
   key: StorageKeys.PERSIST_ROOT,
-  version: 1,
+  version: 2,
   storage: persistStorage,
-  whitelist: [appPersistedSlice.name, authSlice.name],
+  whitelist: [appPersistedSlice.name, authSlice.name, baseLayoutSlice.name],
 }
 
 // make persisted store

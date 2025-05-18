@@ -1,10 +1,17 @@
-import { FlatList, View } from 'react-native'
+import { Alert, FlatList, View } from 'react-native'
 import { IconButton, Screen } from '@/components/core'
-import { useTheme } from '@/hooks'
+import { useBaseLayout, useTheme } from '@/hooks'
 import { BaseLayoutCardItem } from '@/components/base-layout'
 import { themeConfig } from '@/configs'
 import { blue } from '@/libs'
 import { IBaseLayout } from '@/interfaces'
+import { Fragment, JSX, useCallback } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import { IRequestParamsGetBaseLayout } from '@/api/base-layout.api'
+import RenderCounter from '@/components/common/render-counter'
+import { useAppDispatch, useAppSelector } from '@/store'
+import { baseLayout_fetchList, baseLayout_selector } from '@/store/base-layout'
+import { FlashList } from '@shopify/flash-list'
 
 const data: Array<IBaseLayout> = [
   {
@@ -94,6 +101,7 @@ const data: Array<IBaseLayout> = [
   },
 ]
 
+let renderCount = 0
 const HeaderRightContent = () => {
   return (
     <View style={{ marginRight: -12, flexDirection: 'row' }}>
@@ -104,27 +112,58 @@ const HeaderRightContent = () => {
 
 const BaseLayoutListScreen = (): JSX.Element => {
   const theme = useTheme()
+
+  // const { baseLayout_fetchList, baseLayout_listData } = useBaseLayout()
+
+  const dispatch = useAppDispatch()
+  const { baseLayout_listData, baseLayout_pagination } = useAppSelector(baseLayout_selector)
+
+  const fetchListBaseLayout = useCallback(async (params: IRequestParamsGetBaseLayout) => {
+    dispatch(baseLayout_fetchList(params))
+  }, [])
+
+  const onScrollEndReached = useCallback(() => {
+    if (baseLayout_pagination.lastPage > baseLayout_pagination.currentPage) {
+      fetchListBaseLayout({ paginate: true, page: baseLayout_pagination.currentPage + 1 })
+    }
+  }, [baseLayout_pagination.lastPage, baseLayout_pagination.currentPage])
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch
+      fetchListBaseLayout({ paginate: true })
+    }, [])
+  )
+
+  console.log('baseLayout_pagination', baseLayout_pagination)
+  renderCount += 1
+
   return (
-    <Screen
-      preset='fixed'
-      titleColor='#fff'
-      statusBarStyle='light-content'
-      title='Bases'
-      titleSize='medium'
-      headerBackgroundColor={blue[500]}
-      backgroundColor={theme.palette.background.default}
-      headerRightContent={<HeaderRightContent />}
-    >
-      <View style={{ flex: 1 }}>
-        <FlatList
-          data={data}
-          keyExtractor={item => item.id}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <BaseLayoutCardItem item={item} />}
-          contentContainerStyle={{ paddingTop: 20, paddingHorizontal: themeConfig.horizontalSpacing }}
-        />
-      </View>
-    </Screen>
+    <Fragment>
+      <Screen
+        preset='fixed'
+        titleColor='#fff'
+        statusBarStyle='light-content'
+        title='Bases'
+        titleSize='medium'
+        headerBackgroundColor={blue[500]}
+        backgroundColor={theme.palette.background.default}
+        headerRightContent={<HeaderRightContent />}
+      >
+        <View style={{ flex: 1 }}>
+          <FlashList
+            data={baseLayout_listData}
+            estimatedItemSize={200}
+            keyExtractor={item => String(item.id)}
+            onEndReached={onScrollEndReached}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingTop: 20, paddingHorizontal: themeConfig.horizontalSpacing }}
+            renderItem={({ item }) => <BaseLayoutCardItem item={item} />}
+          />
+        </View>
+      </Screen>
+      {__DEV__ && <RenderCounter renderCount={renderCount} />}
+    </Fragment>
   )
 }
 
