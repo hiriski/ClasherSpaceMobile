@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 // components
 import BottomTab from '@/components/bottom-tab'
@@ -11,6 +11,7 @@ import VideoScreen from '@/screens/video/video.screen'
 
 // interfaces
 import { ScreenType } from './navigation.type'
+import { JSX } from 'react'
 
 // screens list
 export const bottomTabScreens: ScreenType[] = [
@@ -39,9 +40,9 @@ export const bottomTabScreens: ScreenType[] = [
 const BottomTabStack = createBottomTabNavigator()
 
 const BottomTabStackNavigator = (): JSX.Element | null => {
+  const renderTabBar = (props: BottomTabBarProps) => <BottomTab {...props} />
   return (
-    // eslint-disable-next-line react/no-unstable-nested-components
-    <BottomTabStack.Navigator screenOptions={{ headerShown: false }} tabBar={props => <BottomTab {...props} />}>
+    <BottomTabStack.Navigator screenOptions={{ headerShown: false }} tabBar={renderTabBar}>
       {bottomTabScreens.map(x => {
         return <BottomTabStack.Screen key={x.name} component={x.component} name={x.name} />
       })}

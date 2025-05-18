@@ -1,4 +1,4 @@
-import { JSX, ReactElement, useEffect, useRef, useState } from 'react'
+import { ReactElement, useEffect, useMemo, useRef, useState } from 'react'
 
 // react navigation
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -34,7 +34,7 @@ import { useAppDispatch } from '@/store'
 const rootRoutes: Array<ScreenType> = [
   { name: 'onboarding_screen', component: OnboardingScreen },
   { name: 'bottom_tab_stack', component: BottomTabStackNavigator },
-  { name: 'layout_detail_screen', component: LayoutDetailScreen },
+  { name: 'base_layout_list_screen', component: BaseLayoutDetailScreen },
   {
     name: 'register_screen',
     component: RegisterScreen,
@@ -51,8 +51,6 @@ const rootRoutes: Array<ScreenType> = [
   },
   { name: 'feedback_screen', component: FeedbackScreen },
   { name: 'base_layout_detail_screen', component: BaseLayoutDetailScreen },
-  { name: 'register_screen', component: RegisterScreen },
-  { name: 'login_screen', component: LoginScreen },
 ]
 
 const RootStack = createNativeStackNavigator<NavigatorParamList>()

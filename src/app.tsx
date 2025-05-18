@@ -1,3 +1,5 @@
+import { JSX } from 'react'
+
 import { StatusBar } from 'react-native'
 
 // react native screens.
@@ -34,9 +36,14 @@ import { toastConfig } from '@/configs'
 import { Provider as StoreProvider } from 'react-redux'
 import { persistor, store } from './store/store.config'
 import { PersistGate } from 'redux-persist/integration/react'
-import { JSX } from 'react'
+
+// react native uni unistyles
+import { StyleSheet } from 'react-native-unistyles'
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
+
+// theme config
+import { theme_breakpoints, themes } from './configs/unistyles-theme.config'
 
 GoogleSignin.configure({ profileImageSize: 512 })
 
@@ -49,7 +56,17 @@ i18n.use(initReactI18next).init({
     escapeValue: false,
   },
   supportedLngs: ['en', 'id', 'vi'],
-  compatibilityJSON: 'v3',
+  compatibilityJSON: 'v4',
+})
+
+// Configure react native unistyles
+StyleSheet.configure({
+  settings: {
+    // adaptiveThemes: true,
+    initialTheme: 'light',
+  },
+  breakpoints: theme_breakpoints,
+  themes: themes,
 })
 
 const App = (): JSX.Element => {

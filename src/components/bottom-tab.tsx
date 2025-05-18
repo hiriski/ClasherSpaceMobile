@@ -3,7 +3,7 @@ import { View, Animated, StyleSheet, Pressable } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
 // hooks
-import { useApp, useTheme } from '@/hooks'
+import { useApp } from '@/hooks'
 
 // interfaces
 import { BottomTabNavigatorParamList, NavigatorParamList } from '@/navigator/navigation.type'
@@ -36,7 +36,7 @@ const TAB_ITEMS: Array<TabItem> = [
     focusIcon: <Assets.SVGWidgetDuoToneIcon color={theme_paletteBase.primary.main} height={ICON_SIZE} width={ICON_SIZE} />,
   },
   {
-    path: 'layout_list_screen',
+    path: 'base_layout_list_screen',
     label: 'Layouts',
     icon: <Assets.SVGLayersDuoToneIcon color={theme_paletteLight.text.secondary} height={ICON_SIZE} width={ICON_SIZE} />,
     focusIcon: <Assets.SVGLayersDuoToneIcon color={theme_paletteBase.primary.main} height={ICON_SIZE} width={ICON_SIZE} />,

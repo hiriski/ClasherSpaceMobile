@@ -5,13 +5,14 @@ import { useApp, useFeedback, useTheme } from '@/hooks'
 import { useNavigation } from '@react-navigation/native'
 import { NavigationProps } from '@/navigator'
 import { storageUtils } from '@/utilities'
-import { useCallback } from 'react'
+import { JSX, useCallback } from 'react'
 import { FloatingFeedbackButton } from '@/components/feedback'
 import BottomSheetFeedback from '@/components/feedback/bottom-sheet-feedback'
 import { useTranslation } from 'react-i18next'
 import { AppLanguageCode } from '@/interfaces'
 import { appLibs } from '@/libs'
 import { useAppDispatch } from '@/store'
+import { StyleSheet } from 'react-native-unistyles'
 
 const DashboardScreen = (): JSX.Element => {
   const theme = useTheme()
@@ -51,7 +52,7 @@ const DashboardScreen = (): JSX.Element => {
         backgroundColor={theme.palette.background.paper}
         style={{ paddingTop: 12, paddingHorizontal: theme.horizontalSpacing }}
       >
-        <View style={{ flex: 1 }}>
+        <View style={styles.root}>
           <Typography variant='h3' gutterBottom={2} style={{ textAlign: 'center' }}>
             {t('common.hello')}
           </Typography>
@@ -93,5 +94,12 @@ const DashboardScreen = (): JSX.Element => {
     </>
   )
 }
+
+const styles = StyleSheet.create(theme => ({
+  root: {
+    flex: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+}))
 
 export default DashboardScreen

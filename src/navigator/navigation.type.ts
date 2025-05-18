@@ -1,4 +1,4 @@
-import { ComponentType } from 'react'
+import { ComponentType, ReactElement } from 'react'
 import { NativeStackNavigationOptions, NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
 
 export type NavigatorParamList = {
@@ -24,7 +24,7 @@ export type BottomTabNavigatorParamList = {
 export type ScreenType = {
   label?: string | null
   name: keyof Partial<NavigatorParamList>
-  component: ComponentType<object> | (() => JSX.Element)
+  component: ComponentType<object> | (() => ReactElement)
   options?: NativeStackNavigationOptions
 }
 

@@ -1,10 +1,10 @@
 import { FlatList, View } from 'react-native'
 import { IconButton, Screen } from '@/components/core'
 import { useTheme } from '@/hooks'
-import { IBaseLayout } from '@/interfaces'
 import { BaseLayoutCardItem } from '@/components/base-layout'
-import { themeConfig } from '@/config'
+import { themeConfig } from '@/configs'
 import { blue } from '@/libs'
+import { IBaseLayout } from '@/interfaces'
 
 const data: Array<IBaseLayout> = [
   {
